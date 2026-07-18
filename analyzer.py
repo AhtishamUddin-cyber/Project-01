@@ -37,6 +37,165 @@ COIN_MAP = {
 }
 
 PATTERN_LIBRARY_FILE = "pattern_library.json"
+TRADE_TRACKER_FILE = "trades.json"
+
+
+# ─────────────────────────────────────────────────────────────
+#   TRADE TRACKER — log real trades, auto-check TP/SL against live price
+# ─────────────────────────────────────────────────────────────
+def load_trades():
+    if os.path.exists(TRADE_TRACKER_FILE):
+        with open(TRADE_TRACKER_FILE, "r") as f:
+            return json.load(f)
+    return []
+
+
+def save_trades(trades):
+    with open(TRADE_TRACKER_FILE, "w") as f:
+        json.dump(trades, f, indent=2)
+
+
+def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note=""):
+    trades = load_trades()
+    trade = {
+        "id": f"{pair}_{int(time.time()*1000)}",
+        "coin": coin_symbol, "pair": pair, "market_type": market_type,
+        "direction": direction, "entry": entry, "tp1": tp1, "tp2": tp2, "sl": sl,
+        "timeframe": timeframe, "note": note,
+        "status": "OPEN",
+        "opened_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "closed_at": None,
+        "exit_price": None,
+    }
+    trades.append(trade)
+    save_trades(trades)
+    return trade
+
+
+def get_single_ticker_price(pair, market_type="spot"):
+    """Fetch just the live price for one symbol (cheap, single-symbol call)."""
+    try:
+        if market_type == "futures":
+            r = requests.get(
+                "https://api.bitget.com/api/v2/mix/market/ticker",
+                params={"symbol": pair, "productType": "usdt-futures"}, timeout=8,
+            )
+        else:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/spot/market/tickers",
+                params={"symbol": pair}, timeout=8,
+            )
+        data = r.json().get("data", [])
+        if not data:
+            return None
+        d = data[0]
+        return float(d.get("lastPr") or d.get("last") or 0) or None
+    except Exception:
+        return None
+
+
+def evaluate_trade(trade, live_price):
+    """Checks a trade's live price against its TP/SL and returns an updated
+    copy with status + unrealized/realized P&L. Doesn't mutate the original."""
+    t = dict(trade)
+    if live_price is None:
+        t["current_price"] = None
+        t["pnl_pct"] = None
+        return t
+
+    t["current_price"] = live_price
+    direction = t["direction"]
+    entry = t["entry"]
+
+    if direction == "LONG":
+        pnl_pct = ((live_price - entry) / entry) * 100 if entry else 0
+    else:
+        pnl_pct = ((entry - live_price) / entry) * 100 if entry else 0
+    t["pnl_pct"] = round(pnl_pct, 2)
+
+    if t["status"] == "OPEN":
+        sl = t.get("sl")
+        tp1 = t.get("tp1")
+        tp2 = t.get("tp2")
+
+        if direction == "LONG":
+            hit_sl = sl and live_price <= sl
+            hit_tp2 = tp2 and live_price >= tp2
+            hit_tp1 = tp1 and live_price >= tp1
+        else:
+            hit_sl = sl and live_price >= sl
+            hit_tp2 = tp2 and live_price <= tp2
+            hit_tp1 = tp1 and live_price <= tp1
+
+        if hit_sl:
+            t["status"] = "SL_HIT"
+            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["exit_price"] = sl
+        elif hit_tp2:
+            t["status"] = "TP2_HIT"
+            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["exit_price"] = tp2
+        elif hit_tp1:
+            t["status"] = "TP1_HIT"
+            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["exit_price"] = tp1
+
+    return t
+
+
+def refresh_all_trades():
+    """Re-checks every OPEN trade's live price and updates status in storage.
+    Returns the fully refreshed list (open + closed)."""
+    trades = load_trades()
+    updated = []
+    for t in trades:
+        if t["status"] == "OPEN":
+            price = get_single_ticker_price(t["pair"], t["market_type"])
+            t = evaluate_trade(t, price)
+        else:
+            price = get_single_ticker_price(t["pair"], t["market_type"])
+            t = evaluate_trade(t, price)
+        updated.append(t)
+    save_trades(updated)
+    return updated
+
+
+def close_trade_manually(trade_id, exit_price=None, note=""):
+    trades = load_trades()
+    for t in trades:
+        if t["id"] == trade_id and t["status"] == "OPEN":
+            t["status"] = "CLOSED_MANUAL"
+            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["exit_price"] = exit_price
+            if note:
+                t["note"] = (t.get("note", "") + " | " + note).strip(" |")
+    save_trades(trades)
+    return trades
+
+
+def delete_trade(trade_id):
+    trades = load_trades()
+    trades = [t for t in trades if t["id"] != trade_id]
+    save_trades(trades)
+    return trades
+
+
+def trade_stats(trades):
+    """Win-rate and performance summary across CLOSED trades."""
+    closed = [t for t in trades if t["status"] != "OPEN"]
+    wins = [t for t in closed if t["status"] in ("TP1_HIT", "TP2_HIT")]
+    losses = [t for t in closed if t["status"] == "SL_HIT"]
+    manual = [t for t in closed if t["status"] == "CLOSED_MANUAL"]
+    win_rate = (len(wins) / len(closed) * 100) if closed else 0
+    avg_win_pnl = sum(t["pnl_pct"] for t in wins if t.get("pnl_pct") is not None) / len(wins) if wins else 0
+    avg_loss_pnl = sum(t["pnl_pct"] for t in losses if t.get("pnl_pct") is not None) / len(losses) if losses else 0
+    open_count = len([t for t in trades if t["status"] == "OPEN"])
+    return {
+        "total": len(trades), "open": open_count, "closed": len(closed),
+        "wins": len(wins), "losses": len(losses), "manual_closes": len(manual),
+        "win_rate": round(win_rate, 1),
+        "avg_win_pnl": round(avg_win_pnl, 2), "avg_loss_pnl": round(avg_loss_pnl, 2),
+    }
 
 
 # ─────────────────────────────────────────────────────────────
@@ -434,7 +593,7 @@ def get_funding_rate(pair, market_type="futures"):
 def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
     try:
         tf_map = {"1m": "1min", "3m": "3min", "5m": "5min", "15m": "15min", "30m": "30min",
-                  "1h": "1H", "2h": "2H", "4h": "4H", "6h": "6H", "12h": "12H", "1d": "1D", "1w": "1W"}
+                  "1h": "1h", "2h": "2h", "4h": "4h", "6h": "6h", "12h": "12h", "1d": "1day", "1w": "1week"}
         tf = tf_map.get(timeframe.lower(), "1H")
         if market_type == "futures":
             r = requests.get(
@@ -1103,7 +1262,8 @@ def run_live_analysis(coin_symbol, pair, market_type, timeframe, newsapi_key,
     log(f"Calculating indicators for {coin_symbol}...")
     indicators = get_realtime_indicators(pair, timeframe, market_type)
     if not indicators:
-        return None
+        return {"error": f"No candle data returned for {pair} ({market_type}, {timeframe}). "
+                          f"Bitget API might be rate-limiting or the symbol/timeframe combo is unsupported."}
 
     log("Fetching order book...")
     orderbook = get_orderbook(pair, market_type)
