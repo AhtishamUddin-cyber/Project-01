@@ -35,14 +35,12 @@ with st.sidebar:
     )
 
     st.divider()
-    st.subheader("⚙️ Defaults")
-    default_timeframe = st.selectbox(
-        "Timeframe", ["5m", "15m", "30m", "1h", "2h", "4h", "1d"], index=3,
-    )
     st.caption("Data source: Bitget (live) · CoinGecko · Alternative.me")
 
 
-tab_live, tab_shot, tab_lib = st.tabs(["🔴 Live Dashboard", "📸 Screenshot Deep-Dive", "📚 Pattern Library"])
+tab_live, tab_shot, tab_lib, tab_track = st.tabs(
+    ["🔴 Live Dashboard", "📸 Screenshot Deep-Dive", "📚 Pattern Library", "📒 Trade Tracker"]
+)
 
 
 # ─────────────────────────────────────────────────────────────
@@ -62,8 +60,7 @@ with tab_live:
     with c2:
         timeframe = st.selectbox(
             "Chart timeframe", ["5m", "15m", "30m", "1h", "2h", "4h", "1d"],
-            index=["5m", "15m", "30m", "1h", "2h", "4h", "1d"].index(default_timeframe),
-            key="live_tf",
+            index=3, key="live_tf",
         )
     with c3:
         include_news = st.checkbox("Include news", value=False,
@@ -107,6 +104,7 @@ with tab_live:
 
         if run_btn:
             results = []
+            errors = []
             progress = st.progress(0.0, text="Starting...")
             for i, lbl in enumerate(selected_labels):
                 s = label_to_symbol[lbl]
@@ -115,13 +113,23 @@ with tab_live:
                     coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
                     timeframe=timeframe, newsapi_key=newsapi_key, use_news=include_news,
                 )
-                if res:
+                if res and "error" not in res:
                     results.append((s, res))
+                else:
+                    err_msg = res.get("error", "Unknown error") if res else "No response"
+                    errors.append(f"{s['base']}: {err_msg}")
                 time.sleep(0.3)
             progress.progress(1.0, text="Done!")
             time.sleep(0.3)
             progress.empty()
             st.session_state["live_results"] = results
+            st.session_state["live_errors"] = errors
+
+        errors = st.session_state.get("live_errors", [])
+        if errors:
+            with st.expander(f"⚠️ {len(errors)} coin(s) could not be analyzed — click for details"):
+                for e in errors:
+                    st.write(f"- {e}")
 
         results = st.session_state.get("live_results", [])
         if results:
@@ -192,6 +200,24 @@ with tab_live:
                     d1.metric("Order Book", f"Buy {orderbook.get('buy_pct',50):.0f}% / Sell {orderbook.get('sell_pct',50):.0f}%")
                     d2.metric("Fear & Greed", f"{fg.get('value',50)} — {fg.get('label','')}")
                     d3.metric("Funding Rate", f"{funding.get('rate',0):+.4f}% ({funding.get('signal','NEUTRAL')})")
+
+                    if v["agreement"] != "CONFLICT" and v["entry_low"]:
+                        st.divider()
+                        entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
+                        tcol1, tcol2 = st.columns([3, 1])
+                        with tcol1:
+                            st.caption(
+                                f"📒 Log this as a real trade — Entry ~{entry_ref:,.6f}, "
+                                f"TP1 {v['tp1']:,.6f}, TP2 {v['tp2']:,.6f}, SL {v['sl']:,.6f}"
+                            )
+                        with tcol2:
+                            if st.button("➕ Add to Tracker", key=f"track_{s['base']}_{s['symbol']}"):
+                                az.add_trade(
+                                    coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
+                                    direction=v["final_direction"], entry=entry_ref,
+                                    tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
+                                )
+                                st.success(f"{s['base']} trade added to tracker! Check the 📒 Trade Tracker tab.")
 
                     try:
                         docx_bytes = az.generate_docx_bytes(chart, res["market"], funding, indicators, v, [], None)
@@ -330,3 +356,101 @@ with tab_lib:
                     st.warning(f"{f.name}: koi pattern detect nahi hua")
             az.save_library(library)
             st.rerun()
+
+
+# ─────────────────────────────────────────────────────────────
+#   TAB 4 — TRADE TRACKER
+# ─────────────────────────────────────────────────────────────
+with tab_track:
+    st.subheader("Trade Tracker")
+    st.caption(
+        "Jo trades tumne Live Dashboard se 'Add to Tracker' kiye hain, wo yahan track hote hain. "
+        "Refresh dabate hi live price check hoga aur agar TP ya SL hit ho gaya ho to status khud update ho jayega."
+    )
+
+    tcol1, tcol2 = st.columns([1, 4])
+    with tcol1:
+        if st.button("🔄 Refresh & Check Status", type="primary"):
+            with st.spinner("Checking live prices against TP/SL..."):
+                az.refresh_all_trades()
+            st.rerun()
+
+    trades = az.load_trades()
+
+    if not trades:
+        st.info("Abhi koi trade track nahi ho raha. Live Dashboard mein kisi coin ki analysis kholo aur '➕ Add to Tracker' dabao.")
+    else:
+        stats = az.trade_stats(trades)
+        s1, s2, s3, s4, s5 = st.columns(5)
+        s1.metric("Open Trades", stats["open"])
+        s2.metric("Closed Trades", stats["closed"])
+        s3.metric("Win Rate", f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A")
+        s4.metric("Avg Win", f"{stats['avg_win_pnl']:+.2f}%" if stats["wins"] else "N/A")
+        s5.metric("Avg Loss", f"{stats['avg_loss_pnl']:+.2f}%" if stats["losses"] else "N/A")
+
+        st.divider()
+        open_trades = [t for t in trades if t["status"] == "OPEN"]
+        closed_trades = [t for t in trades if t["status"] != "OPEN"]
+
+        st.markdown("### 🟡 Open Trades")
+        if not open_trades:
+            st.caption("Koi open trade nahi hai.")
+        else:
+            for t in open_trades:
+                dir_emoji = "🟢" if t["direction"] == "LONG" else "🔴"
+                cur = t.get("current_price")
+                pnl = t.get("pnl_pct")
+                pnl_txt = f"{pnl:+.2f}%" if pnl is not None else "—"
+                with st.container(border=True):
+                    h1, h2, h3, h4, h5 = st.columns([2, 1, 1, 1, 1])
+                    h1.markdown(f"**{dir_emoji} {t['coin']}** ({t['market_type']}, {t['timeframe']}) — opened {t['opened_at']}")
+                    h2.metric("Entry", f"{t['entry']:,.6f}")
+                    h3.metric("Current", f"{cur:,.6f}" if cur else "—")
+                    h4.metric("Unrealized P&L", pnl_txt)
+                    with h5:
+                        if st.button("✋ Close now", key=f"close_{t['id']}"):
+                            az.close_trade_manually(t["id"], exit_price=cur, note="Manually closed")
+                            st.rerun()
+                    st.caption(f"TP1 {t['tp1']:,.6f}  |  TP2 {t.get('tp2', 0):,.6f}  |  SL {t['sl']:,.6f}")
+
+        st.divider()
+        st.markdown("### ✅ Closed Trades")
+        if not closed_trades:
+            st.caption("Abhi tak koi trade close nahi hua.")
+        else:
+            status_map = {
+                "TP1_HIT": "✅ Take Profit 1 Hit",
+                "TP2_HIT": "🎯 Take Profit 2 Hit",
+                "SL_HIT": "❌ Stop Loss Hit",
+                "CLOSED_MANUAL": "✋ Closed Manually",
+            }
+            rows = []
+            for t in sorted(closed_trades, key=lambda x: x.get("closed_at") or "", reverse=True):
+                dir_emoji = "🟢" if t["direction"] == "LONG" else "🔴"
+                rows.append({
+                    "Coin": f"{dir_emoji} {t['coin']}",
+                    "Direction": t["direction"],
+                    "Entry": f"{t['entry']:,.6f}",
+                    "Exit": f"{t['exit_price']:,.6f}" if t.get("exit_price") else "N/A",
+                    "Result": status_map.get(t["status"], t["status"]),
+                    "P&L": f"{t['pnl_pct']:+.2f}%" if t.get("pnl_pct") is not None else "—",
+                    "Opened": t["opened_at"],
+                    "Closed": t.get("closed_at") or "—",
+                })
+            st.dataframe(rows, use_container_width=True, hide_index=True)
+
+            del_id = st.selectbox(
+                "Delete a closed trade record",
+                ["-- select --"] + [f"{t['coin']} @ {t['opened_at']} ({t['id']})" for t in closed_trades],
+            )
+            if del_id != "-- select --" and st.button("🗑️ Delete This Record"):
+                trade_id = del_id.split("(")[-1].rstrip(")")
+                az.delete_trade(trade_id)
+                st.rerun()
+
+        st.divider()
+        st.caption(
+            "⚠️ Status sirf jab tum 'Refresh' dabate ho tab ke live price se check hota hai — "
+            "agar price beech mein SL aur TP dono cross kar chuki ho refresh se pehle, to sirf latest "
+            "price ke hisaab se result dikhega. Bitget app/exchange par apna actual order hamesha confirm karo."
+        )
