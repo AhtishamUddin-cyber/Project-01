@@ -36,6 +36,11 @@ COIN_MAP = {
     "PYTH": "pyth-network",
 }
 
+# Bitget lists several futures categories beyond plain crypto perpetuals
+# (stock-linked futures like AAPL/TSLA, USDC-margined, coin-margined, etc).
+# We try them in this order until one responds with real data.
+FUTURES_PRODUCT_TYPES = ["usdt-futures", "susdt-futures", "usdc-futures", "coin-futures"]
+
 PATTERN_LIBRARY_FILE = "pattern_library.json"
 TRADE_TRACKER_FILE = "trades.json"
 
@@ -76,20 +81,31 @@ def get_single_ticker_price(pair, market_type="spot"):
     """Fetch just the live price for one symbol (cheap, single-symbol call)."""
     try:
         if market_type == "futures":
-            r = requests.get(
-                "https://api.bitget.com/api/v2/mix/market/ticker",
-                params={"symbol": pair, "productType": "usdt-futures"}, timeout=8,
-            )
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/ticker",
+                        params={"symbol": pair, "productType": ptype}, timeout=8,
+                    )
+                    data = r.json().get("data", [])
+                    if data:
+                        d = data[0]
+                        price = float(d.get("lastPr") or d.get("last") or 0)
+                        if price:
+                            return price
+                except Exception:
+                    continue
+            return None
         else:
             r = requests.get(
                 "https://api.bitget.com/api/v2/spot/market/tickers",
                 params={"symbol": pair}, timeout=8,
             )
-        data = r.json().get("data", [])
-        if not data:
-            return None
-        d = data[0]
-        return float(d.get("lastPr") or d.get("last") or 0) or None
+            data = r.json().get("data", [])
+            if not data:
+                return None
+            d = data[0]
+            return float(d.get("lastPr") or d.get("last") or 0) or None
     except Exception:
         return None
 
@@ -220,53 +236,77 @@ def get_spot_symbols():
 
 
 def get_futures_symbols():
-    """All live Bitget USDT-M futures contracts."""
-    try:
-        r = requests.get(
-            "https://api.bitget.com/api/v2/mix/market/contracts",
-            params={"productType": "usdt-futures"}, timeout=10,
-        )
-        data = r.json().get("data", [])
-        out = []
-        for d in data:
-            if d.get("symbolStatus") == "normal" and d.get("quoteCoin") == "USDT":
-                out.append({
-                    "symbol": d.get("symbol"),
-                    "base": d.get("baseCoin"),
-                    "quote": d.get("quoteCoin"),
-                })
-        return sorted(out, key=lambda x: x["base"])
-    except Exception:
-        return []
+    """All live Bitget futures contracts across every product category
+    (crypto USDT-M, USDC-M, coin-margined, and stock-linked like AAPL/TSLA)."""
+    out = []
+    seen = set()
+    for ptype in FUTURES_PRODUCT_TYPES:
+        try:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/mix/market/contracts",
+                params={"productType": ptype}, timeout=10,
+            )
+            data = r.json().get("data", [])
+            for d in data:
+                sym = d.get("symbol")
+                if not sym or sym in seen:
+                    continue
+                if d.get("symbolStatus") == "normal":
+                    out.append({
+                        "symbol": sym,
+                        "base": d.get("baseCoin"),
+                        "quote": d.get("quoteCoin"),
+                        "product_type": ptype,
+                    })
+                    seen.add(sym)
+        except Exception:
+            continue
+    return sorted(out, key=lambda x: x["base"] or "")
 
 
 def get_all_tickers(market_type="spot"):
     """Batch live price/24h-change for ALL symbols in one call — used for the
     fast browse/filter table so we don't hit the API once per coin."""
+    out = {}
     try:
         if market_type == "spot":
             r = requests.get("https://api.bitget.com/api/v2/spot/market/tickers", timeout=12)
+            data = r.json().get("data", [])
+            for d in data:
+                sym = d.get("symbol")
+                if not sym:
+                    continue
+                try:
+                    price = float(d.get("lastPr") or d.get("last") or 0)
+                    chg = float(d.get("change24h") or d.get("changeUtc24h") or 0) * 100
+                    vol = float(d.get("usdtVolume") or d.get("baseVolume") or 0)
+                except Exception:
+                    price, chg, vol = 0, 0, 0
+                out[sym] = {"price": price, "change_24h": chg, "volume": vol}
         else:
-            r = requests.get(
-                "https://api.bitget.com/api/v2/mix/market/tickers",
-                params={"productType": "usdt-futures"}, timeout=12,
-            )
-        data = r.json().get("data", [])
-        out = {}
-        for d in data:
-            sym = d.get("symbol")
-            if not sym:
-                continue
-            try:
-                price = float(d.get("lastPr") or d.get("last") or 0)
-                chg = float(d.get("change24h") or d.get("changeUtc24h") or 0) * 100
-                vol = float(d.get("usdtVolume") or d.get("baseVolume") or 0)
-            except Exception:
-                price, chg, vol = 0, 0, 0
-            out[sym] = {"price": price, "change_24h": chg, "volume": vol}
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/tickers",
+                        params={"productType": ptype}, timeout=12,
+                    )
+                    data = r.json().get("data", [])
+                    for d in data:
+                        sym = d.get("symbol")
+                        if not sym or sym in out:
+                            continue
+                        try:
+                            price = float(d.get("lastPr") or d.get("last") or 0)
+                            chg = float(d.get("change24h") or d.get("changeUtc24h") or 0) * 100
+                            vol = float(d.get("usdtVolume") or d.get("baseVolume") or 0)
+                        except Exception:
+                            price, chg, vol = 0, 0, 0
+                        out[sym] = {"price": price, "change_24h": chg, "volume": vol}
+                except Exception:
+                    continue
         return out
     except Exception:
-        return {}
+        return out
 
 
 def build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indicators):
@@ -534,24 +574,37 @@ def get_market_data(coin_id, coin_symbol):
 def get_orderbook(pair, market_type="spot"):
     try:
         if market_type == "futures":
-            r = requests.get(
-                "https://api.bitget.com/api/v2/mix/market/merge-depth",
-                params={"symbol": pair, "productType": "usdt-futures", "limit": "20"}, timeout=10,
-            )
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/merge-depth",
+                        params={"symbol": pair, "productType": ptype, "limit": "20"}, timeout=10,
+                    )
+                    data = r.json().get("data", {})
+                    asks = data.get("asks", [])
+                    bids = data.get("bids", [])
+                    if asks and bids:
+                        ta = sum(float(a[1]) for a in asks)
+                        tb = sum(float(b[1]) for b in bids)
+                        t = ta + tb
+                        return {"buy_pct": (tb / t) * 100, "sell_pct": (ta / t) * 100}
+                except Exception:
+                    continue
+            return {"buy_pct": 50, "sell_pct": 50}
         else:
             r = requests.get(
                 "https://api.bitget.com/api/v2/spot/market/orderbook",
                 params={"symbol": pair, "limit": "20"}, timeout=10,
             )
-        data = r.json().get("data", {})
-        asks = data.get("asks", [])
-        bids = data.get("bids", [])
-        if not asks or not bids:
-            raise Exception("empty")
-        ta = sum(float(a[1]) for a in asks)
-        tb = sum(float(b[1]) for b in bids)
-        t = ta + tb
-        return {"buy_pct": (tb / t) * 100, "sell_pct": (ta / t) * 100}
+            data = r.json().get("data", {})
+            asks = data.get("asks", [])
+            bids = data.get("bids", [])
+            if not asks or not bids:
+                raise Exception("empty")
+            ta = sum(float(a[1]) for a in asks)
+            tb = sum(float(b[1]) for b in bids)
+            t = ta + tb
+            return {"buy_pct": (tb / t) * 100, "sell_pct": (ta / t) * 100}
     except Exception:
         return {"buy_pct": 50, "sell_pct": 50}
 
@@ -568,45 +621,57 @@ def get_fear_greed():
 def get_funding_rate(pair, market_type="futures"):
     if market_type != "futures":
         return {"rate": 0, "signal": "NEUTRAL"}
-    try:
-        url = "https://api.bitget.com/api/v2/mix/market/current-fund-rate"
-        r = requests.get(url, params={"symbol": pair, "productType": "usdt-futures"}, timeout=10)
-        data = r.json().get("data", [])
-        if not data:
-            return {"rate": 0, "signal": "NEUTRAL"}
-        rate = float(data[0].get("fundingRate", 0)) * 100
-        if rate > 0.1:
-            signal = "SHORT"
-        elif rate > 0.05:
-            signal = "SHORT"
-        elif rate < -0.1:
-            signal = "LONG"
-        elif rate < -0.05:
-            signal = "LONG"
-        else:
-            signal = "NEUTRAL"
-        return {"rate": rate, "signal": signal}
-    except Exception:
-        return {"rate": 0, "signal": "NEUTRAL"}
+    for ptype in FUTURES_PRODUCT_TYPES:
+        try:
+            url = "https://api.bitget.com/api/v2/mix/market/current-fund-rate"
+            r = requests.get(url, params={"symbol": pair, "productType": ptype}, timeout=10)
+            data = r.json().get("data", [])
+            if not data:
+                continue
+            rate = float(data[0].get("fundingRate", 0)) * 100
+            if rate > 0.1:
+                signal = "SHORT"
+            elif rate > 0.05:
+                signal = "SHORT"
+            elif rate < -0.1:
+                signal = "LONG"
+            elif rate < -0.05:
+                signal = "LONG"
+            else:
+                signal = "NEUTRAL"
+            return {"rate": rate, "signal": signal}
+        except Exception:
+            continue
+    return {"rate": 0, "signal": "NEUTRAL"}
 
 
 def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
     try:
         tf_map = {"1m": "1min", "3m": "3min", "5m": "5min", "15m": "15min", "30m": "30min",
                   "1h": "1h", "2h": "2h", "4h": "4h", "6h": "6h", "12h": "12h", "1d": "1day", "1w": "1week"}
-        tf = tf_map.get(timeframe.lower(), "1H")
+        tf = tf_map.get(timeframe.lower(), "1h")
+        candles = []
         if market_type == "futures":
-            r = requests.get(
-                "https://api.bitget.com/api/v2/mix/market/candles",
-                params={"symbol": pair, "granularity": tf, "limit": "200", "productType": "usdt-futures"},
-                timeout=10,
-            )
+            # Some listings (e.g. stock-linked futures like AAPL/TSLA) live under a
+            # different productType than plain crypto perpetuals — try all of them.
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/candles",
+                        params={"symbol": pair, "granularity": tf, "limit": "200", "productType": ptype},
+                        timeout=10,
+                    )
+                    candles = r.json().get("data", [])
+                    if candles:
+                        break
+                except Exception:
+                    continue
         else:
             r = requests.get(
                 "https://api.bitget.com/api/v2/spot/market/candles",
                 params={"symbol": pair, "granularity": tf, "limit": "200"}, timeout=10,
             )
-        candles = r.json().get("data", [])
+            candles = r.json().get("data", [])
         if not candles:
             return {}
         candles.reverse()
