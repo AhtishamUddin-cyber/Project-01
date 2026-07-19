@@ -647,9 +647,22 @@ def get_funding_rate(pair, market_type="futures"):
 
 def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
     try:
-        tf_map = {"1m": "1min", "3m": "3min", "5m": "5min", "15m": "15min", "30m": "30min",
-                  "1h": "1h", "2h": "2h", "4h": "4h", "6h": "6h", "12h": "12h", "1d": "1day", "1w": "1week"}
-        tf = tf_map.get(timeframe.lower(), "1h")
+        # IMPORTANT: Bitget's Spot candles endpoint and Futures/Mix candles
+        # endpoint use DIFFERENT casing for the same granularity. Spot wants
+        # lowercase ("1h", "4h", "1day"), Futures/Mix wants uppercase
+        # ("1H", "4H", "1D"). Using the wrong case returns an empty/invalid
+        # response, not an error - which is why timeframes like 2h/4h/1d were
+        # silently failing on futures while 5m/15m/30m (same either way) worked.
+        tf_map_spot = {"1m": "1min", "3m": "3min", "5m": "5min", "15m": "15min", "30m": "30min",
+                       "1h": "1h", "2h": "2h", "4h": "4h", "6h": "6h", "12h": "12h",
+                       "1d": "1day", "1w": "1week"}
+        tf_map_futures = {"1m": "1m", "3m": "3m", "5m": "5m", "15m": "15m", "30m": "30m",
+                          "1h": "1H", "2h": "2H", "4h": "4H", "6h": "6H", "12h": "12H",
+                          "1d": "1D", "1w": "1W"}
+        if market_type == "futures":
+            tf = tf_map_futures.get(timeframe.lower(), "1H")
+        else:
+            tf = tf_map_spot.get(timeframe.lower(), "1h")
         candles = []
         if market_type == "futures":
             # Some listings (e.g. stock-linked futures like AAPL/TSLA) live under a
@@ -847,6 +860,7 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
             "bb_upper": BBU, "bb_mid": BBM, "bb_lower": BBL,
             "vol_signal": VSIG, "ind_direction": idir, "long_count": lc, "short_count": sc,
             "atr": ATR, "swing_support": SWING_SUP, "swing_resistance": SWING_RES,
+            "last_close": CP,
         }
     except Exception:
         return {}
@@ -1339,14 +1353,22 @@ def run_live_analysis(coin_symbol, pair, market_type, timeframe, newsapi_key,
     log("Fetching funding rate...")
     funding = get_funding_rate(pair, market_type)
 
+    log("Fetching live price from Bitget...")
+    # Use Bitget's own ticker for THIS exact pair as the primary price source,
+    # so it matches what's on screen on Bitget. CoinGecko is an aggregated,
+    # slightly-delayed price across many exchanges and can legitimately
+    # differ from Bitget's own last-traded price - it should never be the
+    # primary source for a Bitget-based tool.
+    live_price = get_single_ticker_price(pair, market_type)
+
     log("Fetching market cap / 24h data...")
     coin_id = COIN_MAP.get(coin_symbol, coin_symbol.lower())
     market = get_market_data(coin_id, coin_symbol)
-    live_price = market.get("price") or 0
 
     if not live_price:
-        # fall back to the latest close from the candles used for indicators
-        live_price = indicators.get("ema9") or 0
+        # Bitget ticker failed (rare) - fall back to CoinGecko, then to the
+        # last closed candle price used for the indicators.
+        live_price = market.get("price") or indicators.get("last_close") or 0
 
     news = {"score": 0, "articles": []}
     if use_news:
