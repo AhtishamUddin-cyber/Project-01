@@ -957,6 +957,10 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             "LONG" if ch_24h >= 0 else "SHORT"
         )
         agreement = "FULL" if data_direction != "NEUTRAL" else "PARTIAL"
+        # No Gemini screenshot in this mode, so there's no separate AI
+        # opinion to report - just mirror the data-driven direction so the
+        # return dict below always has this key defined.
+        gemini_direction = final_direction
     else:
         trend_lower = chart.get("trend", "").lower()
         if "up" in trend_lower:
