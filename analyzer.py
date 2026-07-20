@@ -237,9 +237,16 @@ def get_spot_symbols():
 
 def get_futures_symbols():
     """All live Bitget futures contracts across every product category
-    (crypto USDT-M, USDC-M, coin-margined, and stock-linked like AAPL/TSLA)."""
+    (crypto USDT-M, USDC-M, coin-margined, and stock-linked like AAPL/TSLA).
+    Deduped by BASE COIN, not just by exact symbol string - the same coin
+    (e.g. BTC) can be listed under several product categories with different
+    symbol names (BTCUSDT, BTCUSD, BTCPERP...), which was making it show up
+    2-3 times in the picker. We keep the first one found, and
+    FUTURES_PRODUCT_TYPES is ordered so usdt-futures (the standard, most
+    liquid contract type) wins that tie-break."""
     out = []
-    seen = set()
+    seen_symbols = set()
+    seen_bases = set()
     for ptype in FUTURES_PRODUCT_TYPES:
         try:
             r = requests.get(
@@ -249,16 +256,20 @@ def get_futures_symbols():
             data = r.json().get("data", [])
             for d in data:
                 sym = d.get("symbol")
-                if not sym or sym in seen:
+                base = d.get("baseCoin")
+                if not sym or sym in seen_symbols:
+                    continue
+                if not base or base in seen_bases:
                     continue
                 if d.get("symbolStatus") == "normal":
                     out.append({
                         "symbol": sym,
-                        "base": d.get("baseCoin"),
+                        "base": base,
                         "quote": d.get("quoteCoin"),
                         "product_type": ptype,
                     })
-                    seen.add(sym)
+                    seen_symbols.add(sym)
+                    seen_bases.add(base)
         except Exception:
             continue
     return sorted(out, key=lambda x: x["base"] or "")
@@ -897,7 +908,8 @@ def get_news(coin_symbol, coin_id, newsapi_key):
 # ─────────────────────────────────────────────────────────────
 #   FINAL VERDICT (data-driven decision + trade levels)
 # ─────────────────────────────────────────────────────────────
-def final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns):
+def final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns,
+                   has_ai_opinion=True):
     buy_pct = orderbook.get("buy_pct", 50)
     sell_pct = orderbook.get("sell_pct", 50)
     fg_val = fg.get("value", 50)
@@ -934,23 +946,35 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
 
     data_direction = "LONG" if ls > ss else ("SHORT" if ss > ls else "NEUTRAL")
 
-    trend_lower = chart.get("trend", "").lower()
-    if "up" in trend_lower:
-        gemini_direction = "LONG"
-    elif "down" in trend_lower:
-        gemini_direction = "SHORT"
+    if not has_ai_opinion:
+        # Live Dashboard mode: there is no independent second opinion here
+        # (no screenshot was read by Gemini) - "trend" in `chart` was itself
+        # derived from the same live data. Comparing it against
+        # data_direction was just noise disagreeing with itself, causing
+        # false "CONFLICT" results that hid the trade decision. Use the
+        # data-driven direction directly instead.
+        final_direction = data_direction if data_direction != "NEUTRAL" else (
+            "LONG" if ch_24h >= 0 else "SHORT"
+        )
+        agreement = "FULL" if data_direction != "NEUTRAL" else "PARTIAL"
     else:
-        gemini_direction = "LONG" if ch_24h > 0 else "SHORT"
+        trend_lower = chart.get("trend", "").lower()
+        if "up" in trend_lower:
+            gemini_direction = "LONG"
+        elif "down" in trend_lower:
+            gemini_direction = "SHORT"
+        else:
+            gemini_direction = "LONG" if ch_24h > 0 else "SHORT"
 
-    if data_direction == gemini_direction:
-        agreement = "FULL"
-        final_direction = data_direction
-    elif data_direction == "NEUTRAL":
-        agreement = "PARTIAL"
-        final_direction = gemini_direction
-    else:
-        agreement = "CONFLICT"
-        final_direction = data_direction
+        if data_direction == gemini_direction:
+            agreement = "FULL"
+            final_direction = data_direction
+        elif data_direction == "NEUTRAL":
+            agreement = "PARTIAL"
+            final_direction = gemini_direction
+        else:
+            agreement = "CONFLICT"
+            final_direction = data_direction
 
     score = 0
     factors = []
@@ -1324,7 +1348,8 @@ def run_full_analysis(image, gemini_key, newsapi_key, library, market_type="spot
     news = get_news(chart["coin_symbol"], chart["coin_id"], newsapi_key)
 
     log("Building final verdict...")
-    verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched)
+    verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched,
+                             has_ai_opinion=True)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,
@@ -1378,7 +1403,8 @@ def run_live_analysis(coin_symbol, pair, market_type, timeframe, newsapi_key,
     chart = build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indicators)
 
     log("Building final verdict...")
-    verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns=[])
+    verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news,
+                             matched_patterns=[], has_ai_opinion=False)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,
