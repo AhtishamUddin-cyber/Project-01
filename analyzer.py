@@ -10,6 +10,7 @@ import os
 import re
 import json
 import time
+import base64
 from datetime import datetime, timedelta
 
 import requests
@@ -46,22 +47,94 @@ TRADE_TRACKER_FILE = "trades.json"
 
 
 # ─────────────────────────────────────────────────────────────
+#   GITHUB-BACKED PERSISTENCE (fixes patterns/trades disappearing)
+# ─────────────────────────────────────────────────────────────
+# Streamlit Cloud's filesystem is EPHEMERAL: local files like
+# pattern_library.json / trades.json get wiped whenever the app container
+# restarts. This happens on every redeploy AND whenever a free-tier app
+# goes to sleep from inactivity and then wakes back up - nothing was
+# actually "deleting" the data on refresh, the whole container (and its
+# local disk) was being replaced underneath it.
+#
+# Fix: also persist these files inside the GitHub repo itself via the
+# GitHub Contents API. The repo survives every restart/redeploy (it's what
+# triggers the redeploy), so this makes the data genuinely permanent.
+# Needs a free GitHub Personal Access Token — falls back to local-file-only
+# behavior (old behavior, still works within a session) if no token is set.
+GITHUB_REPO = "AhtishamUddin-cyber/Project-01"
+GITHUB_BRANCH = "main"
+
+
+def _github_get(path, token):
+    if not token:
+        return None, None
+    try:
+        r = requests.get(
+            f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}",
+            headers={"Authorization": f"token {token}", "Accept": "application/vnd.github+json"},
+            params={"ref": GITHUB_BRANCH}, timeout=10,
+        )
+        if r.status_code != 200:
+            return None, None
+        data = r.json()
+        content = base64.b64decode(data["content"]).decode("utf-8")
+        return content, data["sha"]
+    except Exception:
+        return None, None
+
+
+def _github_put(path, token, content_str, message):
+    if not token:
+        return False
+    try:
+        _, sha = _github_get(path, token)
+        payload = {
+            "message": message,
+            "content": base64.b64encode(content_str.encode("utf-8")).decode("utf-8"),
+            "branch": GITHUB_BRANCH,
+        }
+        if sha:
+            payload["sha"] = sha
+        r = requests.put(
+            f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}",
+            headers={"Authorization": f"token {token}", "Accept": "application/vnd.github+json"},
+            json=payload, timeout=15,
+        )
+        return r.status_code in (200, 201)
+    except Exception:
+        return False
+
+
+# ─────────────────────────────────────────────────────────────
 #   TRADE TRACKER — log real trades, auto-check TP/SL against live price
 # ─────────────────────────────────────────────────────────────
-def load_trades():
+def load_trades(github_token=None):
+    if github_token:
+        content, _ = _github_get("data/trades.json", github_token)
+        if content is not None:
+            try:
+                trades = json.loads(content)
+                with open(TRADE_TRACKER_FILE, "w") as f:
+                    f.write(content)
+                return trades
+            except Exception:
+                pass
     if os.path.exists(TRADE_TRACKER_FILE):
         with open(TRADE_TRACKER_FILE, "r") as f:
             return json.load(f)
     return []
 
 
-def save_trades(trades):
+def save_trades(trades, github_token=None):
+    content = json.dumps(trades, indent=2)
     with open(TRADE_TRACKER_FILE, "w") as f:
-        json.dump(trades, f, indent=2)
+        f.write(content)
+    if github_token:
+        _github_put("data/trades.json", github_token, content, "Update trade tracker")
 
 
-def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note=""):
-    trades = load_trades()
+def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="", github_token=None):
+    trades = load_trades(github_token)
     trade = {
         "id": f"{pair}_{int(time.time()*1000)}",
         "coin": coin_symbol, "pair": pair, "market_type": market_type,
@@ -73,7 +146,7 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
         "exit_price": None,
     }
     trades.append(trade)
-    save_trades(trades)
+    save_trades(trades, github_token)
     return trade
 
 
@@ -159,10 +232,10 @@ def evaluate_trade(trade, live_price):
     return t
 
 
-def refresh_all_trades():
+def refresh_all_trades(github_token=None):
     """Re-checks every OPEN trade's live price and updates status in storage.
     Returns the fully refreshed list (open + closed)."""
-    trades = load_trades()
+    trades = load_trades(github_token)
     updated = []
     for t in trades:
         if t["status"] == "OPEN":
@@ -172,12 +245,12 @@ def refresh_all_trades():
             price = get_single_ticker_price(t["pair"], t["market_type"])
             t = evaluate_trade(t, price)
         updated.append(t)
-    save_trades(updated)
+    save_trades(updated, github_token)
     return updated
 
 
-def close_trade_manually(trade_id, exit_price=None, note=""):
-    trades = load_trades()
+def close_trade_manually(trade_id, exit_price=None, note="", github_token=None):
+    trades = load_trades(github_token)
     for t in trades:
         if t["id"] == trade_id and t["status"] == "OPEN":
             t["status"] = "CLOSED_MANUAL"
@@ -185,14 +258,14 @@ def close_trade_manually(trade_id, exit_price=None, note=""):
             t["exit_price"] = exit_price
             if note:
                 t["note"] = (t.get("note", "") + " | " + note).strip(" |")
-    save_trades(trades)
+    save_trades(trades, github_token)
     return trades
 
 
-def delete_trade(trade_id):
-    trades = load_trades()
+def delete_trade(trade_id, github_token=None):
+    trades = load_trades(github_token)
     trades = [t for t in trades if t["id"] != trade_id]
-    save_trades(trades)
+    save_trades(trades, github_token)
     return trades
 
 
@@ -348,6 +421,21 @@ def build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indi
 
     coin_id = COIN_MAP.get(coin_symbol, coin_symbol.lower())
 
+    # chart_confidence used to be hardcoded "HIGH" on every single live
+    # analysis regardless of what data actually came back — meaning it
+    # always contributed the same fixed bonus everywhere. Now it reflects
+    # how complete the indicator set really was for this coin/timeframe.
+    completeness_checks = [ema50, indicators.get("ema200"), indicators.get("atr"),
+                           indicators.get("bb_upper"), indicators.get("bb_lower"),
+                           swing_sup is not None and swing_res is not None]
+    complete_count = sum(1 for v in completeness_checks if v)
+    if complete_count >= 5:
+        data_confidence = "HIGH"
+    elif complete_count >= 3:
+        data_confidence = "MODERATE"
+    else:
+        data_confidence = "LOW"
+
     return {
         "coin_symbol": coin_symbol, "pair": pair, "coin_id": coin_id,
         "timeframe": timeframe, "mkt_type": "Futures" if market_type == "futures" else "Spot",
@@ -356,7 +444,7 @@ def build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indi
         "resistance": f"{swing_res:.6f}" if swing_res else "N/A",
         "volume": indicators.get("vol_signal", "N/A"),
         "buyer_seller": "N/A", "ma_sig": "N/A",
-        "chart_confidence": "HIGH",
+        "chart_confidence": data_confidence,
         "reason": "Live data-based analysis (RSI, MACD, EMA, Bollinger Bands, ATR, swing levels, order book, funding, sentiment).",
         "warning": "None",
     }
@@ -386,16 +474,29 @@ def get_gemini_response(prompt, image, api_key, log=None):
 # ─────────────────────────────────────────────────────────────
 #   PATTERN LIBRARY (stored as JSON file next to the app)
 # ─────────────────────────────────────────────────────────────
-def load_library():
+def load_library(github_token=None):
+    if github_token:
+        content, _ = _github_get("data/pattern_library.json", github_token)
+        if content is not None:
+            try:
+                library = json.loads(content)
+                with open(PATTERN_LIBRARY_FILE, "w") as f:
+                    f.write(content)
+                return library
+            except Exception:
+                pass
     if os.path.exists(PATTERN_LIBRARY_FILE):
         with open(PATTERN_LIBRARY_FILE, "r") as f:
             return json.load(f)
     return {}
 
 
-def save_library(library):
+def save_library(library, github_token=None):
+    content = json.dumps(library, indent=2)
     with open(PATTERN_LIBRARY_FILE, "w") as f:
-        json.dump(library, f, indent=2)
+        f.write(content)
+    if github_token:
+        _github_put("data/pattern_library.json", github_token, content, "Update pattern library")
 
 
 def process_pattern_response(raw, filename, library):
@@ -878,42 +979,103 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
 
 
 def get_news(coin_symbol, coin_id, newsapi_key):
+    """News sentiment via NewsAPI headlines + descriptions (TextBlob).
+    IMPORTANT: a missing/blank key, an API error, or too few articles is
+    now reported explicitly via 'reliable'/'reason' instead of silently
+    coming back as score=0 ('Neutral') - that was misleading, since it
+    looked like sentiment was actually checked and happened to be neutral
+    when really nothing was checked at all."""
     if not newsapi_key:
-        return {"score": 0, "articles": []}
+        return {"score": 0, "articles": [], "count": 0, "reliable": False,
+                "reason": "No NewsAPI key configured"}
     try:
         r = requests.get(
             "https://newsapi.org/v2/everything",
             params={
-                "q": f"{coin_symbol} {coin_id} crypto", "language": "en", "sortBy": "publishedAt",
-                "pageSize": 7, "apiKey": newsapi_key,
-                "from": (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d"),
+                "q": f'"{coin_symbol}" OR "{coin_id}"', "language": "en", "sortBy": "publishedAt",
+                "pageSize": 15, "apiKey": newsapi_key,
+                "from": (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
             }, timeout=10,
         )
-        articles = r.json().get("articles", [])
+        data = r.json()
+        if data.get("status") != "ok":
+            return {"score": 0, "articles": [], "count": 0, "reliable": False,
+                    "reason": f"NewsAPI error: {data.get('message', 'unknown')}"}
+        articles = data.get("articles", [])
         if not articles:
-            return {"score": 0, "articles": []}
+            return {"score": 0, "articles": [], "count": 0, "reliable": False,
+                    "reason": "No recent articles found"}
         scored = []
         scores = []
-        for a in articles[:7]:
-            title = a.get("title", "")[:80]
-            pol = TextBlob(title).sentiment.polarity
-            scored.append({"title": title, "polarity": pol})
+        for a in articles[:12]:
+            title = (a.get("title") or "")[:100]
+            desc = (a.get("description") or "")[:200]
+            text = f"{title}. {desc}".strip()
+            pol = TextBlob(text).sentiment.polarity
+            scored.append({"title": title, "polarity": round(pol, 3)})
             scores.append(pol)
         avg = sum(scores) / len(scores) if scores else 0
-        return {"score": avg, "articles": scored}
-    except Exception:
-        return {"score": 0, "articles": []}
+        return {
+            "score": avg, "articles": scored, "count": len(scores),
+            "reliable": len(scores) >= 3,
+            "reason": "OK" if len(scores) >= 3 else "Too few articles for a reliable score",
+        }
+    except Exception as e:
+        return {"score": 0, "articles": [], "count": 0, "reliable": False,
+                "reason": f"NewsAPI request failed: {e}"}
+
+
+# ─────────────────────────────────────────────────────────────
+#   HIGHER-TIMEFRAME TREND FILTER
+# ─────────────────────────────────────────────────────────────
+# Most retail trades lose money by fighting the bigger trend (e.g. taking a
+# 15-minute "oversold bounce" LONG while the 4-hour trend is strongly down).
+# This checks a higher timeframe than the one selected and reports whether
+# it agrees, so final_verdict can flag/penalize counter-trend setups instead
+# of only ever looking at one timeframe in isolation.
+HTF_MAP = {
+    "1m": "1h", "3m": "1h", "5m": "4h", "15m": "4h", "30m": "4h",
+    "1h": "1d", "2h": "1d", "4h": "1w", "6h": "1w", "12h": "1w",
+    "1d": "1w", "1w": "1w",
+}
+
+
+def get_htf_trend(pair, market_type, timeframe):
+    htf_tf = HTF_MAP.get(timeframe, "1d")
+    if htf_tf == timeframe:
+        return {"available": False, "trend": "NEUTRAL", "timeframe": htf_tf}
+    ind = get_realtime_indicators(pair, htf_tf, market_type)
+    if not ind:
+        return {"available": False, "trend": "NEUTRAL", "timeframe": htf_tf}
+    ema50 = ind.get("ema50")
+    ema200 = ind.get("ema200")
+    cp = ind.get("last_close")
+    trend = "NEUTRAL"
+    if ema50 and ema200 and cp:
+        if cp > ema50 > ema200:
+            trend = "LONG"
+        elif cp < ema50 < ema200:
+            trend = "SHORT"
+        elif cp > ema50:
+            trend = "LONG"
+        elif cp < ema50:
+            trend = "SHORT"
+    elif ema50 and cp:
+        trend = "LONG" if cp > ema50 else "SHORT"
+    return {"available": True, "trend": trend, "timeframe": htf_tf}
 
 
 # ─────────────────────────────────────────────────────────────
 #   FINAL VERDICT (data-driven decision + trade levels)
 # ─────────────────────────────────────────────────────────────
 def final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns,
-                   has_ai_opinion=True):
+                   has_ai_opinion=True, htf=None):
     buy_pct = orderbook.get("buy_pct", 50)
     sell_pct = orderbook.get("sell_pct", 50)
     fg_val = fg.get("value", 50)
     news_score = news.get("score", 0)
+    news_reliable = news.get("reliable", False)
+    community_sent = market.get("sent_up", 50)  # CoinGecko community poll - free, no key needed
     ch_24h = market.get("ch_24h", 0)
     price = chart.get("price") or market.get("price", 0)
     fund_rate = funding.get("rate", 0)
@@ -928,38 +1090,49 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     swing_res = indicators.get("swing_resistance")
     bb_lower = indicators.get("bb_lower")
     bb_upper_v = indicators.get("bb_upper")
+    htf = htf or {"available": False, "trend": "NEUTRAL", "timeframe": "-"}
 
+    # ── Directional vote — decides direction ONLY ──────────────────────
     ls = 0
     ss = 0
     if buy_pct > 55: ls += 1
-    else: ss += 1
+    elif sell_pct > 55: ss += 1
     if fg_val < 45: ls += 1
     elif fg_val > 65: ss += 1
-    if news_score > 0.1: ls += 1
-    elif news_score < -0.1: ss += 1
+    if news_reliable:
+        if news_score > 0.1: ls += 1
+        elif news_score < -0.1: ss += 1
+    else:
+        # Not enough real news articles to trust NewsAPI's number this time
+        # - fall back to CoinGecko's free community-sentiment poll (already
+        # fetched, no extra key needed) instead of silently voting neutral.
+        if community_sent >= 60: ls += 1
+        elif community_sent <= 40: ss += 1
     if fund_signal == "LONG": ls += 2
     elif fund_signal == "SHORT": ss += 2
     if ind_dir == "LONG": ls += 3
     elif ind_dir == "SHORT": ss += 3
     if ch_24h > 1: ls += 1
     elif ch_24h < -1: ss += 1
+    if htf.get("trend") == "LONG": ls += 2
+    elif htf.get("trend") == "SHORT": ss += 2
 
-    data_direction = "LONG" if ls > ss else ("SHORT" if ss > ls else "NEUTRAL")
+    margin = ls - ss
+    max_margin = 11  # sum of all weights above: 1+1+1+2+3+1+2
+    # Require a real margin, not just any lead - a 1-point win among 7
+    # weighted categories used to be enough to call a full trade direction.
+    if margin >= 2:
+        data_direction = "LONG"
+    elif margin <= -2:
+        data_direction = "SHORT"
+    else:
+        data_direction = "NEUTRAL"
 
     if not has_ai_opinion:
-        # Live Dashboard mode: there is no independent second opinion here
-        # (no screenshot was read by Gemini) - "trend" in `chart` was itself
-        # derived from the same live data. Comparing it against
-        # data_direction was just noise disagreeing with itself, causing
-        # false "CONFLICT" results that hid the trade decision. Use the
-        # data-driven direction directly instead.
         final_direction = data_direction if data_direction != "NEUTRAL" else (
             "LONG" if ch_24h >= 0 else "SHORT"
         )
         agreement = "FULL" if data_direction != "NEUTRAL" else "PARTIAL"
-        # No Gemini screenshot in this mode, so there's no separate AI
-        # opinion to report - just mirror the data-driven direction so the
-        # return dict below always has this key defined.
         gemini_direction = final_direction
     else:
         trend_lower = chart.get("trend", "").lower()
@@ -980,91 +1153,99 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             agreement = "CONFLICT"
             final_direction = data_direction
 
-    score = 0
+    # ── Confidence score — INDEPENDENT measures, not a re-check of the
+    # same votes used above. Re-scoring the same signals that already
+    # decided the direction was circular: whichever direction won would
+    # automatically "confirm itself" and score high, regardless of whether
+    # it was actually a good trade. Confidence now comes from: how decisive
+    # the vote margin was, how many of the 5 technical indicators actually
+    # agree with each other, whether the higher timeframe trend agrees, and
+    # how complete the underlying data was.
     factors = []
 
     if confidence == "HIGH":
-        score += 2
-        factors.append(("good", "Chart clearly readable"))
+        factors.append(("good", "Full indicator set available (EMA/BB/ATR/swing all calculated)"))
     elif confidence == "MODERATE":
-        score += 1
-        factors.append(("warn", "Chart moderately readable"))
+        factors.append(("warn", "Partial indicator set — some values missing"))
     else:
-        factors.append(("bad", "Chart unclear"))
+        factors.append(("bad", "Indicator data mostly incomplete"))
 
     if matched_patterns:
         bull_p = [p for p in matched_patterns if "bull" in p.get("type", "").lower()]
         bear_p = [p for p in matched_patterns if "bear" in p.get("type", "").lower()]
-        high_r = [p for p in matched_patterns if p.get("reliability", "") == "High"]
         if final_direction == "LONG" and bull_p:
-            score += min(3, len(bull_p) + len(high_r))
-            factors.append(("good", f"Bullish patterns: {', '.join([p['name'] for p in bull_p])}"))
+            factors.append(("good", f"Bullish patterns matched: {', '.join([p['name'] for p in bull_p])}"))
         elif final_direction == "SHORT" and bear_p:
-            score += min(3, len(bear_p) + len(high_r))
-            factors.append(("good", f"Bearish patterns: {', '.join([p['name'] for p in bear_p])}"))
+            factors.append(("good", f"Bearish patterns matched: {', '.join([p['name'] for p in bear_p])}"))
         else:
-            score += 1
-            factors.append(("warn", "Patterns found but mixed"))
+            factors.append(("warn", "Patterns found but don't clearly support this direction"))
     else:
-        factors.append(("warn", "No patterns detected"))
+        factors.append(("warn", "No chart patterns detected"))
 
-    if final_direction == "LONG":
-        if buy_pct > 60: score += 2; factors.append(("good", f"Buyers dominating ({buy_pct:.0f}%)"))
-        elif buy_pct >= 50: score += 1; factors.append(("warn", "Slight buying pressure"))
-        else: factors.append(("bad", "Sellers dominating — weak for LONG"))
+    winning_votes = ls if final_direction == "LONG" else ss
+    losing_votes = ss if final_direction == "LONG" else ls
+    if margin >= 4:
+        factors.append(("good", f"Strong directional vote ({winning_votes} vs {losing_votes} across all signals)"))
+    elif margin >= 2:
+        factors.append(("warn", f"Moderate directional vote ({winning_votes} vs {losing_votes})"))
     else:
-        if sell_pct > 60: score += 2; factors.append(("good", f"Sellers dominating ({sell_pct:.0f}%)"))
-        elif sell_pct >= 50: score += 1; factors.append(("warn", "Slight selling pressure"))
-        else: factors.append(("bad", "Buyers dominating — weak for SHORT"))
+        factors.append(("bad", f"Thin/no clear majority ({winning_votes} vs {losing_votes}) — low-conviction setup"))
 
-    if final_direction == "LONG":
-        if 35 <= fg_val <= 70: score += 2; factors.append(("good", f"Fear & Greed favorable ({fg_val})"))
-        elif fg_val < 25: score += 1; factors.append(("warn", "Extreme fear — contrarian zone"))
-        else: factors.append(("warn", "Extreme greed — caution for LONG"))
+    ind_winning = long_c if final_direction == "LONG" else short_c
+    if ind_winning >= 4:
+        factors.append(("good", f"Indicators strongly agree ({ind_winning}/5 point this way)"))
+    elif ind_winning == 3:
+        factors.append(("warn", f"Indicators lean this way ({ind_winning}/5)"))
     else:
-        if fg_val > 70: score += 2; factors.append(("good", f"Extreme greed — ideal for SHORT ({fg_val})"))
-        elif fg_val > 55: score += 1; factors.append(("warn", "Greed building"))
-        else: factors.append(("warn", "F&G not ideal for SHORT"))
+        factors.append(("bad", f"Indicators are split ({ind_winning}/5) — no clear technical edge"))
 
-    if final_direction == "LONG":
-        if news_score > 0.1: score += 2; factors.append(("good", "Positive news sentiment"))
-        elif news_score > -0.1: score += 1; factors.append(("warn", "Neutral news"))
-        else: factors.append(("bad", "Negative news"))
+    if htf.get("available"):
+        if htf["trend"] == final_direction:
+            factors.append(("good", f"Higher timeframe ({htf['timeframe']}) trend agrees"))
+        elif htf["trend"] == "NEUTRAL":
+            factors.append(("warn", f"Higher timeframe ({htf['timeframe']}) trend is flat/unclear"))
+        else:
+            factors.append(("bad", f"⚠️ Against higher timeframe ({htf['timeframe']}) trend — counter-trend, higher risk"))
     else:
-        if news_score < -0.1: score += 2; factors.append(("good", "Negative news — SHORT supported"))
-        elif news_score < 0.1: score += 1; factors.append(("warn", "Neutral news"))
-        else: factors.append(("bad", "Positive news — risky for SHORT"))
+        factors.append(("warn", "Higher-timeframe trend check unavailable"))
 
-    if final_direction == "LONG":
-        if fund_signal == "LONG": score += 2; factors.append(("good", f"Funding negative — LONG favored ({fund_rate:+.4f}%)"))
-        elif fund_signal == "NEUTRAL": score += 1; factors.append(("warn", f"Funding neutral ({fund_rate:+.4f}%)"))
-        else: factors.append(("bad", "Funding positive — risky for LONG"))
+    if fund_signal != "NEUTRAL":
+        aligned = (fund_signal == final_direction)
+        factors.append(("good" if aligned else "warn",
+                         f"Funding rate {fund_rate:+.4f}% {'supports' if aligned else 'does not support'} this trade"))
     else:
-        if fund_signal == "SHORT": score += 2; factors.append(("good", f"Funding positive — SHORT favored ({fund_rate:+.4f}%)"))
-        elif fund_signal == "NEUTRAL": score += 1; factors.append(("warn", f"Funding neutral ({fund_rate:+.4f}%)"))
-        else: factors.append(("bad", "Funding negative — risky for SHORT"))
+        factors.append(("warn", f"Funding rate neutral ({fund_rate:+.4f}%)"))
 
-    if final_direction == "LONG":
-        if ind_dir == "LONG" and long_c >= 4: score += 3; factors.append(("good", f"Indicators: Strong LONG ({long_c}/5)"))
-        elif ind_dir == "LONG": score += 2; factors.append(("good", f"Indicators: Moderate LONG ({long_c}/5)"))
-        elif ind_dir == "NEUTRAL": score += 1; factors.append(("warn", "Indicators: Mixed"))
-        else: factors.append(("bad", "Indicators: Bearish — conflicts LONG"))
+    if news_reliable:
+        matches = (news_score > 0.1) == (final_direction == "LONG")
+        factors.append(("good" if matches else "warn",
+                         f"News sentiment: {news_score:+.2f} from {news.get('count', 0)} articles"))
     else:
-        if ind_dir == "SHORT" and short_c >= 4: score += 3; factors.append(("good", f"Indicators: Strong SHORT ({short_c}/5)"))
-        elif ind_dir == "SHORT": score += 2; factors.append(("good", f"Indicators: Moderate SHORT ({short_c}/5)"))
-        elif ind_dir == "NEUTRAL": score += 1; factors.append(("warn", "Indicators: Mixed"))
-        else: factors.append(("bad", "Indicators: Bullish — conflicts SHORT"))
+        factors.append(("warn", f"News: {news.get('reason', 'unavailable')} — used CoinGecko community sentiment ({community_sent:.0f}% bullish) as backup"))
 
-    if final_direction == "LONG" and ch_24h > 1:
-        score += 1; factors.append(("good", f"Positive momentum ({ch_24h:+.1f}%)"))
-    elif final_direction == "SHORT" and ch_24h < -1:
-        score += 1; factors.append(("good", "Negative momentum — SHORT supported"))
+    if fg_val <= 25 or fg_val >= 75:
+        factors.append(("warn", f"Fear & Greed at an extreme ({fg_val}, {fg.get('label','')}) — contrarian risk"))
     else:
-        factors.append(("warn", f"Momentum: {ch_24h:+.1f}%"))
+        factors.append(("good", f"Fear & Greed in a normal range ({fg_val}, {fg.get('label','')})"))
 
-    max_score = 18
-    accuracy = min((score / max_score) * 100, 100)
+    margin_pct = min(abs(margin) / max_margin, 1.0) * 100
+    ind_pct = (ind_winning / 5) * 100
+    if htf.get("available"):
+        htf_pct = 100 if htf["trend"] == final_direction else (50 if htf["trend"] == "NEUTRAL" else 0)
+    else:
+        htf_pct = 50
+    data_pct = {"HIGH": 100, "MODERATE": 60}.get(confidence, 30)
 
+    accuracy = round(margin_pct * 0.40 + ind_pct * 0.25 + htf_pct * 0.20 + data_pct * 0.15, 1)
+    accuracy = max(0, min(accuracy, 100))
+
+    # ── Trade levels — anchored to the ACTUAL planned entry price ──────
+    # Previously SL/TP/R:R were calculated off today's live price even
+    # though the entry itself was set above/below that price (waiting for
+    # breakout confirmation). That meant the real risk once filled at the
+    # confirmation price was bigger than shown, and the real reward was
+    # smaller than shown. Everything below is now anchored to entry_ref,
+    # the actual price the trader will enter at.
     tp1 = tp2 = sl = entry_low = entry_high = None
     entry_note = ""
     confirm_price = invalidate_price = None
@@ -1085,17 +1266,18 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
         ctx_txt = (" — " + ", ".join(ctx)) if ctx else ""
 
         if final_direction == "LONG":
+            entry_ref = round(price + eff_atr * 0.35, 8)
             if swing_sup and swing_sup < price and (price - swing_sup) < eff_atr * 6:
                 sl = round(swing_sup - eff_atr * 0.3, 8)
             else:
                 sl = round(price - eff_atr * 1.5, 8)
-            risk = price - sl
-            if swing_res and swing_res > price and (swing_res - price) >= risk * 1.3:
+            risk = entry_ref - sl
+            if swing_res and swing_res > entry_ref and (swing_res - entry_ref) >= risk * 1.3:
                 tp1 = round(swing_res, 8)
             else:
-                tp1 = round(price + risk * 2, 8)
-            tp2 = round(price + risk * 3.5, 8)
-            confirm_price = round(price + eff_atr * 0.35, 8)
+                tp1 = round(entry_ref + risk * 2, 8)
+            tp2 = round(entry_ref + risk * 3.5, 8)
+            confirm_price = entry_ref
             invalidate_price = round(sl - eff_atr * 0.15, 8)
             entry_low = confirm_price
             entry_high = round(confirm_price + eff_atr * 0.25, 8)
@@ -1106,19 +1288,20 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             rev_risk = eff_atr * 1.5
             rev_tp1 = round(rev_confirm - rev_risk * 2, 8)
             rev_tp2 = round(rev_confirm - rev_risk * 3.5, 8)
-            rev_sl = round(price + eff_atr * 0.5, 8)
+            rev_sl = round(entry_ref + eff_atr * 0.5, 8)
         else:
+            entry_ref = round(price - eff_atr * 0.35, 8)
             if swing_res and swing_res > price and (swing_res - price) < eff_atr * 6:
                 sl = round(swing_res + eff_atr * 0.3, 8)
             else:
                 sl = round(price + eff_atr * 1.5, 8)
-            risk = sl - price
-            if swing_sup and swing_sup < price and (price - swing_sup) >= risk * 1.3:
+            risk = sl - entry_ref
+            if swing_sup and swing_sup < entry_ref and (entry_ref - swing_sup) >= risk * 1.3:
                 tp1 = round(swing_sup, 8)
             else:
-                tp1 = round(price - risk * 2, 8)
-            tp2 = round(price - risk * 3.5, 8)
-            confirm_price = round(price - eff_atr * 0.35, 8)
+                tp1 = round(entry_ref - risk * 2, 8)
+            tp2 = round(entry_ref - risk * 3.5, 8)
+            confirm_price = entry_ref
             invalidate_price = round(sl + eff_atr * 0.15, 8)
             entry_low = round(confirm_price - eff_atr * 0.25, 8)
             entry_high = confirm_price
@@ -1129,13 +1312,14 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             rev_risk = eff_atr * 1.5
             rev_tp1 = round(rev_confirm + rev_risk * 2, 8)
             rev_tp2 = round(rev_confirm + rev_risk * 3.5, 8)
-            rev_sl = round(price - eff_atr * 0.5, 8)
+            rev_sl = round(entry_ref - eff_atr * 0.5, 8)
 
-        rr = round(abs(tp1 - price) / abs(sl - price), 1) if sl and abs(sl - price) > 0 else "N/A"
+        rr = round(abs(tp1 - entry_ref) / abs(sl - entry_ref), 1) if sl and abs(sl - entry_ref) > 0 else "N/A"
 
     return {
         "final_direction": final_direction, "gemini_direction": gemini_direction,
         "data_direction": data_direction, "agreement": agreement, "accuracy": accuracy,
+        "vote_margin": margin, "htf_trend": htf.get("trend"), "htf_timeframe": htf.get("timeframe"),
         "factors": factors, "tp1": tp1, "tp2": tp2, "sl": sl,
         "entry_low": entry_low, "entry_high": entry_high, "entry_note": entry_note,
         "confirm_price": confirm_price, "invalidate_price": invalidate_price,
@@ -1351,9 +1535,12 @@ def run_full_analysis(image, gemini_key, newsapi_key, library, market_type="spot
     log("Checking news sentiment...")
     news = get_news(chart["coin_symbol"], chart["coin_id"], newsapi_key)
 
+    log("Checking higher-timeframe trend...")
+    htf = get_htf_trend(chart["pair"], market_type, chart["timeframe"])
+
     log("Building final verdict...")
     verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched,
-                             has_ai_opinion=True)
+                             has_ai_opinion=True, htf=htf)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,
@@ -1399,16 +1586,19 @@ def run_live_analysis(coin_symbol, pair, market_type, timeframe, newsapi_key,
         # last closed candle price used for the indicators.
         live_price = market.get("price") or indicators.get("last_close") or 0
 
-    news = {"score": 0, "articles": []}
+    news = {"score": 0, "articles": [], "count": 0, "reliable": False, "reason": "News check disabled"}
     if use_news:
         log("Checking news sentiment...")
         news = get_news(coin_symbol, coin_id, newsapi_key)
+
+    log("Checking higher-timeframe trend...")
+    htf = get_htf_trend(pair, market_type, timeframe)
 
     chart = build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indicators)
 
     log("Building final verdict...")
     verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news,
-                             matched_patterns=[], has_ai_opinion=False)
+                             matched_patterns=[], has_ai_opinion=False, htf=htf)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,

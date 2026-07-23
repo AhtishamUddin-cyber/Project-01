@@ -33,6 +33,15 @@ with st.sidebar:
         "NewsAPI Key (optional)", value=get_key("NEWSAPI_KEY"), type="password",
         help="Adds news-sentiment scoring. Leave blank to skip.",
     )
+    github_token = st.text_input(
+        "GitHub Token (recommended)", value=get_key("GITHUB_TOKEN"), type="password",
+        help="Without this, Pattern Library and Trade Tracker data get wiped whenever "
+             "Streamlit Cloud restarts the app (it happens automatically). With a token, "
+             "data is also saved into your GitHub repo so it survives restarts. "
+             "Create one free at github.com → Settings → Developer settings → "
+             "Personal access tokens → Fine-grained → grant 'Contents: Read and write' "
+             "on this repo only.",
+    )
 
     st.divider()
     st.caption("Data source: Bitget (live) · CoinGecko · Alternative.me")
@@ -191,6 +200,13 @@ with tab_live:
                         e4.metric("Stop Loss", f"{v['sl']:,.6f}" if v["sl"] else "N/A")
                         st.caption(f"Risk:Reward = 1:{v['rr']}  |  {v['entry_note']}")
 
+                        htf_trend = v.get("htf_trend")
+                        htf_tf = v.get("htf_timeframe", "-")
+                        if htf_trend and htf_trend != v["final_direction"] and htf_trend != "NEUTRAL":
+                            st.warning(f"⚠️ Counter-trend: {htf_tf} higher-timeframe trend is {htf_trend}, this trade is {v['final_direction']}. Higher risk — size down or skip.")
+                        elif htf_trend == v["final_direction"]:
+                            st.caption(f"✅ Higher timeframe ({htf_tf}) trend agrees: {htf_trend}")
+
                     st.markdown("**Signal breakdown:**")
                     for level, text in v["factors"]:
                         icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
@@ -216,6 +232,7 @@ with tab_live:
                                     coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
                                     direction=v["final_direction"], entry=entry_ref,
                                     tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
+                                    github_token=github_token,
                                 )
                                 st.success(f"{s['base']} trade added to tracker! Check the 📒 Trade Tracker tab.")
 
@@ -263,7 +280,7 @@ with tab_shot:
                 logs.append(msg)
                 log_box.info("\n".join(logs[-3:]))
 
-            library = az.load_library()
+            library = az.load_library(github_token=github_token)
             with st.spinner("Analyzing..."):
                 res = az.run_full_analysis(image, gemini_key, newsapi_key, library, shot_market, log=log)
             log_box.empty()
@@ -284,6 +301,11 @@ with tab_shot:
                     e2.metric("TP1", f"{v['tp1']:,.6f}" if v["tp1"] else "N/A")
                     e3.metric("TP2", f"{v['tp2']:,.6f}" if v["tp2"] else "N/A")
                     e4.metric("SL", f"{v['sl']:,.6f}" if v["sl"] else "N/A")
+
+                    htf_trend = v.get("htf_trend")
+                    htf_tf = v.get("htf_timeframe", "-")
+                    if htf_trend and htf_trend != v["final_direction"] and htf_trend != "NEUTRAL":
+                        st.warning(f"⚠️ Counter-trend: {htf_tf} higher-timeframe trend is {htf_trend}, this trade is {v['final_direction']}. Higher risk — size down or skip.")
 
                 st.markdown("**Signal breakdown:**")
                 for level, text in v["factors"]:
@@ -314,7 +336,11 @@ with tab_lib:
     st.subheader("Pattern Library")
     st.caption("Apne candlestick pattern references add karo — screenshot deep-dive inhe match karega.")
 
-    library = az.load_library()
+    if not github_token:
+        st.info("⚠️ GitHub Token nahi diya — patterns is session ke baad ya app restart hone par "
+                 "delete ho sakte hain. Sidebar mein GitHub Token daalo permanent storage ke liye.")
+
+    library = az.load_library(github_token=github_token)
     st.write(f"**Total patterns saved:** {len(library)}")
 
     if library:
@@ -328,7 +354,7 @@ with tab_lib:
         if del_name != "-- select --" and st.button("🗑️ Delete Selected Pattern"):
             key_to_del = next(k for k, p in library.items() if p["name"] == del_name)
             del library[key_to_del]
-            az.save_library(library)
+            az.save_library(library, github_token=github_token)
             st.success(f"Deleted: {del_name}")
             st.rerun()
 
@@ -342,7 +368,7 @@ with tab_lib:
             accept_multiple_files=True, key="pattern_upload",
         )
         if pattern_files and st.button("➕ Add to Library"):
-            library = az.load_library()
+            library = az.load_library(github_token=github_token)
             for f in pattern_files:
                 with st.spinner(f"Processing {f.name}..."):
                     if f.name.lower().endswith(".pdf"):
@@ -354,7 +380,7 @@ with tab_lib:
                     st.success(f"{f.name}: added {', '.join(added)}")
                 else:
                     st.warning(f"{f.name}: koi pattern detect nahi hua")
-            az.save_library(library)
+            az.save_library(library, github_token=github_token)
             st.rerun()
 
 
@@ -367,15 +393,18 @@ with tab_track:
         "Jo trades tumne Live Dashboard se 'Add to Tracker' kiye hain, wo yahan track hote hain. "
         "Refresh dabate hi live price check hoga aur agar TP ya SL hit ho gaya ho to status khud update ho jayega."
     )
+    if not github_token:
+        st.info("⚠️ GitHub Token nahi diya — trades is session ke baad ya app restart hone par "
+                 "delete ho sakte hain. Sidebar mein GitHub Token daalo permanent storage ke liye.")
 
     tcol1, tcol2 = st.columns([1, 4])
     with tcol1:
         if st.button("🔄 Refresh & Check Status", type="primary"):
             with st.spinner("Checking live prices against TP/SL..."):
-                az.refresh_all_trades()
+                az.refresh_all_trades(github_token=github_token)
             st.rerun()
 
-    trades = az.load_trades()
+    trades = az.load_trades(github_token=github_token)
 
     if not trades:
         st.info("Abhi koi trade track nahi ho raha. Live Dashboard mein kisi coin ki analysis kholo aur '➕ Add to Tracker' dabao.")
@@ -409,7 +438,7 @@ with tab_track:
                     h4.metric("Unrealized P&L", pnl_txt)
                     with h5:
                         if st.button("✋ Close now", key=f"close_{t['id']}"):
-                            az.close_trade_manually(t["id"], exit_price=cur, note="Manually closed")
+                            az.close_trade_manually(t["id"], exit_price=cur, note="Manually closed", github_token=github_token)
                             st.rerun()
                     st.caption(f"TP1 {t['tp1']:,.6f}  |  TP2 {t.get('tp2', 0):,.6f}  |  SL {t['sl']:,.6f}")
 
@@ -445,7 +474,7 @@ with tab_track:
             )
             if del_id != "-- select --" and st.button("🗑️ Delete This Record"):
                 trade_id = del_id.split("(")[-1].rstrip(")")
-                az.delete_trade(trade_id)
+                az.delete_trade(trade_id, github_token=github_token)
                 st.rerun()
 
         st.divider()
