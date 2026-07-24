@@ -11,6 +11,96 @@ import analyzer as az
 st.set_page_config(page_title="AI Smart Trade Analyzer", page_icon="📊", layout="wide")
 
 # ─────────────────────────────────────────────────────────────
+#   VISUAL THEME — dark, card-style UI
+# ─────────────────────────────────────────────────────────────
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root {
+    --bg: #0A0E17;
+    --panel: #121826;
+    --panel-border: #1F2937;
+    --accent: #00D9B5;
+    --accent-2: #F0B90B;
+    --long: #16C784;
+    --short: #EA3943;
+    --text-dim: #8B96A8;
+}
+
+html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif !important; letter-spacing: -0.01em; }
+
+.ata-hero {
+    background: linear-gradient(135deg, rgba(0,217,181,0.12), rgba(240,185,11,0.06));
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-bottom: 22px;
+}
+.ata-hero h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    background: linear-gradient(90deg, #00D9B5, #6DD6FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.ata-hero p { color: var(--text-dim); margin: 4px 0 0 0; font-size: 0.92rem; }
+
+div[data-testid="stMetric"] {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+div[data-testid="stMetricValue"] { font-family: 'JetBrains Mono', monospace; }
+div[data-testid="stMetricLabel"] { color: var(--text-dim); }
+
+.stButton > button {
+    border-radius: 10px;
+    font-weight: 600;
+    border: 1px solid var(--panel-border);
+}
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent), #00A8FF);
+    border: none;
+    color: #06110E;
+}
+.stButton > button[kind="primary"]:hover { filter: brightness(1.08); }
+
+.stTabs [data-baseweb="tab-list"] { gap: 6px; }
+.stTabs [data-baseweb="tab"] {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px 10px 0 0;
+    padding: 8px 16px;
+}
+.stTabs [aria-selected="true"] {
+    background: rgba(0,217,181,0.10) !important;
+    border-bottom: 2px solid var(--accent) !important;
+}
+
+details {
+    background: var(--panel);
+    border: 1px solid var(--panel-border) !important;
+    border-radius: 12px !important;
+    margin-bottom: 8px;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 12px !important; }
+span[data-baseweb="tag"] { border-radius: 8px !important; }
+div[data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="ata-hero">
+  <h1>📊 AI Smart Trade Analyzer</h1>
+  <p>Live Bitget multi-coin analysis — AI + real indicators, no screenshot required</p>
+</div>
+""", unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────────────────────
 #   API KEYS (from Streamlit Secrets, with manual override)
 # ─────────────────────────────────────────────────────────────
 def get_key(name):
@@ -42,6 +132,12 @@ with st.sidebar:
              "Personal access tokens → Fine-grained → grant 'Contents: Read and write' "
              "on this repo only.",
     )
+
+    st.subheader("💰 Position Sizing")
+    st.caption("Har analysis ke sath position size bhi suggest hogi — SL hit hone par exactly itna hi % loss ho.")
+    account_balance = st.number_input("Account Balance (USDT)", min_value=0.0, value=100.0, step=10.0)
+    risk_pct = st.slider("Risk per trade (%)", min_value=0.5, max_value=5.0, value=1.0, step=0.5)
+    leverage = st.number_input("Leverage (futures only)", min_value=1, max_value=125, value=1, step=1)
 
     st.divider()
     st.caption("Data source: Bitget (live) · CoinGecko · Alternative.me")
@@ -220,6 +316,17 @@ with tab_live:
                     if v["agreement"] != "CONFLICT" and v["entry_low"]:
                         st.divider()
                         entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
+
+                        pos = az.position_size(account_balance, risk_pct, entry_ref, v["sl"],
+                                                leverage if market_type == "futures" else 1)
+                        if pos:
+                            p1, p2, p3 = st.columns(3)
+                            p1.metric("Position Size", f"{pos['units']:,.4f} {s['base']}")
+                            p2.metric("Position Value", f"${pos['position_value']:,.2f}")
+                            p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
+                            if market_type == "futures" and leverage > 1:
+                                st.caption(f"Margin required at {leverage}x leverage: ${pos['margin_required']:,.2f}")
+
                         tcol1, tcol2 = st.columns([3, 1])
                         with tcol1:
                             st.caption(
@@ -233,6 +340,7 @@ with tab_live:
                                     direction=v["final_direction"], entry=entry_ref,
                                     tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
                                     github_token=github_token,
+                                    confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
                                 )
                                 st.success(f"{s['base']} trade added to tracker! Check the 📒 Trade Tracker tab.")
 
@@ -416,6 +524,37 @@ with tab_track:
         s3.metric("Win Rate", f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A")
         s4.metric("Avg Win", f"{stats['avg_win_pnl']:+.2f}%" if stats["wins"] else "N/A")
         s5.metric("Avg Loss", f"{stats['avg_loss_pnl']:+.2f}%" if stats["losses"] else "N/A")
+
+        perf = az.performance_by_confidence(trades)
+        if any(p["trades"] > 0 for p in perf):
+            st.divider()
+            st.markdown("### 📈 Performance by Signal Strength")
+            st.caption(
+                "Tumhare apne closed trades se real feedback — jab tool ne 'High confidence' bola, "
+                "kya woh waqai zyada jeete? Yeh confidence score ko blindly trust karne ke bajaye "
+                "khud check karne ka tarika hai."
+            )
+            perf_rows = [
+                {
+                    "Confidence Bucket": p["bucket"],
+                    "Trades": p["trades"],
+                    "Win Rate": f"{p['win_rate']:.0f}%" if p["win_rate"] is not None else "—",
+                    "Avg P&L": f"{p['avg_pnl']:+.2f}%" if p["avg_pnl"] is not None else "—",
+                }
+                for p in perf
+            ]
+            st.dataframe(perf_rows, use_container_width=True, hide_index=True)
+            high = next((p for p in perf if p["bucket"].startswith("High") and p["trades"] >= 5), None)
+            low = next((p for p in perf if p["bucket"].startswith("Low") and p["trades"] >= 5), None)
+            if high and low and high["win_rate"] is not None and low["win_rate"] is not None:
+                if high["win_rate"] <= low["win_rate"]:
+                    st.warning(
+                        "⚠️ Tumhare data mein High-confidence trades, Low-confidence trades se behtar "
+                        "perform nahi kar rahe — confidence score ko zyada literally mat lo, sirf ek factor "
+                        "samjho, guarantee nahi."
+                    )
+                else:
+                    st.success("✅ High-confidence trades tumhare data mein waqai behtar perform kar rahe hain.")
 
         st.divider()
         open_trades = [t for t in trades if t["status"] == "OPEN"]

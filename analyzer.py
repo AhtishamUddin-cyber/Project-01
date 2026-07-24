@@ -133,7 +133,8 @@ def save_trades(trades, github_token=None):
         _github_put("data/trades.json", github_token, content, "Update trade tracker")
 
 
-def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="", github_token=None):
+def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",
+              github_token=None, confidence=None, vote_margin=None):
     trades = load_trades(github_token)
     trade = {
         "id": f"{pair}_{int(time.time()*1000)}",
@@ -144,10 +145,62 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
         "opened_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "closed_at": None,
         "exit_price": None,
+        # Stored so we can later measure REAL win rate by signal strength,
+        # instead of just trusting the confidence score in the abstract.
+        "confidence": confidence,
+        "vote_margin": vote_margin,
     }
     trades.append(trade)
     save_trades(trades, github_token)
     return trade
+
+
+def position_size(account_balance, risk_pct, entry, sl, leverage=1):
+    """How many coins/contracts to buy so that hitting the SL loses exactly
+    `risk_pct`% of the account - not more, not less. This is the single
+    biggest thing separating a controlled trade from a gambling one: the
+    signal decides direction, but position size decides how much damage a
+    wrong call can do."""
+    if not entry or not sl or entry == sl or not account_balance or not risk_pct:
+        return None
+    risk_amount = account_balance * (risk_pct / 100)
+    price_risk_per_unit = abs(entry - sl)
+    units = risk_amount / price_risk_per_unit
+    position_value = units * entry
+    margin_required = position_value / max(leverage, 1)
+    return {
+        "units": units,
+        "position_value": position_value,
+        "margin_required": margin_required,
+        "risk_amount": risk_amount,
+        "leverage": leverage,
+    }
+
+
+def performance_by_confidence(trades):
+    """Real win-rate feedback from the trader's OWN closed trades, bucketed
+    by how confident the tool was when the trade was opened. This is the
+    honest way to know if the confidence score means anything - not by
+    trusting the formula, but by checking what actually happened."""
+    closed = [t for t in trades if t["status"] != "OPEN" and t.get("confidence") is not None]
+    buckets = {
+        "High (75%+)": [t for t in closed if t["confidence"] >= 75],
+        "Medium (55-74%)": [t for t in closed if 55 <= t["confidence"] < 75],
+        "Low (<55%)": [t for t in closed if t["confidence"] < 55],
+    }
+    out = []
+    for label, group in buckets.items():
+        if not group:
+            out.append({"bucket": label, "trades": 0, "win_rate": None, "avg_pnl": None})
+            continue
+        wins = [t for t in group if t["status"] in ("TP1_HIT", "TP2_HIT")]
+        avg_pnl = sum(t.get("pnl_pct", 0) or 0 for t in group) / len(group)
+        out.append({
+            "bucket": label, "trades": len(group),
+            "win_rate": round(len(wins) / len(group) * 100, 1),
+            "avg_pnl": round(avg_pnl, 2),
+        })
+    return out
 
 
 def get_single_ticker_price(pair, market_type="spot"):
@@ -1069,7 +1122,7 @@ def get_htf_trend(pair, market_type, timeframe):
 #   FINAL VERDICT (data-driven decision + trade levels)
 # ─────────────────────────────────────────────────────────────
 def final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns,
-                   has_ai_opinion=True, htf=None):
+                   has_ai_opinion=True, htf=None, target_style="auto"):
     buy_pct = orderbook.get("buy_pct", 50)
     sell_pct = orderbook.get("sell_pct", 50)
     fg_val = fg.get("value", 50)
@@ -1252,6 +1305,34 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     rev_confirm = rev_entry_low = rev_entry_high = rev_tp1 = rev_tp2 = rev_sl = None
     rr = "N/A"
 
+    # TP distance is now decided BY the analysis itself, not a manual
+    # choice. A weak/thin setup gets a closer TP (bank profit before the
+    # low-conviction read has time to be wrong); a setup with a strong
+    # vote margin AND a higher-timeframe trend actually agreeing gets more
+    # room, since there's real evidence the move can run further. This
+    # directly uses the same independent strength measures as the
+    # confidence score, so "how far is TP" and "how confident is this"
+    # always tell a consistent story instead of a fixed distance being
+    # slapped on regardless of setup quality.
+    if target_style == "auto":
+        if accuracy >= 75 and htf_pct >= 50:
+            eff_style = "aggressive"
+        elif accuracy >= 55:
+            eff_style = "balanced"
+        else:
+            eff_style = "conservative"
+    else:
+        eff_style = target_style
+
+    tp_mult = {
+        "conservative": (1.5, 2.5),
+        "balanced": (2.0, 3.5),
+        "aggressive": (2.5, 4.5),
+    }.get(eff_style, (2.0, 3.5))
+    tp1_mult, tp2_mult = tp_mult
+    factors.append(("warn" if eff_style == "conservative" else "good",
+                     f"Target distance: {eff_style} ({tp1_mult}x/{tp2_mult}x risk) — auto-picked from this setup's own strength"))
+
     if price and price > 0:
         eff_atr = atr if (atr and atr > 0) else price * 0.01
         ctx = []
@@ -1275,8 +1356,8 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             if swing_res and swing_res > entry_ref and (swing_res - entry_ref) >= risk * 1.3:
                 tp1 = round(swing_res, 8)
             else:
-                tp1 = round(entry_ref + risk * 2, 8)
-            tp2 = round(entry_ref + risk * 3.5, 8)
+                tp1 = round(entry_ref + risk * tp1_mult, 8)
+            tp2 = round(entry_ref + risk * tp2_mult, 8)
             confirm_price = entry_ref
             invalidate_price = round(sl - eff_atr * 0.15, 8)
             entry_low = confirm_price
@@ -1286,8 +1367,8 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             rev_entry_low = round(rev_confirm - eff_atr * 0.25, 8)
             rev_entry_high = rev_confirm
             rev_risk = eff_atr * 1.5
-            rev_tp1 = round(rev_confirm - rev_risk * 2, 8)
-            rev_tp2 = round(rev_confirm - rev_risk * 3.5, 8)
+            rev_tp1 = round(rev_confirm - rev_risk * tp1_mult, 8)
+            rev_tp2 = round(rev_confirm - rev_risk * tp2_mult, 8)
             rev_sl = round(entry_ref + eff_atr * 0.5, 8)
         else:
             entry_ref = round(price - eff_atr * 0.35, 8)
@@ -1299,8 +1380,8 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             if swing_sup and swing_sup < entry_ref and (entry_ref - swing_sup) >= risk * 1.3:
                 tp1 = round(swing_sup, 8)
             else:
-                tp1 = round(entry_ref - risk * 2, 8)
-            tp2 = round(entry_ref - risk * 3.5, 8)
+                tp1 = round(entry_ref - risk * tp1_mult, 8)
+            tp2 = round(entry_ref - risk * tp2_mult, 8)
             confirm_price = entry_ref
             invalidate_price = round(sl + eff_atr * 0.15, 8)
             entry_low = round(confirm_price - eff_atr * 0.25, 8)
@@ -1310,8 +1391,8 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             rev_entry_low = rev_confirm
             rev_entry_high = round(rev_confirm + eff_atr * 0.25, 8)
             rev_risk = eff_atr * 1.5
-            rev_tp1 = round(rev_confirm + rev_risk * 2, 8)
-            rev_tp2 = round(rev_confirm + rev_risk * 3.5, 8)
+            rev_tp1 = round(rev_confirm + rev_risk * tp1_mult, 8)
+            rev_tp2 = round(rev_confirm + rev_risk * tp2_mult, 8)
             rev_sl = round(entry_ref - eff_atr * 0.5, 8)
 
         rr = round(abs(tp1 - entry_ref) / abs(sl - entry_ref), 1) if sl and abs(sl - entry_ref) > 0 else "N/A"
@@ -1320,6 +1401,7 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
         "final_direction": final_direction, "gemini_direction": gemini_direction,
         "data_direction": data_direction, "agreement": agreement, "accuracy": accuracy,
         "vote_margin": margin, "htf_trend": htf.get("trend"), "htf_timeframe": htf.get("timeframe"),
+        "target_style": eff_style,
         "factors": factors, "tp1": tp1, "tp2": tp2, "sl": sl,
         "entry_low": entry_low, "entry_high": entry_high, "entry_note": entry_note,
         "confirm_price": confirm_price, "invalidate_price": invalidate_price,
