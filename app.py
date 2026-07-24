@@ -341,8 +341,14 @@ with tab_live:
                                     tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
                                     github_token=github_token,
                                     confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
+                                    entry_low=v["entry_low"], entry_high=v["entry_high"],
+                                    invalidate_price=v.get("invalidate_price"),
                                 )
-                                st.success(f"{s['base']} trade added to tracker! Check the 📒 Trade Tracker tab.")
+                                st.success(
+                                    f"{s['base']} added as a PENDING setup — it only becomes a real "
+                                    f"open trade once price actually confirms at {entry_ref:,.6f}. "
+                                    f"Check the 📒 Trade Tracker tab."
+                                )
 
                     try:
                         docx_bytes = az.generate_docx_bytes(chart, res["market"], funding, indicators, v, [], None)
@@ -505,11 +511,20 @@ with tab_track:
         st.info("⚠️ GitHub Token nahi diya — trades is session ke baad ya app restart hone par "
                  "delete ho sakte hain. Sidebar mein GitHub Token daalo permanent storage ke liye.")
 
-    tcol1, tcol2 = st.columns([1, 4])
+    tcol1, tcol2, tcol3 = st.columns([1, 1, 3])
     with tcol1:
         if st.button("🔄 Refresh & Check Status", type="primary"):
             with st.spinner("Checking live prices against TP/SL..."):
                 az.refresh_all_trades(github_token=github_token)
+            st.rerun()
+    with tcol2:
+        if st.button("🔧 Repair Old P&L Data"):
+            with st.spinner("Repairing historical P&L on already-closed trades..."):
+                fixed_count = az.repair_and_save_trade_pnls(github_token=github_token)
+            if fixed_count:
+                st.success(f"Fixed {fixed_count} closed trade(s) whose P&L had drifted from live-price re-checks. Avg Win/Loss should now be accurate.")
+            else:
+                st.info("Nothing to repair — all closed trades already have correct P&L.")
             st.rerun()
 
     trades = az.load_trades(github_token=github_token)
@@ -518,12 +533,18 @@ with tab_track:
         st.info("Abhi koi trade track nahi ho raha. Live Dashboard mein kisi coin ki analysis kholo aur '➕ Add to Tracker' dabao.")
     else:
         stats = az.trade_stats(trades)
-        s1, s2, s3, s4, s5 = st.columns(5)
-        s1.metric("Open Trades", stats["open"])
-        s2.metric("Closed Trades", stats["closed"])
-        s3.metric("Win Rate", f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A")
-        s4.metric("Avg Win", f"{stats['avg_win_pnl']:+.2f}%" if stats["wins"] else "N/A")
-        s5.metric("Avg Loss", f"{stats['avg_loss_pnl']:+.2f}%" if stats["losses"] else "N/A")
+        s1, s2, s3, s4, s5, s6 = st.columns(6)
+        s1.metric("Pending", stats.get("pending", 0))
+        s2.metric("Open Trades", stats["open"])
+        s3.metric("Closed Trades", stats["closed"])
+        s4.metric("Win Rate", f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A")
+        s5.metric("Avg Win", f"{stats['avg_win_pnl']:+.2f}%" if stats["wins"] else "N/A")
+        s6.metric("Avg Loss", f"{stats['avg_loss_pnl']:+.2f}%" if stats["losses"] else "N/A")
+        if stats.get("invalidated"):
+            st.caption(
+                f"🚫 {stats['invalidated']} setup(s) invalidated — price reversed before the entry "
+                f"was ever confirmed, so these were never real trades and aren't counted above."
+            )
 
         perf = az.performance_by_confidence(trades)
         if any(p["trades"] > 0 for p in perf):
@@ -557,9 +578,30 @@ with tab_track:
                     st.success("✅ High-confidence trades tumhare data mein waqai behtar perform kar rahe hain.")
 
         st.divider()
+        pending_trades = [t for t in trades if t["status"] == "PENDING"]
         open_trades = [t for t in trades if t["status"] == "OPEN"]
-        closed_trades = [t for t in trades if t["status"] != "OPEN"]
+        closed_trades = [t for t in trades if t["status"] not in ("OPEN", "PENDING")]
 
+        st.markdown("### 🟠 Pending Setups (waiting for breakout confirmation)")
+        st.caption(
+            "Ye abhi real open trades nahi hain — jab tak price actually confirmation zone "
+            "(Entry Low–Entry High) tak nahi pahunchti, tab tak trade trigger nahi hota. Agar price "
+            "ulta chali gayi aur invalidation level cross ho gaya, setup khud invalidate ho jayega."
+        )
+        if not pending_trades:
+            st.caption("Koi pending setup nahi hai.")
+        else:
+            for t in pending_trades:
+                dir_emoji = "🟢" if t["direction"] == "LONG" else "🔴"
+                cur = t.get("current_price")
+                with st.container(border=True):
+                    h1, h2, h3, h4 = st.columns([2, 1, 1, 1])
+                    h1.markdown(f"**{dir_emoji} {t['coin']}** ({t['market_type']}, {t['timeframe']}) — added {t['opened_at']}")
+                    h2.metric("Current", f"{cur:,.6f}" if cur else "—")
+                    h3.metric("Confirms at", f"{t.get('entry_low') or t.get('planned_entry'):,.6f}" if t.get("entry_low") or t.get("planned_entry") else "—")
+                    h4.metric("Invalidates at", f"{t.get('invalidate_price'):,.6f}" if t.get("invalidate_price") else "—")
+
+        st.divider()
         st.markdown("### 🟡 Open Trades")
         if not open_trades:
             st.caption("Koi open trade nahi hai.")
@@ -591,6 +633,7 @@ with tab_track:
                 "TP2_HIT": "🎯 Take Profit 2 Hit",
                 "SL_HIT": "❌ Stop Loss Hit",
                 "CLOSED_MANUAL": "✋ Closed Manually",
+                "INVALIDATED": "🚫 Invalidated (never triggered)",
             }
             rows = []
             for t in sorted(closed_trades, key=lambda x: x.get("closed_at") or "", reverse=True):

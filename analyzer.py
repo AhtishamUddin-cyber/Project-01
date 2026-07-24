@@ -134,15 +134,44 @@ def save_trades(trades, github_token=None):
 
 
 def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",
-              github_token=None, confidence=None, vote_margin=None):
+              github_token=None, confidence=None, vote_margin=None,
+              entry_low=None, entry_high=None, invalidate_price=None):
+    """Logs a new trade.
+
+    IMPORTANT FIX: the signal's `entry` price is a BREAKOUT-CONFIRMATION
+    level (price +/- 0.35*ATR from the moment of analysis) — the verdict's
+    own entry_note literally says "Enter after candle confirms above/below
+    this level". It is NOT the current market price. Previously this
+    function marked the trade "OPEN" immediately, as if it had already been
+    filled at that level. In practice price often never reaches that level
+    (or reverses first and invalidates the setup), so trades were being
+    tracked/counted as open positions that were never actually triggered —
+    and if you were entering at market immediately instead of waiting for
+    that confirmation, you were taking the trade before its own filter had
+    confirmed it, which is exactly the kind of premature/fakeout entry a
+    breakout system is designed to avoid.
+
+    Trades now start as "PENDING" and only flip to "OPEN" (with entry set to
+    the REAL live price at the moment of confirmation) once price actually
+    reaches the entry_low/entry_high confirmation zone. If price instead
+    goes the other way past invalidate_price first, the trade is marked
+    "INVALIDATED" and never counted as a loss — the setup simply never
+    happened. See evaluate_trade()/refresh_all_trades().
+    """
     trades = load_trades(github_token)
     trade = {
         "id": f"{pair}_{int(time.time()*1000)}",
         "coin": coin_symbol, "pair": pair, "market_type": market_type,
-        "direction": direction, "entry": entry, "tp1": tp1, "tp2": tp2, "sl": sl,
+        "direction": direction,
+        "planned_entry": entry,  # the breakout-confirmation level from the verdict
+        "entry": entry,          # will be overwritten with the REAL fill price on confirmation
+        "entry_low": entry_low, "entry_high": entry_high,
+        "invalidate_price": invalidate_price,
+        "tp1": tp1, "tp2": tp2, "sl": sl,
         "timeframe": timeframe, "note": note,
-        "status": "OPEN",
+        "status": "PENDING",
         "opened_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "confirmed_at": None,
         "closed_at": None,
         "exit_price": None,
         # Stored so we can later measure REAL win rate by signal strength,
@@ -182,7 +211,8 @@ def performance_by_confidence(trades):
     by how confident the tool was when the trade was opened. This is the
     honest way to know if the confidence score means anything - not by
     trusting the formula, but by checking what actually happened."""
-    closed = [t for t in trades if t["status"] != "OPEN" and t.get("confidence") is not None]
+    closed = [t for t in trades if t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
+              and t.get("confidence") is not None]
     buckets = {
         "High (75%+)": [t for t in closed if t["confidence"] >= 75],
         "Medium (55-74%)": [t for t in closed if 55 <= t["confidence"] < 75],
@@ -247,8 +277,38 @@ def evaluate_trade(trade, live_price):
 
     t["current_price"] = live_price
     direction = t["direction"]
-    entry = t["entry"]
 
+    if t["status"] == "PENDING":
+        entry_low = t.get("entry_low")
+        entry_high = t.get("entry_high")
+        invalidate_price = t.get("invalidate_price")
+
+        if direction == "LONG":
+            confirmed = entry_low is not None and live_price >= entry_low
+            invalidated = invalidate_price is not None and live_price <= invalidate_price
+        else:
+            confirmed = entry_high is not None and live_price <= entry_high
+            invalidated = invalidate_price is not None and live_price >= invalidate_price
+
+        if invalidated and not confirmed:
+            t["status"] = "INVALIDATED"
+            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["exit_price"] = live_price
+            t["pnl_pct"] = None  # setup never triggered - not a real win or loss
+            return t
+        elif confirmed:
+            # Breakout actually happened - the trade is now really open, and
+            # the REAL fill price is today's live price, not the theoretical
+            # entry_ref calculated when the signal was first generated.
+            t["status"] = "OPEN"
+            t["entry"] = live_price
+            t["confirmed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+        else:
+            # Still waiting for price to reach the confirmation zone.
+            t["pnl_pct"] = None
+            return t
+
+    entry = t["entry"]
     if direction == "LONG":
         pnl_pct = ((live_price - entry) / entry) * 100 if entry else 0
     else:
@@ -291,10 +351,7 @@ def refresh_all_trades(github_token=None):
     trades = load_trades(github_token)
     updated = []
     for t in trades:
-        if t["status"] == "OPEN":
-            price = get_single_ticker_price(t["pair"], t["market_type"])
-            t = evaluate_trade(t, price)
-        else:
+        if t["status"] in ("OPEN", "PENDING"):
             price = get_single_ticker_price(t["pair"], t["market_type"])
             t = evaluate_trade(t, price)
         updated.append(t)
@@ -302,10 +359,59 @@ def refresh_all_trades(github_token=None):
     return updated
 
 
+def repair_closed_trade_pnls(trades):
+    """One-time data repair.
+
+    Before this fix, refresh_all_trades() re-ran evaluate_trade() on EVERY
+    trade on every refresh - including trades that had already closed
+    (TP1_HIT/TP2_HIT/SL_HIT/CLOSED_MANUAL). evaluate_trade() always
+    recomputes pnl_pct from the CURRENT live price, not the price the trade
+    actually closed at. So a trade that had already won at TP could get its
+    stored pnl_pct silently overwritten with a negative number later if the
+    market price drifted back down afterwards - which is why "Avg Win" was
+    showing as negative even though it should only ever include real wins.
+
+    This recomputes pnl_pct for every already-closed trade using its real
+    entry and exit_price (which are never touched again once a trade
+    closes, so they're trustworthy) instead of any live price. Returns
+    (repaired_trades, number_of_trades_actually_corrected).
+    """
+    closed_statuses = ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
+    fixed_count = 0
+    out = []
+    for t in trades:
+        t = dict(t)
+        if t.get("status") in closed_statuses:
+            entry = t.get("entry")
+            exit_price = t.get("exit_price")
+            direction = t.get("direction")
+            if entry and exit_price:
+                if direction == "LONG":
+                    correct_pnl = round(((exit_price - entry) / entry) * 100, 2)
+                else:
+                    correct_pnl = round(((entry - exit_price) / entry) * 100, 2)
+                if t.get("pnl_pct") != correct_pnl:
+                    t["pnl_pct"] = correct_pnl
+                    fixed_count += 1
+        out.append(t)
+    return out, fixed_count
+
+
+def repair_and_save_trade_pnls(github_token=None):
+    """Loads trades, repairs any corrupted closed-trade pnl_pct values
+    (see repair_closed_trade_pnls), saves the result, and returns how many
+    records were actually corrected."""
+    trades = load_trades(github_token)
+    repaired, fixed_count = repair_closed_trade_pnls(trades)
+    if fixed_count:
+        save_trades(repaired, github_token)
+    return fixed_count
+
+
 def close_trade_manually(trade_id, exit_price=None, note="", github_token=None):
     trades = load_trades(github_token)
     for t in trades:
-        if t["id"] == trade_id and t["status"] == "OPEN":
+        if t["id"] == trade_id and t["status"] in ("OPEN", "PENDING"):
             t["status"] = "CLOSED_MANUAL"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = exit_price
@@ -323,8 +429,13 @@ def delete_trade(trade_id, github_token=None):
 
 
 def trade_stats(trades):
-    """Win-rate and performance summary across CLOSED trades."""
-    closed = [t for t in trades if t["status"] != "OPEN"]
+    """Win-rate and performance summary across CLOSED trades.
+    PENDING trades (waiting for breakout confirmation) are not yet "open"
+    positions and INVALIDATED trades (setup never confirmed, cancelled
+    before entry) are excluded from win rate - counting either would make
+    the win rate look worse than the strategy actually performed once
+    trades were genuinely triggered."""
+    closed = [t for t in trades if t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")]
     wins = [t for t in closed if t["status"] in ("TP1_HIT", "TP2_HIT")]
     losses = [t for t in closed if t["status"] == "SL_HIT"]
     manual = [t for t in closed if t["status"] == "CLOSED_MANUAL"]
@@ -332,8 +443,11 @@ def trade_stats(trades):
     avg_win_pnl = sum(t["pnl_pct"] for t in wins if t.get("pnl_pct") is not None) / len(wins) if wins else 0
     avg_loss_pnl = sum(t["pnl_pct"] for t in losses if t.get("pnl_pct") is not None) / len(losses) if losses else 0
     open_count = len([t for t in trades if t["status"] == "OPEN"])
+    pending_count = len([t for t in trades if t["status"] == "PENDING"])
+    invalidated_count = len([t for t in trades if t["status"] == "INVALIDATED"])
     return {
-        "total": len(trades), "open": open_count, "closed": len(closed),
+        "total": len(trades), "open": open_count, "pending": pending_count,
+        "invalidated": invalidated_count, "closed": len(closed),
         "wins": len(wins), "losses": len(losses), "manual_closes": len(manual),
         "win_rate": round(win_rate, 1),
         "avg_win_pnl": round(avg_win_pnl, 2), "avg_loss_pnl": round(avg_loss_pnl, 2),
@@ -959,14 +1073,13 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         ATR = atr_calc(highs, lows, closes)
         SWING_SUP, SWING_RES = swing_levels(highs, lows, closes)
 
-        rt = "LONG" if RSI <= 30 or RSI >= 55 and RSI < 70 else ("SHORT" if RSI >= 70 or RSI <= 45 else "NEUTRAL")
         if RSI >= 70:
             rt = "SHORT"
         elif RSI <= 30:
             rt = "LONG"
-        elif RSI >= 55:
+        elif RSI >= 60:
             rt = "LONG"
-        elif RSI <= 45:
+        elif RSI <= 40:
             rt = "SHORT"
         else:
             rt = "NEUTRAL"
@@ -1172,11 +1285,13 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
 
     margin = ls - ss
     max_margin = 11  # sum of all weights above: 1+1+1+2+3+1+2
-    # Require a real margin, not just any lead - a 1-point win among 7
-    # weighted categories used to be enough to call a full trade direction.
-    if margin >= 2:
+    # Require a real margin, not just any lead - a 2-point win out of 11
+    # possible was still thin enough to let low-conviction/noisy setups
+    # through as if they were clear trades. Raised to 3 so a direction only
+    # gets called when there's a genuinely decisive lean across the signals.
+    if margin >= 3:
         data_direction = "LONG"
-    elif margin <= -2:
+    elif margin <= -3:
         data_direction = "SHORT"
     else:
         data_direction = "NEUTRAL"
