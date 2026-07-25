@@ -204,7 +204,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.00698,
+    "current_price": 0.006981,
     "pnl_pct": null
   },
   {
@@ -412,8 +412,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 114.15,
-    "pnl_pct": 0.45
+    "current_price": 114.04,
+    "pnl_pct": 0.35
   },
   {
     "id": "CTKUSDT_1784950776244",
@@ -568,8 +568,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.0996,
-    "pnl_pct": 0.71
+    "current_price": 0.0994,
+    "pnl_pct": 0.51
   },
   {
     "id": "10000NEXUSDT_1784955940876",
@@ -620,8 +620,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.00303,
-    "pnl_pct": 1.71
+    "current_price": 0.003029,
+    "pnl_pct": 1.68
   },
   {
     "id": "1000CATUSDT_1784955956803",
@@ -776,8 +776,8 @@
     "exit_price": null,
     "confidence": 48.6,
     "vote_margin": 1,
-    "current_price": 0.00698,
-    "pnl_pct": 0.17
+    "current_price": 0.006981,
+    "pnl_pct": 0.19
   },
   {
     "id": "1000000MOGUSDT_1784983317142",
@@ -802,7 +802,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.0996,
-    "pnl_pct": 0.71
+    "current_price": 0.0994,
+    "pnl_pct": 0.51
   }
 ]
