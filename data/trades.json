@@ -197,14 +197,14 @@
     "sl": 0.00693129,
     "timeframe": "5m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-07-25 03:34",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-25 16:58",
+    "exit_price": 0.006925,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.006939,
+    "current_price": 0.006925,
     "pnl_pct": null
   },
   {
@@ -620,8 +620,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.003046,
-    "pnl_pct": 2.25
+    "current_price": 0.003054,
+    "pnl_pct": 2.52
   },
   {
     "id": "1000CATUSDT_1784955956803",
@@ -776,8 +776,8 @@
     "exit_price": null,
     "confidence": 48.6,
     "vote_margin": 1,
-    "current_price": 0.006939,
-    "pnl_pct": -0.42
+    "current_price": 0.006925,
+    "pnl_pct": -0.62
   },
   {
     "id": "1000000MOGUSDT_1784983317142",
@@ -832,7 +832,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64157.3,
-    "pnl_pct": -0.03
+    "current_price": 64177.2,
+    "pnl_pct": -0.0
   }
 ]
