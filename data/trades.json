@@ -204,7 +204,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.006981,
+    "current_price": 0.006929,
     "pnl_pct": null
   },
   {
@@ -412,8 +412,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 114.04,
-    "pnl_pct": 0.35
+    "current_price": 114.16,
+    "pnl_pct": 0.46
   },
   {
     "id": "CTKUSDT_1784950776244",
@@ -561,15 +561,15 @@
     "sl": 0.09766429,
     "timeframe": "5m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-25 05:05",
     "confirmed_at": "2026-07-25 14:59",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-25 16:28",
+    "exit_price": 0.09964642,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.0994,
-    "pnl_pct": 0.51
+    "current_price": 0.0999,
+    "pnl_pct": 1.01
   },
   {
     "id": "10000NEXUSDT_1784955940876",
@@ -620,8 +620,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.003029,
-    "pnl_pct": 1.68
+    "current_price": 0.003056,
+    "pnl_pct": 2.58
   },
   {
     "id": "1000CATUSDT_1784955956803",
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06204,
-    "pnl_pct": 0.32
+    "current_price": 0.06197,
+    "pnl_pct": 0.21
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -776,8 +776,8 @@
     "exit_price": null,
     "confidence": 48.6,
     "vote_margin": 1,
-    "current_price": 0.006981,
-    "pnl_pct": 0.19
+    "current_price": 0.006929,
+    "pnl_pct": -0.56
   },
   {
     "id": "1000000MOGUSDT_1784983317142",
@@ -802,7 +802,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.0994,
-    "pnl_pct": 0.51
+    "current_price": 0.0999,
+    "pnl_pct": 1.01
   }
 ]
