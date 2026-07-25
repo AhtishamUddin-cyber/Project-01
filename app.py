@@ -132,6 +132,20 @@ with st.sidebar:
              "Personal access tokens → Fine-grained → grant 'Contents: Read and write' "
              "on this repo only.",
     )
+    if github_token:
+        if st.button("🔌 Test GitHub Connection"):
+            with st.spinner("Checking token..."):
+                ok, msg = az.test_github_connection(github_token)
+            if ok:
+                st.success(f"✅ {msg}")
+            else:
+                st.error(f"❌ Connection failed: {msg}")
+        if not get_key("GITHUB_TOKEN"):
+            st.warning(
+                "⚠️ Yeh token abhi sirf is box mein typed hai, Streamlit Secrets mein saved "
+                "nahi — refresh/app-restart hote hi gayab ho jayega aur data phir se sirf local "
+                "(temporary) storage mein save hoga. Secrets mein `GITHUB_TOKEN = \"...\"` add karo."
+            )
 
     st.subheader("💰 Position Sizing")
     st.caption("Har analysis ke sath position size bhi suggest hogi — SL hit hone par exactly itna hi % loss ho.")
@@ -327,15 +341,22 @@ with tab_live:
                             if market_type == "futures" and leverage > 1:
                                 st.caption(f"Margin required at {leverage}x leverage: ${pos['margin_required']:,.2f}")
 
-                        tcol1, tcol2 = st.columns([3, 1])
+                        tcol1, tcol2, tcol3 = st.columns([2, 1.2, 1])
                         with tcol1:
                             st.caption(
                                 f"📒 Log this as a real trade — Entry ~{entry_ref:,.6f}, "
                                 f"TP1 {v['tp1']:,.6f}, TP2 {v['tp2']:,.6f}, SL {v['sl']:,.6f}"
                             )
                         with tcol2:
+                            stake_amt = st.number_input(
+                                "Amount ($)", min_value=0.0, value=10.0, step=5.0,
+                                key=f"stake_{s['base']}_{s['symbol']}",
+                                help="Demo balance mein se itna $ is trade mein daala jayega. 0 rakho agar sirf track karna hai, balance na chhuye.",
+                            )
+                        with tcol3:
+                            st.write("")
                             if st.button("➕ Add to Tracker", key=f"track_{s['base']}_{s['symbol']}"):
-                                az.add_trade(
+                                new_trade = az.add_trade(
                                     coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
                                     direction=v["final_direction"], entry=entry_ref,
                                     tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
@@ -343,12 +364,22 @@ with tab_live:
                                     confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
                                     entry_low=v["entry_low"], entry_high=v["entry_high"],
                                     invalidate_price=v.get("invalidate_price"),
+                                    stake=stake_amt if stake_amt > 0 else None,
+                                    leverage=leverage,
                                 )
-                                st.success(
-                                    f"{s['base']} added as a PENDING setup — it only becomes a real "
-                                    f"open trade once price actually confirms at {entry_ref:,.6f}. "
-                                    f"Check the 📒 Trade Tracker tab."
-                                )
+                                if github_token and not new_trade.get("_github_synced"):
+                                    st.error(
+                                        f"⚠️ Saved locally but GitHub sync FAILED — this trade will be "
+                                        f"lost on the next app restart unless this is fixed: "
+                                        f"{new_trade.get('_github_error') or 'unknown error'}. "
+                                        f"Use 'Test GitHub Connection' in the sidebar to diagnose."
+                                    )
+                                else:
+                                    st.success(
+                                        f"{s['base']} added as a PENDING setup — it only becomes a real "
+                                        f"open trade once price actually confirms at {entry_ref:,.6f}. "
+                                        f"Check the 📒 Trade Tracker tab."
+                                    )
 
                     try:
                         docx_bytes = az.generate_docx_bytes(chart, res["market"], funding, indicators, v, [], None)
@@ -468,7 +499,9 @@ with tab_lib:
         if del_name != "-- select --" and st.button("🗑️ Delete Selected Pattern"):
             key_to_del = next(k for k, p in library.items() if p["name"] == del_name)
             del library[key_to_del]
-            az.save_library(library, github_token=github_token)
+            synced, sync_err = az.save_library(library, github_token=github_token)
+            if github_token and not synced:
+                st.error(f"⚠️ Deleted locally but GitHub sync FAILED: {sync_err or 'unknown error'}")
             st.success(f"Deleted: {del_name}")
             st.rerun()
 
@@ -494,7 +527,13 @@ with tab_lib:
                     st.success(f"{f.name}: added {', '.join(added)}")
                 else:
                     st.warning(f"{f.name}: koi pattern detect nahi hua")
-            az.save_library(library, github_token=github_token)
+            synced, sync_err = az.save_library(library, github_token=github_token)
+            if github_token and not synced:
+                st.error(
+                    f"⚠️ Patterns saved locally but GitHub sync FAILED — will be lost on next "
+                    f"restart unless fixed: {sync_err or 'unknown error'}. "
+                    f"Use 'Test GitHub Connection' in the sidebar to diagnose."
+                )
             st.rerun()
 
 
@@ -510,6 +549,36 @@ with tab_track:
     if not github_token:
         st.info("⚠️ GitHub Token nahi diya — trades is session ke baad ya app restart hone par "
                  "delete ho sakte hain. Sidebar mein GitHub Token daalo permanent storage ke liye.")
+
+    # ── Demo / Paper Trading Balance ────────────────────────────────
+    st.markdown("### 💵 Demo Balance (Paper Trading)")
+    demo_bal = az.load_balance(github_token=github_token)
+    if not demo_bal.get("initialized"):
+        st.caption("Abhi koi demo balance set nahi hai. Ek amount daal ke shuru karo — jab bhi koi "
+                   "trade close hogi (jisme tumne amount allocate kiya ho), balance khud update hoga.")
+        dcol1, dcol2 = st.columns([2, 1])
+        with dcol1:
+            start_amt = st.number_input("Starting Demo Balance ($)", min_value=1.0, value=100.0, step=10.0)
+        with dcol2:
+            st.write("")
+            st.write("")
+            if st.button("🚀 Start Demo Balance"):
+                az.set_demo_balance(start_amt, github_token=github_token)
+                st.rerun()
+    else:
+        change = demo_bal["balance"] - demo_bal["starting_balance"]
+        change_pct = (change / demo_bal["starting_balance"] * 100) if demo_bal["starting_balance"] else 0
+        b1, b2, b3 = st.columns(3)
+        b1.metric("Current Balance", f"${demo_bal['balance']:,.2f}", f"{change:+.2f} ({change_pct:+.1f}%)")
+        b2.metric("Starting Balance", f"${demo_bal['starting_balance']:,.2f}")
+        with b3:
+            with st.expander("🔄 Reset"):
+                reset_amt = st.number_input("New starting amount ($)", min_value=1.0, value=100.0, step=10.0, key="reset_bal")
+                if st.button("Confirm Reset"):
+                    az.set_demo_balance(reset_amt, github_token=github_token)
+                    st.rerun()
+
+    st.divider()
 
     tcol1, tcol2, tcol3 = st.columns([1, 1, 3])
     with tcol1:
@@ -537,14 +606,19 @@ with tab_track:
         s1.metric("Pending", stats.get("pending", 0))
         s2.metric("Open Trades", stats["open"])
         s3.metric("Closed Trades", stats["closed"])
-        s4.metric("Win Rate", f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A")
+        s4.metric(
+            "Win Rate",
+            f"{stats['win_rate']:.0f}%" if stats["closed"] else "N/A",
+            f"{stats['wins']}W / {stats['losses']}L" if stats["closed"] else None,
+        )
         s5.metric("Avg Win", f"{stats['avg_win_pnl']:+.2f}%" if stats["wins"] else "N/A")
         s6.metric("Avg Loss", f"{stats['avg_loss_pnl']:+.2f}%" if stats["losses"] else "N/A")
-        if stats.get("invalidated"):
-            st.caption(
-                f"🚫 {stats['invalidated']} setup(s) invalidated — price reversed before the entry "
-                f"was ever confirmed, so these were never real trades and aren't counted above."
-            )
+        st.caption(
+            f"📊 Total logged: {stats['total']} trades — {stats['pending']} pending, "
+            f"{stats['open']} open, {stats['closed']} closed "
+            f"({stats['wins']} win, {stats['losses']} loss, {stats['manual_closes']} manual)"
+            + (f", {stats['invalidated']} invalidated" if stats.get("invalidated") else "")
+        )
 
         perf = az.performance_by_confidence(trades)
         if any(p["trades"] > 0 for p in perf):
@@ -611,12 +685,18 @@ with tab_track:
                 cur = t.get("current_price")
                 pnl = t.get("pnl_pct")
                 pnl_txt = f"{pnl:+.2f}%" if pnl is not None else "—"
+                stake = t.get("stake")
                 with st.container(border=True):
                     h1, h2, h3, h4, h5 = st.columns([2, 1, 1, 1, 1])
-                    h1.markdown(f"**{dir_emoji} {t['coin']}** ({t['market_type']}, {t['timeframe']}) — opened {t['opened_at']}")
+                    stake_txt = f" — ${stake:,.2f} staked" if stake else ""
+                    h1.markdown(f"**{dir_emoji} {t['coin']}** ({t['market_type']}, {t['timeframe']}) — opened {t['opened_at']}{stake_txt}")
                     h2.metric("Entry", f"{t['entry']:,.6f}")
                     h3.metric("Current", f"{cur:,.6f}" if cur else "—")
-                    h4.metric("Unrealized P&L", pnl_txt)
+                    if stake and pnl is not None:
+                        unrealized_dollar = stake * (pnl / 100) * (t.get("leverage") or 1)
+                        h4.metric("Unrealized P&L", pnl_txt, f"${unrealized_dollar:+,.2f}")
+                    else:
+                        h4.metric("Unrealized P&L", pnl_txt)
                     with h5:
                         if st.button("✋ Close now", key=f"close_{t['id']}"):
                             az.close_trade_manually(t["id"], exit_price=cur, note="Manually closed", github_token=github_token)
@@ -644,7 +724,8 @@ with tab_track:
                     "Entry": f"{t['entry']:,.6f}",
                     "Exit": f"{t['exit_price']:,.6f}" if t.get("exit_price") else "N/A",
                     "Result": status_map.get(t["status"], t["status"]),
-                    "P&L": f"{t['pnl_pct']:+.2f}%" if t.get("pnl_pct") is not None else "—",
+                    "P&L %": f"{t['pnl_pct']:+.2f}%" if t.get("pnl_pct") is not None else "—",
+                    "P&L $": f"${t['dollar_pnl']:+,.2f}" if t.get("dollar_pnl") is not None else "—",
                     "Opened": t["opened_at"],
                     "Closed": t.get("closed_at") or "—",
                 })

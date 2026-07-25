@@ -44,6 +44,51 @@ FUTURES_PRODUCT_TYPES = ["usdt-futures", "susdt-futures", "usdc-futures", "coin-
 
 PATTERN_LIBRARY_FILE = "pattern_library.json"
 TRADE_TRACKER_FILE = "trades.json"
+DEMO_BALANCE_FILE = "demo_balance.json"
+
+
+# ─────────────────────────────────────────────────────────────
+#   DEMO / PAPER-TRADING BALANCE
+# ─────────────────────────────────────────────────────────────
+def load_balance(github_token=None):
+    if github_token:
+        content, _, _ = _github_get("data/demo_balance.json", github_token)
+        if content is not None:
+            try:
+                bal = json.loads(content)
+                with open(DEMO_BALANCE_FILE, "w") as f:
+                    f.write(content)
+                return bal
+            except Exception:
+                pass
+    if os.path.exists(DEMO_BALANCE_FILE):
+        with open(DEMO_BALANCE_FILE, "r") as f:
+            return json.load(f)
+    return {"balance": 0.0, "starting_balance": 0.0, "initialized": False}
+
+
+def save_balance(bal, github_token=None):
+    content = json.dumps(bal, indent=2)
+    with open(DEMO_BALANCE_FILE, "w") as f:
+        f.write(content)
+    if github_token:
+        return _github_put("data/demo_balance.json", github_token, content, "Update demo balance")
+    return False, None
+
+
+def set_demo_balance(amount, github_token=None):
+    """(Re)starts paper trading with a fresh balance. Does NOT touch trade
+    history - only the running dollar balance."""
+    bal = {"balance": float(amount), "starting_balance": float(amount), "initialized": True}
+    save_balance(bal, github_token)
+    return bal
+
+
+def apply_trade_pnl_to_balance(dollar_pnl, github_token=None):
+    bal = load_balance(github_token)
+    bal["balance"] = round(bal.get("balance", 0.0) + dollar_pnl, 2)
+    save_balance(bal, github_token)
+    return bal
 
 
 # ─────────────────────────────────────────────────────────────
@@ -67,27 +112,29 @@ GITHUB_BRANCH = "main"
 
 def _github_get(path, token):
     if not token:
-        return None, None
+        return None, None, "No token provided"
     try:
         r = requests.get(
             f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}",
             headers={"Authorization": f"token {token}", "Accept": "application/vnd.github+json"},
             params={"ref": GITHUB_BRANCH}, timeout=10,
         )
+        if r.status_code == 404:
+            return None, None, "File doesn't exist yet in repo (normal for first save)"
         if r.status_code != 200:
-            return None, None
+            return None, None, f"GitHub GET failed: HTTP {r.status_code} — {r.text[:150]}"
         data = r.json()
         content = base64.b64decode(data["content"]).decode("utf-8")
-        return content, data["sha"]
-    except Exception:
-        return None, None
+        return content, data["sha"], None
+    except Exception as e:
+        return None, None, f"GitHub GET request error: {e}"
 
 
 def _github_put(path, token, content_str, message):
     if not token:
-        return False
+        return False, "No token provided"
     try:
-        _, sha = _github_get(path, token)
+        _, sha, _ = _github_get(path, token)
         payload = {
             "message": message,
             "content": base64.b64encode(content_str.encode("utf-8")).decode("utf-8"),
@@ -100,9 +147,25 @@ def _github_put(path, token, content_str, message):
             headers={"Authorization": f"token {token}", "Accept": "application/vnd.github+json"},
             json=payload, timeout=15,
         )
-        return r.status_code in (200, 201)
-    except Exception:
-        return False
+        if r.status_code in (200, 201):
+            return True, None
+        return False, f"GitHub PUT failed: HTTP {r.status_code} — {r.text[:200]}"
+    except Exception as e:
+        return False, f"GitHub PUT request error: {e}"
+
+
+def test_github_connection(token):
+    """Explicit connection check the user can trigger from the sidebar -
+    writes a tiny test file so a bad/expired/under-permissioned token is
+    caught immediately instead of failing silently on a real save later."""
+    if not token:
+        return False, "No token entered"
+    ok, err = _github_put("data/_connection_test.json", token,
+                           json.dumps({"checked_at": datetime.now().isoformat()}),
+                           "Test GitHub connection")
+    if ok:
+        return True, "Connected — token has write access to this repo"
+    return False, err
 
 
 # ─────────────────────────────────────────────────────────────
@@ -110,7 +173,7 @@ def _github_put(path, token, content_str, message):
 # ─────────────────────────────────────────────────────────────
 def load_trades(github_token=None):
     if github_token:
-        content, _ = _github_get("data/trades.json", github_token)
+        content, _, _ = _github_get("data/trades.json", github_token)
         if content is not None:
             try:
                 trades = json.loads(content)
@@ -126,16 +189,21 @@ def load_trades(github_token=None):
 
 
 def save_trades(trades, github_token=None):
+    """Returns (github_synced: bool, error_or_None) so callers can warn the
+    user immediately if GitHub persistence silently failed, instead of only
+    finding out after the data is already gone on the next restart."""
     content = json.dumps(trades, indent=2)
     with open(TRADE_TRACKER_FILE, "w") as f:
         f.write(content)
     if github_token:
-        _github_put("data/trades.json", github_token, content, "Update trade tracker")
+        return _github_put("data/trades.json", github_token, content, "Update trade tracker")
+    return False, None  # no token given - local-only save, not an error
 
 
 def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",
               github_token=None, confidence=None, vote_margin=None,
-              entry_low=None, entry_high=None, invalidate_price=None):
+              entry_low=None, entry_high=None, invalidate_price=None,
+              stake=None, leverage=1):
     """Logs a new trade.
 
     IMPORTANT FIX: the signal's `entry` price is a BREAKOUT-CONFIRMATION
@@ -157,6 +225,10 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
     goes the other way past invalidate_price first, the trade is marked
     "INVALIDATED" and never counted as a loss — the setup simply never
     happened. See evaluate_trade()/refresh_all_trades().
+
+    `stake` is an optional dollar amount (paper-trading) allocated to this
+    trade - when it closes, its realized $ P&L is applied to the demo
+    balance automatically (see apply_trade_pnl_to_balance).
     """
     trades = load_trades(github_token)
     trade = {
@@ -178,9 +250,14 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
         # instead of just trusting the confidence score in the abstract.
         "confidence": confidence,
         "vote_margin": vote_margin,
+        # Paper-trading fields
+        "stake": stake, "leverage": leverage if market_type == "futures" else 1,
+        "dollar_pnl": None, "balance_applied": False,
     }
     trades.append(trade)
-    save_trades(trades, github_token)
+    synced, sync_error = save_trades(trades, github_token)
+    trade["_github_synced"] = synced
+    trade["_github_error"] = sync_error
     return trade
 
 
@@ -223,7 +300,8 @@ def performance_by_confidence(trades):
         if not group:
             out.append({"bucket": label, "trades": 0, "win_rate": None, "avg_pnl": None})
             continue
-        wins = [t for t in group if t["status"] in ("TP1_HIT", "TP2_HIT")]
+        wins = [t for t in group if t["status"] in ("TP1_HIT", "TP2_HIT")
+                or (t["status"] == "CLOSED_MANUAL" and (t.get("pnl_pct") or 0) > 0)]
         avg_pnl = sum(t.get("pnl_pct", 0) or 0 for t in group) / len(group)
         out.append({
             "bucket": label, "trades": len(group),
@@ -345,15 +423,32 @@ def evaluate_trade(trade, live_price):
     return t
 
 
+def _finalize_stake_pnl(t, github_token=None):
+    """If this trade just closed and has a paper-trading stake that hasn't
+    been applied to the demo balance yet, compute its realized dollar P&L
+    and apply it exactly once. Mutates and returns the trade dict."""
+    closed_statuses = ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
+    if t.get("status") in closed_statuses and t.get("stake") and not t.get("balance_applied"):
+        pnl_pct = t.get("pnl_pct") or 0
+        leverage = t.get("leverage") or 1
+        dollar_pnl = round(t["stake"] * (pnl_pct / 100) * leverage, 2)
+        apply_trade_pnl_to_balance(dollar_pnl, github_token)
+        t["dollar_pnl"] = dollar_pnl
+        t["balance_applied"] = True
+    return t
+
+
 def refresh_all_trades(github_token=None):
-    """Re-checks every OPEN trade's live price and updates status in storage.
-    Returns the fully refreshed list (open + closed)."""
+    """Re-checks every OPEN/PENDING trade's live price and updates status in
+    storage. Any staked trade that closes this refresh has its realized $
+    P&L applied to the demo balance. Returns the fully refreshed list."""
     trades = load_trades(github_token)
     updated = []
     for t in trades:
         if t["status"] in ("OPEN", "PENDING"):
             price = get_single_ticker_price(t["pair"], t["market_type"])
             t = evaluate_trade(t, price)
+            t = _finalize_stake_pnl(t, github_token)
         updated.append(t)
     save_trades(updated, github_token)
     return updated
@@ -410,13 +505,21 @@ def repair_and_save_trade_pnls(github_token=None):
 
 def close_trade_manually(trade_id, exit_price=None, note="", github_token=None):
     trades = load_trades(github_token)
-    for t in trades:
+    for i, t in enumerate(trades):
         if t["id"] == trade_id and t["status"] in ("OPEN", "PENDING"):
+            entry = t.get("entry")
+            direction = t.get("direction")
             t["status"] = "CLOSED_MANUAL"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = exit_price
+            if entry and exit_price:
+                pnl_pct = (((exit_price - entry) / entry) * 100 if direction == "LONG"
+                          else ((entry - exit_price) / entry) * 100)
+                t["pnl_pct"] = round(pnl_pct, 2)
             if note:
                 t["note"] = (t.get("note", "") + " | " + note).strip(" |")
+            t = _finalize_stake_pnl(t, github_token)
+            trades[i] = t
     save_trades(trades, github_token)
     return trades
 
@@ -434,10 +537,24 @@ def trade_stats(trades):
     positions and INVALIDATED trades (setup never confirmed, cancelled
     before entry) are excluded from win rate - counting either would make
     the win rate look worse than the strategy actually performed once
-    trades were genuinely triggered."""
+    trades were genuinely triggered.
+
+    A manually-closed trade counts as a win or loss based on its actual
+    P&L sign, not automatically as neither - previously it was included in
+    the closed-trade denominator but never in the win numerator, which
+    silently dragged the win rate down even when the manual close was
+    profitable."""
     closed = [t for t in trades if t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")]
-    wins = [t for t in closed if t["status"] in ("TP1_HIT", "TP2_HIT")]
-    losses = [t for t in closed if t["status"] == "SL_HIT"]
+
+    def _is_win(t):
+        if t["status"] in ("TP1_HIT", "TP2_HIT"):
+            return True
+        if t["status"] == "CLOSED_MANUAL":
+            return (t.get("pnl_pct") or 0) > 0
+        return False
+
+    wins = [t for t in closed if _is_win(t)]
+    losses = [t for t in closed if not _is_win(t)]
     manual = [t for t in closed if t["status"] == "CLOSED_MANUAL"]
     win_rate = (len(wins) / len(closed) * 100) if closed else 0
     avg_win_pnl = sum(t["pnl_pct"] for t in wins if t.get("pnl_pct") is not None) / len(wins) if wins else 0
@@ -643,7 +760,7 @@ def get_gemini_response(prompt, image, api_key, log=None):
 # ─────────────────────────────────────────────────────────────
 def load_library(github_token=None):
     if github_token:
-        content, _ = _github_get("data/pattern_library.json", github_token)
+        content, _, _ = _github_get("data/pattern_library.json", github_token)
         if content is not None:
             try:
                 library = json.loads(content)
@@ -659,11 +776,13 @@ def load_library(github_token=None):
 
 
 def save_library(library, github_token=None):
+    """Returns (github_synced: bool, error_or_None) - see save_trades."""
     content = json.dumps(library, indent=2)
     with open(PATTERN_LIBRARY_FILE, "w") as f:
         f.write(content)
     if github_token:
-        _github_put("data/pattern_library.json", github_token, content, "Update pattern library")
+        return _github_put("data/pattern_library.json", github_token, content, "Update pattern library")
+    return False, None
 
 
 def process_pattern_response(raw, filename, library):
@@ -1704,12 +1823,49 @@ def generate_docx_bytes(chart, market, funding, indicators, verdict, matched_pat
 # ─────────────────────────────────────────────────────────────
 #   FULL PIPELINE (called by the Streamlit app)
 # ─────────────────────────────────────────────────────────────
+def normalize_timeframe(raw):
+    """Gemini reads the visible timeframe label off a chart screenshot as
+    free text ('15 Minutes', 'M15', '1H', 'Daily', ...) - this was
+    previously passed straight into indicator/HTF lookups that expect
+    Bitget's exact format ('15m', '1h', '1d'). Any mismatch silently fell
+    back to a default 1-hour timeframe with no warning, so a 15-minute
+    chart could quietly get analyzed with 1-hour indicators. This maps
+    common phrasings to the canonical key; unrecognized text still falls
+    back to 1h (same as before) but every known variant is now handled."""
+    if not raw:
+        return "1h"
+    s = raw.strip().lower().replace(" ", "")
+    if "day" in s or s in ("d", "1d", "daily"):
+        return "1d"
+    if "week" in s or s in ("w", "1w", "weekly"):
+        return "1w"
+    if "hour" in s or "hr" in s:
+        m = re.search(r"(\d+)", s)
+        return f"{m.group(1) if m else '1'}h"
+    if "min" in s or (s.endswith("m") and not s.endswith("am") and not s.endswith("pm")):
+        m = re.search(r"(\d+)", s)
+        return f"{m.group(1) if m else '1'}m"
+    m = re.match(r"^([hmdw])(\d+)$", s)  # e.g. "h1", "m15"
+    if m:
+        unit, n = m.groups()
+        return f"{n}{unit}"
+    m = re.match(r"^(\d+)([hmdw])$", s)  # e.g. "1h", "15m" already-clean
+    if m:
+        return s
+    return "1h"
+
+
 def run_full_analysis(image, gemini_key, newsapi_key, library, market_type="spot", log=lambda msg: None):
     """Screenshot-based deep-dive (uses Gemini vision) — optional extra mode."""
     log("Reading chart with Gemini...")
     chart = analyze_chart_full(image, gemini_key)
     if not chart:
         return None
+
+    # Use the normalized timeframe for anything that does a dict lookup
+    # (indicators, HTF trend) - but leave chart["timeframe"] as the
+    # original text Gemini read, since that's shown to the user as-is.
+    lookup_tf = normalize_timeframe(chart["timeframe"])
 
     log("Matching known patterns...")
     matched, pat_signal = match_patterns_from_chart(image, library, gemini_key)
@@ -1727,13 +1883,13 @@ def run_full_analysis(image, gemini_key, newsapi_key, library, market_type="spot
     funding = get_funding_rate(chart["pair"], market_type)
 
     log("Calculating technical indicators...")
-    indicators = get_realtime_indicators(chart["pair"], chart["timeframe"], market_type)
+    indicators = get_realtime_indicators(chart["pair"], lookup_tf, market_type)
 
     log("Checking news sentiment...")
     news = get_news(chart["coin_symbol"], chart["coin_id"], newsapi_key)
 
     log("Checking higher-timeframe trend...")
-    htf = get_htf_trend(chart["pair"], market_type, chart["timeframe"])
+    htf = get_htf_trend(chart["pair"], market_type, lookup_tf)
 
     log("Building final verdict...")
     verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched,
