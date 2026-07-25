@@ -204,7 +204,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.006929,
+    "current_price": 0.006931,
     "pnl_pct": null
   },
   {
@@ -620,8 +620,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.003056,
-    "pnl_pct": 2.58
+    "current_price": 0.003064,
+    "pnl_pct": 2.85
   },
   {
     "id": "1000CATUSDT_1784955956803",
@@ -776,8 +776,8 @@
     "exit_price": null,
     "confidence": 48.6,
     "vote_margin": 1,
-    "current_price": 0.006929,
-    "pnl_pct": -0.56
+    "current_price": 0.006931,
+    "pnl_pct": -0.53
   },
   {
     "id": "1000000MOGUSDT_1784983317142",
@@ -831,6 +831,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 64114.9,
+    "pnl_pct": null
   }
 ]
