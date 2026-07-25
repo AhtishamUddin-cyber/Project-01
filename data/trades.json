@@ -204,7 +204,7 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.006931,
+    "current_price": 0.006935,
     "pnl_pct": null
   },
   {
@@ -405,15 +405,15 @@
     "sl": 113.27142856,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-25 03:39",
     "confirmed_at": "2026-07-25 12:42",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-25 16:51",
+    "exit_price": 114.19114288,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 114.16,
-    "pnl_pct": 0.46
+    "current_price": 114.32,
+    "pnl_pct": 0.6
   },
   {
     "id": "CTKUSDT_1784950776244",
@@ -620,8 +620,8 @@
     "exit_price": null,
     "confidence": 71.8,
     "vote_margin": 6,
-    "current_price": 0.003064,
-    "pnl_pct": 2.85
+    "current_price": 0.003056,
+    "pnl_pct": 2.58
   },
   {
     "id": "1000CATUSDT_1784955956803",
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06197,
-    "pnl_pct": 0.21
+    "current_price": 0.06202,
+    "pnl_pct": 0.29
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -776,8 +776,8 @@
     "exit_price": null,
     "confidence": 48.6,
     "vote_margin": 1,
-    "current_price": 0.006931,
-    "pnl_pct": -0.53
+    "current_price": 0.006935,
+    "pnl_pct": -0.47
   },
   {
     "id": "1000000MOGUSDT_1784983317142",
@@ -802,8 +802,8 @@
     "exit_price": null,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.0999,
-    "pnl_pct": 1.01
+    "current_price": 0.0998,
+    "pnl_pct": 0.91
   },
   {
     "id": "BTCUSDT_1784997070366",
@@ -812,7 +812,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 64193.82142857,
-    "entry": 64193.82142857,
+    "entry": 64179.7,
     "entry_low": 64172.5,
     "entry_high": 64215.14285714,
     "invalidate_price": 63831.35714286,
@@ -821,9 +821,9 @@
     "sl": 63856.94285715,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-25 16:31",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-25 16:51",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.5,
@@ -832,7 +832,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64114.9,
-    "pnl_pct": null
+    "current_price": 64179.7,
+    "pnl_pct": 0.0
   }
 ]
