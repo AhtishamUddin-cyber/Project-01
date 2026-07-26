@@ -924,5 +924,33 @@
     "balance_applied": false,
     "current_price": 0.1752,
     "pnl_pct": -0.17
+  },
+  {
+    "id": "BTCUSDT_1785099127258",
+    "coin": "BTC",
+    "pair": "BTCUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 64723.11642857,
+    "entry": 64723.11642857,
+    "entry_low": 64696.27,
+    "entry_high": 64749.96285714,
+    "invalidate_price": 63947.65285714,
+    "tp1": 66487.27357142,
+    "tp2": 67920.07642856,
+    "sl": 63979.86857143,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-26 20:52",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 79.1,
+    "vote_margin": 8,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
