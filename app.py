@@ -8,7 +8,7 @@ from PIL import Image
 
 import analyzer as az
 
-st.set_page_config(page_title="AI Smart Trade Analyzer", page_icon="📊", layout="wide")
+st.set_page_config(page_title="AI Smart Trade Analyzer Made By Ahtisham Uddin", page_icon="📊", layout="wide")
 
 # ─────────────────────────────────────────────────────────────
 #   VISUAL THEME — dark, card-style UI
