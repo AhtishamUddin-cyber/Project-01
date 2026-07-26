@@ -832,8 +832,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64633.6,
-    "pnl_pct": 0.71
+    "current_price": 64614.9,
+    "pnl_pct": 0.68
   },
   {
     "id": "1INCHUSDT_1785054185543",
@@ -922,8 +922,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1752,
-    "pnl_pct": -0.17
+    "current_price": 0.175,
+    "pnl_pct": -0.28
   },
   {
     "id": "BTCUSDT_1785099127258",
@@ -952,7 +952,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64633.6,
+    "current_price": 64614.8,
     "pnl_pct": null
   },
   {
@@ -981,6 +981,8 @@
     "stake": 50.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.0818,
+    "pnl_pct": null
   }
 ]
