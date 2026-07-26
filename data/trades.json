@@ -100,7 +100,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01565,
+    "current_price": 0.01584,
     "pnl_pct": null
   },
   {
@@ -594,7 +594,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01565,
+    "current_price": 0.01584,
     "pnl_pct": null
   },
   {
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06249,
-    "pnl_pct": 1.05
+    "current_price": 0.06191,
+    "pnl_pct": 0.11
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -832,8 +832,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64361.6,
-    "pnl_pct": 0.28
+    "current_price": 64707.7,
+    "pnl_pct": 0.82
   },
   {
     "id": "1INCHUSDT_1785054185543",
@@ -842,7 +842,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.08184828,
-    "entry": 0.08184828,
+    "entry": 0.08396,
     "entry_low": 0.081804,
     "entry_high": 0.08189257,
     "invalidate_price": 0.08109543,
@@ -851,19 +851,19 @@
     "sl": 0.08114857,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-26 08:23",
-    "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "confirmed_at": "2026-07-26 15:54",
+    "closed_at": "2026-07-26 15:54",
+    "exit_price": 0.08344257,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 20.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.08136,
-    "pnl_pct": null
+    "dollar_pnl": 0.0,
+    "balance_applied": true,
+    "current_price": 0.08396,
+    "pnl_pct": 0.0
   },
   {
     "id": "1INCHUSDT_1785054262940",
@@ -872,7 +872,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.08184828,
-    "entry": 0.08184828,
+    "entry": 0.08396,
     "entry_low": 0.081804,
     "entry_high": 0.08189257,
     "invalidate_price": 0.08109543,
@@ -881,18 +881,18 @@
     "sl": 0.08114857,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-26 08:24",
-    "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "confirmed_at": "2026-07-26 15:54",
+    "closed_at": "2026-07-26 15:54",
+    "exit_price": 0.08344257,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 20.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.08136,
-    "pnl_pct": null
+    "dollar_pnl": 0.0,
+    "balance_applied": true,
+    "current_price": 0.08396,
+    "pnl_pct": 0.0
   }
 ]
