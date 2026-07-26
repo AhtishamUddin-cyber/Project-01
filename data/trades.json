@@ -100,7 +100,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01565,
+    "current_price": 0.01569,
     "pnl_pct": null
   },
   {
@@ -594,7 +594,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01565,
+    "current_price": 0.01569,
     "pnl_pct": null
   },
   {
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06199,
-    "pnl_pct": 0.24
+    "current_price": 0.06242,
+    "pnl_pct": 0.94
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -795,15 +795,15 @@
     "sl": 0.097325,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-07-25 12:41",
     "confirmed_at": "2026-07-25 14:59",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-26 07:09",
+    "exit_price": 0.10190375,
     "confidence": 76.8,
     "vote_margin": 6,
-    "current_price": 0.0993,
-    "pnl_pct": 0.4
+    "current_price": 0.1054,
+    "pnl_pct": 6.57
   },
   {
     "id": "BTCUSDT_1784997070366",
@@ -832,7 +832,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64312.2,
-    "pnl_pct": 0.21
+    "current_price": 64386.7,
+    "pnl_pct": 0.32
   }
 ]
