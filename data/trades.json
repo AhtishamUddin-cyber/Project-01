@@ -832,8 +832,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64364.6,
-    "pnl_pct": 0.29
+    "current_price": 64361.6,
+    "pnl_pct": 0.28
   },
   {
     "id": "1INCHUSDT_1785054185543",
@@ -862,7 +862,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.08129,
+    "current_price": 0.08136,
     "pnl_pct": null
   },
   {
@@ -891,6 +891,8 @@
     "stake": 20.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.08136,
+    "pnl_pct": null
   }
 ]
