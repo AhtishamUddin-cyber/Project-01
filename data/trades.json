@@ -100,7 +100,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01569,
+    "current_price": 0.01565,
     "pnl_pct": null
   },
   {
@@ -594,7 +594,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01569,
+    "current_price": 0.01565,
     "pnl_pct": null
   },
   {
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06242,
-    "pnl_pct": 0.94
+    "current_price": 0.06249,
+    "pnl_pct": 1.05
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -832,7 +832,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64367.1,
+    "current_price": 64364.6,
     "pnl_pct": 0.29
   },
   {
@@ -861,6 +861,8 @@
     "stake": 20.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.08129,
+    "pnl_pct": null
   }
 ]
