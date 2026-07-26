@@ -95,7 +95,7 @@ div[data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
 
 st.markdown("""
 <div class="ata-hero">
-  <h1>📊 AI Smart Trade Analyzer</h1>
+  <h1>📊 AI Smart Trade Analyzer Made By Ahtisham Uddin</h1>
   <p>Live Bitget multi-coin analysis — AI + real indicators, no screenshot required</p>
 </div>
 """, unsafe_allow_html=True)
