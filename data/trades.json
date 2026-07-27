@@ -100,7 +100,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01577,
+    "current_price": 0.0157,
     "pnl_pct": null
   },
   {
@@ -594,7 +594,7 @@
     "exit_price": null,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.01577,
+    "current_price": 0.0157,
     "pnl_pct": null
   },
   {
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06121,
-    "pnl_pct": -1.02
+    "current_price": 0.06171,
+    "pnl_pct": -0.21
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -821,19 +821,19 @@
     "sl": 63856.94285715,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-25 16:31",
     "confirmed_at": "2026-07-25 16:51",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-27 03:06",
+    "exit_price": 64889.6,
     "confidence": 75.5,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 64728.3,
-    "pnl_pct": 0.85
+    "dollar_pnl": 0.16,
+    "balance_applied": true,
+    "current_price": 65201.0,
+    "pnl_pct": 1.59
   },
   {
     "id": "1INCHUSDT_1785054185543",
@@ -922,8 +922,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1753,
-    "pnl_pct": -0.11
+    "current_price": 0.1786,
+    "pnl_pct": 1.77
   },
   {
     "id": "BTCUSDT_1785099127258",
@@ -952,8 +952,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64728.3,
-    "pnl_pct": 0.0
+    "current_price": 65201.0,
+    "pnl_pct": 0.73
   },
   {
     "id": "ACEUSDT_1785100145667",
@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0817,
+    "current_price": 0.0809,
     "pnl_pct": null
   }
 ]
