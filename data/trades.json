@@ -1126,5 +1126,33 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "BZUSDT_1785154669461",
+    "coin": "BZ",
+    "pair": "BZUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 86.96810715,
+    "entry": 86.96810715,
+    "entry_low": 86.9265,
+    "entry_high": 87.00971429,
+    "invalidate_price": 86.26078572,
+    "tp1": 88.47,
+    "tp2": 89.08174998,
+    "sl": 86.31071429,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-27 12:17",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 71.8,
+    "vote_margin": 6,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
