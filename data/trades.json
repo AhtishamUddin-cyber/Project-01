@@ -93,14 +93,14 @@
     "sl": 0.01559255,
     "timeframe": "5m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-07-25 03:33",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-27 06:32",
+    "exit_price": 0.01548,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.0157,
+    "current_price": 0.01548,
     "pnl_pct": null
   },
   {
@@ -587,14 +587,14 @@
     "sl": 0.01559255,
     "timeframe": "5m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-07-25 05:05",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-27 06:32",
+    "exit_price": 0.01548,
     "confidence": 34.0,
     "vote_margin": 0,
-    "current_price": 0.0157,
+    "current_price": 0.01548,
     "pnl_pct": null
   },
   {
@@ -750,8 +750,8 @@
     "exit_price": null,
     "confidence": 75.5,
     "vote_margin": 7,
-    "current_price": 0.06171,
-    "pnl_pct": -0.21
+    "current_price": 0.06162,
+    "pnl_pct": -0.36
   },
   {
     "id": "1000XECUSDT_1784956015147",
@@ -922,8 +922,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1786,
-    "pnl_pct": 1.77
+    "current_price": 0.1755,
+    "pnl_pct": 0.0
   },
   {
     "id": "BTCUSDT_1785099127258",
@@ -952,8 +952,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 65201.0,
-    "pnl_pct": 0.73
+    "current_price": 65471.4,
+    "pnl_pct": 1.15
   },
   {
     "id": "ACEUSDT_1785100145667",
@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0809,
+    "current_price": 0.0804,
     "pnl_pct": null
   },
   {
@@ -1011,6 +1011,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 65471.5,
+    "pnl_pct": null
   }
 ]
