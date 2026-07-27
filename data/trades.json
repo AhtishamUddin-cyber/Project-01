@@ -1014,5 +1014,33 @@
     "balance_applied": false,
     "current_price": 65471.5,
     "pnl_pct": null
+  },
+  {
+    "id": "10000NEXUSDT_1785152974146",
+    "coin": "10000NEX",
+    "pair": "10000NEXUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.01568682,
+    "entry": 0.01568682,
+    "entry_low": 0.0156745,
+    "entry_high": 0.01569914,
+    "invalidate_price": 0.01547736,
+    "tp1": 0.01701,
+    "tp2": 0.01631273,
+    "sl": 0.01549215,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-27 11:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 71.8,
+    "vote_margin": 6,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
