@@ -1284,5 +1284,33 @@
     "balance_applied": false,
     "current_price": 0.02592,
     "pnl_pct": null
+  },
+  {
+    "id": "ALTUSDT_1785213134257",
+    "coin": "ALT",
+    "pair": "ALTUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.00575442,
+    "entry": 0.00575442,
+    "entry_low": 0.00574615,
+    "entry_high": 0.00576269,
+    "invalidate_price": 0.00561387,
+    "tp1": 0.006409,
+    "tp2": 0.00617441,
+    "sl": 0.00562379,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-28 04:32",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 71.8,
+    "vote_margin": 6,
+    "stake": 10.0,
+    "leverage": 30,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
