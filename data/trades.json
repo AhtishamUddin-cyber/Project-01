@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0773,
+    "current_price": 0.0771,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1474.96,
+    "current_price": 1476.34,
     "pnl_pct": null
   },
   {
@@ -1252,7 +1252,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01497,
+    "current_price": 0.01499,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005834,
-    "pnl_pct": 1.06
+    "current_price": 0.00584,
+    "pnl_pct": 1.16
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1342,8 +1342,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63841.7,
-    "pnl_pct": 0.15
+    "current_price": 63788.1,
+    "pnl_pct": 0.07
   },
   {
     "id": "JASMYUSDT_1785254307336",
@@ -1372,7 +1372,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004306,
+    "current_price": 0.004296,
     "pnl_pct": null
   },
   {
@@ -1401,6 +1401,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.3986,
+    "pnl_pct": null
   }
 ]
