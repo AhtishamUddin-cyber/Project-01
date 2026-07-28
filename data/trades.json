@@ -1252,5 +1252,33 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "1000RATSUSDT_1785212989042",
+    "coin": "1000RATS",
+    "pair": "1000RATSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.0260335,
+    "entry": 0.0260335,
+    "entry_low": 0.026001,
+    "entry_high": 0.026066,
+    "invalidate_price": 0.025481,
+    "tp1": 0.02773,
+    "tp2": 0.0281655,
+    "sl": 0.02552,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-28 04:29",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 80.5,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 30,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
