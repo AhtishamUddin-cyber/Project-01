@@ -952,7 +952,7 @@
     "leverage": 1,
     "dollar_pnl": -0.24,
     "balance_applied": true,
-    "current_price": 63186.8,
+    "current_price": 63184.8,
     "pnl_pct": -2.38
   },
   {
@@ -1005,14 +1005,14 @@
     "opened_at": "2026-07-27 06:31",
     "confirmed_at": null,
     "closed_at": "2026-07-28 02:37",
-    "exit_price": 63184.7,
+    "exit_price": 63184.8,
     "confidence": 79.1,
     "vote_margin": 8,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63184.7,
+    "current_price": 63184.8,
     "pnl_pct": null
   },
   {
