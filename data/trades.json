@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0792,
+    "current_price": 0.081,
     "pnl_pct": null
   },
   {
@@ -1072,7 +1072,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4633,
+    "current_price": 0.4678,
     "pnl_pct": null
   },
   {
@@ -1102,7 +1102,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02589,
+    "current_price": 0.02591,
     "pnl_pct": null
   },
   {
@@ -1192,7 +1192,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02589,
+    "current_price": 0.02591,
     "pnl_pct": null
   },
   {
@@ -1221,6 +1221,8 @@
     "stake": 20.0,
     "leverage": 30,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 1497.43,
+    "pnl_pct": null
   }
 ]
