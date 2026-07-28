@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0809,
+    "current_price": 0.081,
     "pnl_pct": null
   },
   {
@@ -1072,7 +1072,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4689,
+    "current_price": 0.4712,
     "pnl_pct": null
   },
   {
@@ -1102,7 +1102,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02592,
+    "current_price": 0.02593,
     "pnl_pct": null
   },
   {
@@ -1192,7 +1192,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02592,
+    "current_price": 0.02593,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1497.24,
+    "current_price": 1481.61,
     "pnl_pct": null
   },
   {
@@ -1252,7 +1252,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01499,
+    "current_price": 0.01501,
     "pnl_pct": null
   },
   {
@@ -1282,7 +1282,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02592,
+    "current_price": 0.02593,
     "pnl_pct": null
   },
   {
@@ -1312,7 +1312,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005718,
+    "current_price": 0.005717,
     "pnl_pct": null
   }
 ]
