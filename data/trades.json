@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.081,
+    "current_price": 0.0756,
     "pnl_pct": null
   },
   {
@@ -1061,18 +1061,18 @@
     "sl": 0.480245,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-07-27 11:49",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-28 12:10",
+    "exit_price": 0.485,
     "confidence": 65.9,
     "vote_margin": -3,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4712,
+    "current_price": 0.485,
     "pnl_pct": null
   },
   {
@@ -1102,7 +1102,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02593,
+    "current_price": 0.02589,
     "pnl_pct": null
   },
   {
@@ -1192,7 +1192,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02593,
+    "current_price": 0.02589,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1479.75,
+    "current_price": 1484.37,
     "pnl_pct": null
   },
   {
@@ -1252,7 +1252,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01501,
+    "current_price": 0.01497,
     "pnl_pct": null
   },
   {
@@ -1282,7 +1282,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02593,
+    "current_price": 0.02589,
     "pnl_pct": null
   },
   {
@@ -1292,7 +1292,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.00575442,
-    "entry": 0.00575442,
+    "entry": 0.005773,
     "entry_low": 0.00574615,
     "entry_high": 0.00576269,
     "invalidate_price": 0.00561387,
@@ -1301,9 +1301,9 @@
     "sl": 0.00562379,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-28 04:32",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-28 12:11",
     "closed_at": null,
     "exit_price": null,
     "confidence": 71.8,
@@ -1312,7 +1312,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005717,
-    "pnl_pct": null
+    "current_price": 0.005773,
+    "pnl_pct": 0.0
   }
 ]
