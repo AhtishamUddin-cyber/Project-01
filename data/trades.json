@@ -1194,5 +1194,33 @@
     "balance_applied": false,
     "current_price": 0.02589,
     "pnl_pct": null
+  },
+  {
+    "id": "ANTHROPICUSDT_1785212854199",
+    "coin": "ANTHROPIC",
+    "pair": "ANTHROPICUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 1513.09991072,
+    "entry": 1513.09991072,
+    "entry_low": 1508.97625,
+    "entry_high": 1517.22357143,
+    "invalidate_price": 1442.99767858,
+    "tp1": 1604.67,
+    "tp2": 1783.61205352,
+    "sl": 1447.94607144,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-28 04:27",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.5,
+    "vote_margin": 7,
+    "stake": 20.0,
+    "leverage": 30,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
