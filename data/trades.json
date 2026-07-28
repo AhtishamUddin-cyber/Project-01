@@ -1102,7 +1102,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02591,
+    "current_price": 0.02592,
     "pnl_pct": null
   },
   {
@@ -1192,7 +1192,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02591,
+    "current_price": 0.02592,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1497.43,
+    "current_price": 1499.57,
     "pnl_pct": null
   },
   {
@@ -1251,7 +1251,9 @@
     "stake": 10.0,
     "leverage": 30,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.01499,
+    "pnl_pct": null
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1279,6 +1281,8 @@
     "stake": 10.0,
     "leverage": 30,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.02592,
+    "pnl_pct": null
   }
 ]
