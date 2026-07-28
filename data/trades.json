@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.077,
+    "current_price": 0.0775,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1468.36,
+    "current_price": 1470.05,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005809,
-    "pnl_pct": 0.62
+    "current_price": 0.005851,
+    "pnl_pct": 1.35
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1322,7 +1322,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 63461.25,
-    "entry": 63461.25,
+    "entry": 63744.8,
     "entry_low": 63446.0,
     "entry_high": 63476.5,
     "invalidate_price": 63202.0,
@@ -1331,9 +1331,9 @@
     "sl": 63220.3,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-28 14:58",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-28 15:21",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.5,
@@ -1342,7 +1342,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63442.7,
-    "pnl_pct": null
+    "current_price": 63744.8,
+    "pnl_pct": 0.0
   }
 ]
