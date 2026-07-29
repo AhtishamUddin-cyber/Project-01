@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0705,
+    "current_price": 0.0701,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1466.2,
+    "current_price": 1466.51,
     "pnl_pct": null
   },
   {
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01545,
-    "pnl_pct": 2.59
+    "current_price": 0.01563,
+    "pnl_pct": 3.78
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005716,
-    "pnl_pct": -0.99
+    "current_price": 0.005695,
+    "pnl_pct": -1.35
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004389,
-    "pnl_pct": -0.34
+    "current_price": 0.00429,
+    "pnl_pct": -2.59
   },
   {
     "id": "EDGEUSDT_1785254997691",
