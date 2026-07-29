@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0771,
+    "current_price": 0.0709,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1476.34,
+    "current_price": 1460.37,
     "pnl_pct": null
   },
   {
@@ -1232,7 +1232,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.01502665,
-    "entry": 0.01502665,
+    "entry": 0.01506,
     "entry_low": 0.015017,
     "entry_high": 0.01503629,
     "invalidate_price": 0.01486272,
@@ -1241,9 +1241,9 @@
     "sl": 0.01487429,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-28 04:29",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-29 05:32",
     "closed_at": null,
     "exit_price": null,
     "confidence": 76.8,
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01499,
-    "pnl_pct": null
+    "current_price": 0.01506,
+    "pnl_pct": 0.0
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.00584,
-    "pnl_pct": 1.16
+    "current_price": 0.005711,
+    "pnl_pct": -1.07
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1342,8 +1342,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63788.1,
-    "pnl_pct": 0.07
+    "current_price": 63956.3,
+    "pnl_pct": 0.33
   },
   {
     "id": "JASMYUSDT_1785254307336",
@@ -1372,7 +1372,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004296,
+    "current_price": 0.004244,
     "pnl_pct": null
   },
   {
@@ -1391,18 +1391,18 @@
     "sl": 0.39533929,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-07-28 16:09",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-29 05:32",
+    "exit_price": 0.3907,
     "confidence": 80.5,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.3986,
+    "current_price": 0.3907,
     "pnl_pct": null
   }
 ]
