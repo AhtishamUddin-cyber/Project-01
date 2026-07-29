@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0709,
+    "current_price": 0.0705,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1460.37,
+    "current_price": 1466.2,
     "pnl_pct": null
   },
   {
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01506,
-    "pnl_pct": 0.0
+    "current_price": 0.01545,
+    "pnl_pct": 2.59
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005711,
-    "pnl_pct": -1.07
+    "current_price": 0.005716,
+    "pnl_pct": -0.99
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1331,19 +1331,19 @@
     "sl": 63220.3,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-07-28 14:58",
     "confirmed_at": "2026-07-28 15:21",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-29 09:57",
+    "exit_price": 64461.65,
     "confidence": 75.5,
     "vote_margin": 7,
     "stake": 100.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 63956.3,
-    "pnl_pct": 0.33
+    "dollar_pnl": 1.42,
+    "balance_applied": true,
+    "current_price": 64650.3,
+    "pnl_pct": 1.42
   },
   {
     "id": "JASMYUSDT_1785254307336",
@@ -1352,7 +1352,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.00435112,
-    "entry": 0.00435112,
+    "entry": 0.004404,
     "entry_low": 0.00434425,
     "entry_high": 0.004358,
     "invalidate_price": 0.00423425,
@@ -1361,9 +1361,9 @@
     "sl": 0.0042425,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-28 15:58",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-29 09:57",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.5,
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004244,
-    "pnl_pct": null
+    "current_price": 0.004404,
+    "pnl_pct": 0.0
   },
   {
     "id": "EDGEUSDT_1785254997691",
