@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0673,
+    "current_price": 0.0672,
     "pnl_pct": null
   },
   {
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004311,
-    "pnl_pct": -2.11
+    "current_price": 0.004316,
+    "pnl_pct": -2.0
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,7 +1462,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4801,
-    "pnl_pct": 0.0
+    "current_price": 0.4872,
+    "pnl_pct": 1.48
   }
 ]
