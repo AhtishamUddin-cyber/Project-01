@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0653,
+    "current_price": 0.0636,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1483.38,
+    "current_price": 1487.89,
     "pnl_pct": null
   },
   {
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01505,
-    "pnl_pct": -0.07
+    "current_price": 0.01497,
+    "pnl_pct": -0.6
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.00574,
-    "pnl_pct": -0.57
+    "current_price": 0.005742,
+    "pnl_pct": -0.54
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004342,
-    "pnl_pct": -1.41
+    "current_price": 0.004323,
+    "pnl_pct": -1.84
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1432,7 +1432,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0264,
+    "current_price": 0.02636,
     "pnl_pct": null
   },
   {
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.481,
-    "pnl_pct": 0.19
+    "current_price": 0.4916,
+    "pnl_pct": 2.4
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1472,7 +1472,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.00291494,
-    "entry": 0.00291494,
+    "entry": 0.002933,
     "entry_low": 0.00290733,
     "entry_high": 0.00292256,
     "invalidate_price": 0.00278546,
@@ -1481,9 +1481,9 @@
     "sl": 0.0027946,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-30 16:23",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-30 18:28",
     "closed_at": null,
     "exit_price": null,
     "confidence": 76.8,
@@ -1492,7 +1492,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002883,
-    "pnl_pct": null
+    "current_price": 0.002933,
+    "pnl_pct": 0.0
   }
 ]
