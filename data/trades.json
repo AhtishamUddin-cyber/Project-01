@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0634,
+    "current_price": 0.064,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1487.89,
+    "current_price": 1489.59,
     "pnl_pct": null
   },
   {
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01497,
-    "pnl_pct": -0.6
+    "current_price": 0.01495,
+    "pnl_pct": -0.73
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005742,
-    "pnl_pct": -0.54
+    "current_price": 0.005718,
+    "pnl_pct": -0.95
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1412,7 +1412,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.0269299,
-    "entry": 0.0269299,
+    "entry": 0.02738,
     "entry_low": 0.0268615,
     "entry_high": 0.02699829,
     "invalidate_price": 0.02519379,
@@ -1421,9 +1421,9 @@
     "sl": 0.02527586,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-30 10:28",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-31 00:34",
     "closed_at": null,
     "exit_price": null,
     "confidence": 80.5,
@@ -1432,8 +1432,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02624,
-    "pnl_pct": null
+    "current_price": 0.02738,
+    "pnl_pct": 0.0
   },
   {
     "id": "1MCHEEMSUSDT_1785407459795",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4939,
-    "pnl_pct": 2.87
+    "current_price": 0.484,
+    "pnl_pct": 0.81
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1492,7 +1492,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002932,
-    "pnl_pct": -0.03
+    "current_price": 0.002909,
+    "pnl_pct": -0.82
   }
 ]
