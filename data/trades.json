@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1487.62,
+    "current_price": 1488.4,
     "pnl_pct": null
   },
   {
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.5,
-    "pnl_pct": 4.14
+    "current_price": 0.5018,
+    "pnl_pct": 4.52
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1552,7 +1552,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 27.62,
+    "current_price": 27.55,
     "pnl_pct": null
   },
   {
@@ -1582,7 +1582,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0515,
+    "current_price": 0.05155,
     "pnl_pct": null
   },
   {
@@ -1642,7 +1642,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1424,
+    "current_price": 0.1423,
     "pnl_pct": null
   }
 ]
