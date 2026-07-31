@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0649,
+    "current_price": 0.0658,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1489.08,
+    "current_price": 1490.8,
     "pnl_pct": null
   },
   {
@@ -1252,8 +1252,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.015,
-    "pnl_pct": -0.4
+    "current_price": 0.01489,
+    "pnl_pct": -1.13
   },
   {
     "id": "1000RATSUSDT_1785212989042",
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005721,
-    "pnl_pct": -0.9
+    "current_price": 0.005744,
+    "pnl_pct": -0.5
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004391,
-    "pnl_pct": -0.3
+    "current_price": 0.004306,
+    "pnl_pct": -2.23
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1432,8 +1432,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02705,
-    "pnl_pct": -1.21
+    "current_price": 0.02728,
+    "pnl_pct": -0.37
   },
   {
     "id": "1MCHEEMSUSDT_1785407459795",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.485,
-    "pnl_pct": 1.02
+    "current_price": 0.4909,
+    "pnl_pct": 2.25
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1481,18 +1481,18 @@
     "sl": 0.0027946,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-07-30 16:23",
     "confirmed_at": "2026-07-30 18:28",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-07-31 12:09",
+    "exit_price": 0.0027946,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.002881,
-    "pnl_pct": -1.77
+    "dollar_pnl": -0.56,
+    "balance_applied": true,
+    "current_price": 0.00277,
+    "pnl_pct": -5.56
   }
 ]
