@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0636,
+    "current_price": 0.0649,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1487.95,
+    "current_price": 1488.99,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005715,
-    "pnl_pct": -1.0
+    "current_price": 0.005722,
+    "pnl_pct": -0.88
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004348,
-    "pnl_pct": -1.27
+    "current_price": 0.004352,
+    "pnl_pct": -1.18
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1432,8 +1432,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.02736,
-    "pnl_pct": -0.07
+    "current_price": 0.02703,
+    "pnl_pct": -1.28
   },
   {
     "id": "1MCHEEMSUSDT_1785407459795",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.489,
-    "pnl_pct": 1.85
+    "current_price": 0.486,
+    "pnl_pct": 1.23
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1492,7 +1492,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002904,
-    "pnl_pct": -0.99
+    "current_price": 0.002889,
+    "pnl_pct": -1.5
   }
 ]
