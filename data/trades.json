@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.066,
+    "current_price": 0.0669,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1488.47,
+    "current_price": 1486.94,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005752,
-    "pnl_pct": -0.36
+    "current_price": 0.005819,
+    "pnl_pct": 0.8
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004321,
-    "pnl_pct": -1.88
+    "current_price": 0.004331,
+    "pnl_pct": -1.66
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4968,
-    "pnl_pct": 3.48
+    "current_price": 0.4995,
+    "pnl_pct": 4.04
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1521,6 +1521,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.2121,
+    "pnl_pct": null
   }
 ]
