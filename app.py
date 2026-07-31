@@ -157,8 +157,9 @@ with st.sidebar:
     st.caption("Data source: Bitget (live) · CoinGecko · Alternative.me")
 
 
-tab_live, tab_shot, tab_lib, tab_track = st.tabs(
-    ["🔴 Live Dashboard", "📸 Screenshot Deep-Dive", "📚 Pattern Library", "📒 Trade Tracker"]
+tab_live, tab_scan, tab_shot, tab_lib, tab_track, tab_backtest = st.tabs(
+    ["🔴 Live Dashboard", "🔍 Opportunity Scanner", "📸 Screenshot Deep-Dive",
+     "📚 Pattern Library", "📒 Trade Tracker", "🔁 Backtest"]
 )
 
 
@@ -322,10 +323,14 @@ with tab_live:
                         icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
                         st.markdown(f"- {icon} {text}")
 
-                    d1, d2, d3 = st.columns(3)
+                    d1, d2, d3, d4 = st.columns(4)
                     d1.metric("Order Book", f"Buy {orderbook.get('buy_pct',50):.0f}% / Sell {orderbook.get('sell_pct',50):.0f}%")
                     d2.metric("Fear & Greed", f"{fg.get('value',50)} — {fg.get('label','')}")
                     d3.metric("Funding Rate", f"{funding.get('rate',0):+.4f}% ({funding.get('signal','NEUTRAL')})")
+                    whale = res.get("whale", {})
+                    d4.metric("RSI Divergence", indicators.get("rsi_divergence", "NONE").title())
+                    if whale.get("available") or whale.get("wall_side"):
+                        st.caption(f"🐋 Whale activity: {whale.get('note', 'N/A')}")
 
                     if v["agreement"] != "CONFLICT" and v["entry_low"]:
                         st.divider()
@@ -394,6 +399,113 @@ with tab_live:
 
         st.divider()
         st.caption("⚠️ Ye AI-assisted analysis hai, financial advice nahi. Hamesha apna stop-loss lagao — max 2% risk per trade.")
+
+
+# ─────────────────────────────────────────────────────────────
+#   TAB 1B — OPPORTUNITY SCANNER (auto-scan many coins at once)
+# ─────────────────────────────────────────────────────────────
+with tab_scan:
+    st.subheader("Opportunity Scanner")
+    st.caption(
+        "Manually har coin check karne ke bajaye — yahan se ek click mein top volume "
+        "coins scan ho jayenge aur sirf woh coins dikhenge jo abhi entry-worthy hain "
+        "(confidence threshold ke upar, aur data/AI conflict nahi)."
+    )
+
+    sc1, sc2, sc3, sc4 = st.columns([1, 1, 1, 1])
+    with sc1:
+        scan_market = st.radio("Market", ["spot", "futures"], horizontal=True, key="scan_mkt",
+                                format_func=lambda x: "Spot" if x == "spot" else "Futures")
+    with sc2:
+        scan_tf = st.selectbox("Timeframe", ["5m", "15m", "30m", "1h", "2h", "4h", "1d"],
+                                index=3, key="scan_tf")
+    with sc3:
+        scan_top_n = st.slider("Coins to scan", min_value=10, max_value=60, value=25, step=5,
+                                help="Zyada coins = zyada accurate coverage, lekin zyada time lagega "
+                                     "(Bitget API rate limits ki wajah se).")
+    with sc4:
+        scan_min_acc = st.slider("Min confidence %", min_value=40, max_value=90, value=65, step=5)
+
+    scan_news = st.checkbox("Include news sentiment in scan", value=False,
+                             help="Slower — ek NewsAPI call per scanned coin.", key="scan_news")
+
+    if st.button("🔍 Scan Now", type="primary"):
+        log_box = st.empty()
+        logs = []
+
+        def scan_log(msg):
+            logs.append(msg)
+            log_box.info(logs[-1])
+
+        with st.spinner(f"Scanning top {scan_top_n} {scan_market} coins..."):
+            hits = az.scan_top_coins(
+                scan_market, scan_tf, top_n=scan_top_n, min_accuracy=scan_min_acc,
+                newsapi_key=newsapi_key, use_news=scan_news, log=scan_log,
+            )
+        log_box.empty()
+        st.session_state["scan_hits"] = hits
+        st.session_state["scan_meta"] = {"market": scan_market, "tf": scan_tf}
+
+    hits = st.session_state.get("scan_hits")
+    if hits is not None:
+        if not hits:
+            st.info("Is threshold pe abhi koi coin qualify nahi kar raha. Min confidence kam karke dobara try karo.")
+        else:
+            meta = st.session_state.get("scan_meta", {})
+            st.success(f"{len(hits)} coin(s) mile jo {meta.get('tf','')} timeframe pe entry-worthy hain "
+                       f"({meta.get('market','')} market):")
+
+            rows = []
+            for s, res in hits:
+                v = res["verdict"]
+                dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
+                rows.append({
+                    "Coin": s["base"],
+                    "Direction": f"{dir_emoji} {v['final_direction']}",
+                    "Confidence": f"{v['accuracy']:.0f}%",
+                    "Entry Zone": f"${v['entry_low']:,.6f} - ${v['entry_high']:,.6f}" if v["entry_low"] else "N/A",
+                    "TP1": f"${v['tp1']:,.6f}" if v["tp1"] else "N/A",
+                    "SL": f"${v['sl']:,.6f}" if v["sl"] else "N/A",
+                    "R:R": f"1:{v['rr']}" if v["rr"] != "N/A" else "N/A",
+                    "RSI Divergence": v.get("rsi_divergence", "NONE").title(),
+                })
+            st.dataframe(rows, use_container_width=True, hide_index=True)
+
+            st.divider()
+            st.markdown("### 🔍 Details")
+            for s, res in hits:
+                v = res["verdict"]
+                dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
+                with st.expander(f"{dir_emoji} {s['base']} — {v['final_direction']} ({v['accuracy']:.0f}% confidence)"):
+                    e1, e2, e3, e4 = st.columns(4)
+                    e1.metric("Entry Zone", f"{v['entry_low']:,.6f} - {v['entry_high']:,.6f}" if v["entry_low"] else "N/A")
+                    e2.metric("Take Profit 1", f"{v['tp1']:,.6f}" if v["tp1"] else "N/A")
+                    e3.metric("Take Profit 2", f"{v['tp2']:,.6f}" if v["tp2"] else "N/A")
+                    e4.metric("Stop Loss", f"{v['sl']:,.6f}" if v["sl"] else "N/A")
+                    st.caption(f"Risk:Reward = 1:{v['rr']}  |  {v['entry_note']}")
+
+                    whale = res.get("whale", {})
+                    if whale.get("available") or whale.get("wall_side"):
+                        st.caption(f"🐋 Whale activity: {whale.get('note', 'N/A')}")
+
+                    st.markdown("**Signal breakdown:**")
+                    for level, text in v["factors"]:
+                        icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
+                        st.markdown(f"- {icon} {text}")
+
+                    pos = az.position_size(account_balance, risk_pct,
+                                            (v["entry_low"] + v["entry_high"]) / 2 if v["entry_low"] else None,
+                                            v["sl"], leverage if scan_market == "futures" else 1)
+                    if pos:
+                        p1, p2, p3 = st.columns(3)
+                        p1.metric("Position Size", f"{pos['units']:,.4f} {s['base']}")
+                        p2.metric("Position Value", f"${pos['position_value']:,.2f}")
+                        p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
+
+            st.divider()
+            st.caption("⚠️ Scanner bhi AI-assisted analysis hai, financial advice nahi. Hamesha apna stop-loss lagao.")
+    else:
+        st.caption("Abhi tak scan nahi chalaya — 'Scan Now' dabao.")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -746,3 +858,100 @@ with tab_track:
             "agar price beech mein SL aur TP dono cross kar chuki ho refresh se pehle, to sirf latest "
             "price ke hisaab se result dikhega. Bitget app/exchange par apna actual order hamesha confirm karo."
         )
+
+
+# ─────────────────────────────────────────────────────────────
+#   TAB 6 — BACKTEST (walk-forward simulation on historical candles)
+# ─────────────────────────────────────────────────────────────
+with tab_backtest:
+    st.subheader("Backtest")
+    st.caption(
+        "Strategy ko past historical candles pe test karo — asli paisa risk kiye bagair "
+        "yeh pata chalega ke is coin/timeframe pe technical signal (EMA + RSI) kaisa perform karta raha hai."
+    )
+    st.info(
+        "ℹ️ Yeh backtest sirf EMA-stack + RSI signal use karta hai (order book, funding rate, "
+        "news, Fear & Greed history free APIs se available nahi hai) — is liye yeh live tool ka "
+        "exact replay nahi hai, balke uske technical core ka sanity-check hai.",
+        icon="ℹ️",
+    )
+
+    bt1, bt2, bt3 = st.columns([1, 2, 1])
+    with bt1:
+        bt_market = st.radio("Market", ["spot", "futures"], horizontal=True, key="bt_mkt",
+                              format_func=lambda x: "Spot" if x == "spot" else "Futures")
+    with bt2:
+        @st.cache_data(ttl=300, show_spinner=False)
+        def _bt_symbols(mtype):
+            return az.get_spot_symbols() if mtype == "spot" else az.get_futures_symbols()
+
+        with st.spinner("Loading symbol list..."):
+            bt_symbols = _bt_symbols(bt_market)
+        bt_labels = [f"{s['base']}/USDT" for s in bt_symbols]
+        bt_label_to_symbol = {f"{s['base']}/USDT": s for s in bt_symbols}
+        bt_coin_label = st.selectbox(f"Coin ({len(bt_labels)} available)", bt_labels, key="bt_coin")
+    with bt3:
+        bt_tf = st.selectbox("Timeframe", ["5m", "15m", "30m", "1h", "2h", "4h", "1d"],
+                              index=3, key="bt_tf")
+
+    bt4, bt5, bt6 = st.columns(3)
+    with bt4:
+        bt_candles = st.slider("Candles to test", min_value=150, max_value=1000, value=400, step=50,
+                                help="Zyada candles = zyada history cover hogi, lekin utna hi purana data "
+                                     "ho sakta hai jitna Bitget deta hai is timeframe ke liye.")
+    with bt5:
+        bt_tp_mult = st.number_input("TP distance (x risk)", min_value=1.0, max_value=6.0, value=2.0, step=0.5)
+    with bt6:
+        bt_sl_mult = st.number_input("SL distance (x ATR)", min_value=0.5, max_value=4.0, value=1.5, step=0.5)
+
+    if st.button("🔁 Run Backtest", type="primary", disabled=not bt_labels):
+        s = bt_label_to_symbol[bt_coin_label]
+        with st.spinner(f"Backtesting {s['base']} on {bt_tf}..."):
+            result = az.run_backtest(
+                s["symbol"], bt_market, bt_tf, num_candles=bt_candles,
+                tp_mult=bt_tp_mult, sl_mult=bt_sl_mult,
+            )
+        st.session_state["bt_result"] = result
+        st.session_state["bt_coin_label"] = bt_coin_label
+
+    result = st.session_state.get("bt_result")
+    if result:
+        if "error" in result:
+            st.warning(result["error"])
+        else:
+            st.success(f"Backtest complete — {st.session_state.get('bt_coin_label','')} "
+                       f"({result['timeframe']}, {result['total_trades']} trades)")
+
+            r1, r2, r3, r4 = st.columns(4)
+            r1.metric("Total Trades", result["total_trades"])
+            r2.metric("Win Rate", f"{result['win_rate']:.1f}%", f"{result['wins']}W / {result['losses']}L")
+            r3.metric("Avg Win / Avg Loss", f"{result['avg_win_pnl']:+.2f}% / {result['avg_loss_pnl']:+.2f}%")
+            r4.metric("Expectancy per trade", f"{result['expectancy_pct']:+.2f}%")
+
+            st.caption(f"📊 Sum of all trade P&L% across the tested history: {result['total_pnl_pct']:+.2f}% "
+                       f"(not compounded — a rough proxy for how the edge stacks up over many trades, "
+                       f"not literal account growth).")
+
+            if result["win_rate"] < 40:
+                st.error("⚠️ Is coin/timeframe pe is basic EMA+RSI signal ka win rate kaafi kamzor raha hai historically.")
+            elif result["expectancy_pct"] <= 0:
+                st.warning("⚠️ Win rate theek hai lekin average loss, average win se bada hai — overall expectancy negative/flat hai.")
+            else:
+                st.success("✅ Is history mein is signal ki positive expectancy rahi hai.")
+
+            st.divider()
+            st.markdown("### 📋 Recent simulated trades (most recent first)")
+            trade_rows = [
+                {
+                    "Direction": t["direction"],
+                    "Entry": f"{t['entry']:,.6f}",
+                    "Exit": f"{t['exit']:,.6f}",
+                    "Outcome": t["outcome"],
+                    "P&L %": f"{t['pnl_pct']:+.2f}%",
+                    "Bars Held": t["bars_held"],
+                }
+                for t in result["trades"]
+            ]
+            st.dataframe(trade_rows, use_container_width=True, hide_index=True)
+    else:
+        st.caption("Abhi tak backtest nahi chalaya — coin/timeframe select karke 'Run Backtest' dabao.")

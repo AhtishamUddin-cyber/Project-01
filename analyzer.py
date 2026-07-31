@@ -1007,6 +1007,134 @@ def get_orderbook(pair, market_type="spot"):
         return {"buy_pct": 50, "sell_pct": 50}
 
 
+# ─────────────────────────────────────────────────────────────
+#   WHALE DETECTION — unusually large trades + order-book walls
+# ─────────────────────────────────────────────────────────────
+# Retail-sized traders can't move the market on their own — whales
+# (large individual traders / institutions) can. Two signals here:
+#  1. Recent EXECUTED trades much bigger than the local average -> real
+#     large orders that already got filled (not just sitting quotes).
+#  2. Big resting WALLS in the order book -> large limit orders waiting to
+#     be filled, which can act as support/resistance or signal spoofing.
+# Both come from Bitget's free public endpoints, no API key needed.
+def _get_raw_orderbook(pair, market_type="spot"):
+    try:
+        if market_type == "futures":
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/merge-depth",
+                        params={"symbol": pair, "productType": ptype, "limit": "50"}, timeout=8,
+                    )
+                    data = r.json().get("data", {})
+                    if data.get("asks") and data.get("bids"):
+                        return data
+                except Exception:
+                    continue
+            return None
+        else:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/spot/market/orderbook",
+                params={"symbol": pair, "limit": "50"}, timeout=8,
+            )
+            data = r.json().get("data", {})
+            if data.get("asks") and data.get("bids"):
+                return data
+            return None
+    except Exception:
+        return None
+
+
+def get_whale_activity(pair, market_type="spot", large_trade_multiplier=5, wall_multiplier=6):
+    """Returns whale-related signal: recent large executed trades (buy vs
+    sell volume among unusually big fills) plus the single biggest resting
+    order-book wall, if any is clearly larger than the surrounding average."""
+    result = {"available": False, "signal": "NEUTRAL", "big_buy_vol": 0.0, "big_sell_vol": 0.0,
+              "wall_side": None, "wall_price": None, "note": "No whale data available"}
+    try:
+        trades = []
+        if market_type == "futures":
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/fills",
+                        params={"symbol": pair, "productType": ptype, "limit": "100"}, timeout=8,
+                    )
+                    trades = r.json().get("data", [])
+                    if trades:
+                        break
+                except Exception:
+                    continue
+        else:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/spot/market/fills",
+                params={"symbol": pair, "limit": "100"}, timeout=8,
+            )
+            trades = r.json().get("data", [])
+
+        if trades:
+            sizes = []
+            for t in trades:
+                try:
+                    sizes.append(float(t.get("size") or t.get("fillSz") or 0))
+                except Exception:
+                    continue
+            if sizes:
+                avg = sum(sizes) / len(sizes)
+                threshold = avg * large_trade_multiplier
+                big_buy = big_sell = 0.0
+                if threshold > 0:
+                    for t in trades:
+                        try:
+                            sz = float(t.get("size") or t.get("fillSz") or 0)
+                        except Exception:
+                            continue
+                        side = (t.get("side") or "").lower()
+                        if sz >= threshold:
+                            if side == "buy":
+                                big_buy += sz
+                            elif side == "sell":
+                                big_sell += sz
+                result["big_buy_vol"] = round(big_buy, 4)
+                result["big_sell_vol"] = round(big_sell, 4)
+                result["available"] = True
+                if big_buy > 0 and big_buy > big_sell * 1.4:
+                    result["signal"] = "LONG"
+                elif big_sell > 0 and big_sell > big_buy * 1.4:
+                    result["signal"] = "SHORT"
+
+        ob = _get_raw_orderbook(pair, market_type)
+        if ob:
+            try:
+                asks = [(float(a[0]), float(a[1])) for a in ob.get("asks", [])]
+                bids = [(float(b[0]), float(b[1])) for b in ob.get("bids", [])]
+                all_sizes = [s for _, s in asks + bids]
+                if all_sizes:
+                    avg_wall = sum(all_sizes) / len(all_sizes)
+                    biggest_bid = max(bids, key=lambda x: x[1]) if bids else None
+                    biggest_ask = max(asks, key=lambda x: x[1]) if asks else None
+                    if avg_wall > 0 and biggest_bid and biggest_bid[1] > avg_wall * wall_multiplier:
+                        result["wall_side"] = "BUY"
+                        result["wall_price"] = biggest_bid[0]
+                    elif avg_wall > 0 and biggest_ask and biggest_ask[1] > avg_wall * wall_multiplier:
+                        result["wall_side"] = "SELL"
+                        result["wall_price"] = biggest_ask[0]
+            except Exception:
+                pass
+
+        note_parts = []
+        if result["available"]:
+            note_parts.append(f"Large fills: {result['big_buy_vol']:,.2f} buy vs {result['big_sell_vol']:,.2f} sell")
+        else:
+            note_parts.append("No unusually large recent trades")
+        if result["wall_side"]:
+            note_parts.append(f"Big {result['wall_side']} wall near {result['wall_price']:,.6f}")
+        result["note"] = " | ".join(note_parts)
+        return result
+    except Exception:
+        return result
+
+
 def get_fear_greed():
     try:
         r = requests.get("https://api.alternative.me/fng/?limit=1", timeout=8)
@@ -1041,6 +1169,57 @@ def get_funding_rate(pair, market_type="futures"):
         except Exception:
             continue
     return {"rate": 0, "signal": "NEUTRAL"}
+
+
+# ─────────────────────────────────────────────────────────────
+#   RSI DIVERGENCE — trend-exhaustion warning
+# ─────────────────────────────────────────────────────────────
+# Divergence = price and RSI disagreeing about momentum, which is one of the
+# more reliable early warnings that a trend is running out of steam:
+#   BULLISH: price makes a LOWER low, but RSI makes a HIGHER low
+#            (selling pressure is fading even though price is still falling)
+#   BEARISH: price makes a HIGHER high, but RSI makes a LOWER high
+#            (buying pressure is fading even though price is still rising)
+# This only looks at the two most recent confirmed swing points so it
+# reacts to what's actually happening now, not old history.
+def detect_rsi_divergence(closes, highs, lows, rsi_period=14, pivot_lookback=3, search_window=50):
+    n = len(closes)
+    if n < rsi_period + search_window:
+        return "NONE"
+
+    # Local RSI series (same Wilder-style calc as the main rsi(), just run
+    # across the whole window so we have one RSI value per candle to compare
+    # against each price pivot).
+    rsis = [50.0] * n
+    for i in range(rsi_period, n):
+        window = closes[i - rsi_period:i + 1]
+        gains = [max(window[j] - window[j - 1], 0) for j in range(1, len(window))]
+        losses = [max(window[j - 1] - window[j], 0) for j in range(1, len(window))]
+        ag = sum(gains) / rsi_period
+        al = sum(losses) / rsi_period
+        rsis[i] = 50.0 if al == 0 else round(100 - (100 / (1 + ag / al)), 2)
+
+    start = max(rsi_period, n - search_window)
+    swing_lows, swing_highs = [], []
+    for i in range(start + pivot_lookback, n - pivot_lookback):
+        wl = lows[i - pivot_lookback:i + pivot_lookback + 1]
+        wh = highs[i - pivot_lookback:i + pivot_lookback + 1]
+        if lows[i] == min(wl):
+            swing_lows.append(i)
+        if highs[i] == max(wh):
+            swing_highs.append(i)
+
+    if len(swing_lows) >= 2:
+        i1, i2 = swing_lows[-2], swing_lows[-1]
+        if lows[i2] < lows[i1] and rsis[i2] > rsis[i1]:
+            return "BULLISH"
+
+    if len(swing_highs) >= 2:
+        i1, i2 = swing_highs[-2], swing_highs[-1]
+        if highs[i2] > highs[i1] and rsis[i2] < rsis[i1]:
+            return "BEARISH"
+
+    return "NONE"
 
 
 def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
@@ -1191,6 +1370,7 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         CP = closes[-1]
         ATR = atr_calc(highs, lows, closes)
         SWING_SUP, SWING_RES = swing_levels(highs, lows, closes)
+        DIVERGENCE = detect_rsi_divergence(closes, highs, lows)
 
         if RSI >= 70:
             rt = "SHORT"
@@ -1257,7 +1437,7 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
             "bb_upper": BBU, "bb_mid": BBM, "bb_lower": BBL,
             "vol_signal": VSIG, "ind_direction": idir, "long_count": lc, "short_count": sc,
             "atr": ATR, "swing_support": SWING_SUP, "swing_resistance": SWING_RES,
-            "last_close": CP,
+            "last_close": CP, "rsi_divergence": DIVERGENCE,
         }
     except Exception:
         return {}
@@ -1354,7 +1534,7 @@ def get_htf_trend(pair, market_type, timeframe):
 #   FINAL VERDICT (data-driven decision + trade levels)
 # ─────────────────────────────────────────────────────────────
 def final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched_patterns,
-                   has_ai_opinion=True, htf=None, target_style="auto"):
+                   has_ai_opinion=True, htf=None, target_style="auto", whale=None):
     buy_pct = orderbook.get("buy_pct", 50)
     sell_pct = orderbook.get("sell_pct", 50)
     fg_val = fg.get("value", 50)
@@ -1376,6 +1556,9 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     bb_lower = indicators.get("bb_lower")
     bb_upper_v = indicators.get("bb_upper")
     htf = htf or {"available": False, "trend": "NEUTRAL", "timeframe": "-"}
+    divergence = indicators.get("rsi_divergence", "NONE")
+    whale = whale or {"available": False, "signal": "NEUTRAL", "wall_side": None,
+                       "wall_price": None, "note": "Whale check unavailable"}
 
     # ── Directional vote — decides direction ONLY ──────────────────────
     ls = 0
@@ -1401,9 +1584,13 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     elif ch_24h < -1: ss += 1
     if htf.get("trend") == "LONG": ls += 2
     elif htf.get("trend") == "SHORT": ss += 2
+    if divergence == "BULLISH": ls += 2
+    elif divergence == "BEARISH": ss += 2
+    if whale.get("signal") == "LONG": ls += 1
+    elif whale.get("signal") == "SHORT": ss += 1
 
     margin = ls - ss
-    max_margin = 11  # sum of all weights above: 1+1+1+2+3+1+2
+    max_margin = 14  # sum of all weights above: 1+1+1+2+3+1+2+2+1
     # Require a real margin, not just any lead - a 2-point win out of 11
     # possible was still thin enough to let low-conviction/noisy setups
     # through as if they were clear trades. Raised to 3 so a direction only
@@ -1514,6 +1701,27 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
         factors.append(("warn", f"Fear & Greed at an extreme ({fg_val}, {fg.get('label','')}) — contrarian risk"))
     else:
         factors.append(("good", f"Fear & Greed in a normal range ({fg_val}, {fg.get('label','')})"))
+
+    if divergence == "NONE":
+        factors.append(("warn", "No RSI divergence detected"))
+    else:
+        divergence_dir = "LONG" if divergence == "BULLISH" else "SHORT"
+        aligned = (divergence_dir == final_direction)
+        factors.append(("good" if aligned else "bad",
+                         f"{divergence.title()} RSI divergence detected"
+                         + (" — supports this trade" if aligned else " — contradicts this trade, caution")))
+
+    if whale.get("available") or whale.get("wall_side"):
+        if whale.get("signal") != "NEUTRAL":
+            aligned = (whale["signal"] == final_direction)
+            factors.append(("good" if aligned else "warn",
+                             f"Whale activity: {whale['note']}"))
+        elif whale.get("wall_side"):
+            factors.append(("warn", f"Whale activity: {whale['note']}"))
+        else:
+            factors.append(("warn", f"Whale activity: {whale['note']}"))
+    else:
+        factors.append(("warn", "Whale activity check unavailable"))
 
     margin_pct = min(abs(margin) / max_margin, 1.0) * 100
     ind_pct = (ind_winning / 5) * 100
@@ -1641,6 +1849,7 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
         "confirm_price": confirm_price, "invalidate_price": invalidate_price,
         "rev_confirm": rev_confirm, "rev_entry_low": rev_entry_low, "rev_entry_high": rev_entry_high,
         "rev_tp1": rev_tp1, "rev_tp2": rev_tp2, "rev_sl": rev_sl, "rr": rr, "price": price,
+        "rsi_divergence": divergence, "whale": whale,
     }
 
 
@@ -1821,6 +2030,244 @@ def generate_docx_bytes(chart, market, funding, indicators, verdict, matched_pat
 
 
 # ─────────────────────────────────────────────────────────────
+#   BACKTESTING — walk-forward simulation on historical candles
+# ─────────────────────────────────────────────────────────────
+def _fetch_candles_raw(pair, timeframe, market_type="spot", limit=300):
+    """Same candle-fetch logic as get_realtime_indicators, factored out so
+    the backtester can pull a longer history without duplicating the whole
+    indicator function."""
+    tf_map_spot = {"1m": "1min", "3m": "3min", "5m": "5min", "15m": "15min", "30m": "30min",
+                   "1h": "1h", "2h": "2h", "4h": "4h", "6h": "6h", "12h": "12h",
+                   "1d": "1day", "1w": "1week"}
+    tf_map_futures = {"1m": "1m", "3m": "3m", "5m": "5m", "15m": "15m", "30m": "30m",
+                      "1h": "1H", "2h": "2H", "4h": "4H", "6h": "6H", "12h": "12H",
+                      "1d": "1D", "1w": "1W"}
+    tf = (tf_map_futures.get(timeframe.lower(), "1H") if market_type == "futures"
+          else tf_map_spot.get(timeframe.lower(), "1h"))
+    candles = []
+    try:
+        if market_type == "futures":
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/candles",
+                        params={"symbol": pair, "granularity": tf, "limit": str(min(limit, 1000)),
+                                 "productType": ptype}, timeout=15,
+                    )
+                    candles = r.json().get("data", [])
+                    if candles:
+                        break
+                except Exception:
+                    continue
+        else:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/spot/market/candles",
+                params={"symbol": pair, "granularity": tf, "limit": str(min(limit, 1000))}, timeout=15,
+            )
+            candles = r.json().get("data", [])
+    except Exception:
+        return []
+    if not candles:
+        return []
+    candles.reverse()
+    return candles
+
+
+def _backtest_signal_at(closes, highs, lows, i):
+    """Lightweight EMA-stack + RSI signal using only data up to index i
+    (no lookahead) — a fast proxy for the live tool's technical vote,
+    used to walk forward one candle at a time across a lot of history."""
+    window = closes[:i + 1]
+    if len(window) < 55:
+        return None
+
+    def ema(prices, p):
+        if len(prices) < p:
+            return None
+        k = 2 / (p + 1)
+        e = sum(prices[:p]) / p
+        for x in prices[p:]:
+            e = x * k + e * (1 - k)
+        return e
+
+    def rsi(prices, p=14):
+        g, l = [], []
+        for j in range(1, len(prices)):
+            d = prices[j] - prices[j - 1]
+            g.append(max(d, 0)); l.append(max(-d, 0))
+        if len(g) < p:
+            return 50
+        ag = sum(g[-p:]) / p
+        al = sum(l[-p:]) / p
+        return 50 if al == 0 else 100 - (100 / (1 + ag / al))
+
+    ema9, ema21, ema50 = ema(window, 9), ema(window, 21), ema(window, 50)
+    r = rsi(window)
+    cp = window[-1]
+
+    votes_long = votes_short = 0
+    if r <= 30: votes_long += 1
+    elif r >= 70: votes_short += 1
+    elif r >= 60: votes_long += 1
+    elif r <= 40: votes_short += 1
+
+    if ema9 and ema21 and ema50:
+        if cp > ema9 > ema21 > ema50: votes_long += 1
+        elif cp < ema9 < ema21 < ema50: votes_short += 1
+        elif cp > ema21: votes_long += 1
+        elif cp < ema21: votes_short += 1
+
+    direction = "LONG" if votes_long > votes_short else ("SHORT" if votes_short > votes_long else "NEUTRAL")
+
+    h = highs[max(0, i - 14):i + 1]
+    l = lows[max(0, i - 14):i + 1]
+    c = closes[max(0, i - 14):i + 1]
+    trs = [max(h[j] - l[j], abs(h[j] - c[j - 1]), abs(l[j] - c[j - 1])) for j in range(1, len(c))]
+    atr = (sum(trs) / len(trs)) if trs else (cp * 0.01)
+
+    return {"direction": direction, "atr": atr or (cp * 0.01), "price": cp}
+
+
+def run_backtest(pair, market_type, timeframe, num_candles=300,
+                  tp_mult=2.0, sl_mult=1.5, max_hold_bars=40):
+    """Walk-forward backtest of the tool's core EMA-stack + RSI directional
+    signal against real historical candles.
+
+    WHAT THIS DOES AND DOESN'T SIMULATE (be honest about this with users):
+    - Only EMA9/21/50 + RSI drive entries here — order book, funding rate,
+      news sentiment and Fear & Greed aren't available historically from
+      these free APIs, so they're intentionally left out rather than faked.
+    - Enters at the OPEN of the candle right after a signal appears (no
+      lookahead bias).
+    - TP/SL are ATR-based, same style as the live tool's targets.
+    - A trade closes at whichever of TP / SL / max_hold_bars happens first;
+      if both TP and SL are touched within the same candle, SL is assumed
+      (can't know which came first from OHLC data alone — this is the
+      conservative assumption).
+    This is a simplified proxy for the full live strategy (which also uses
+    order book, funding, sentiment and AI chart reading) — treat it as a
+    sanity-check of the underlying technical edge, not an exact replay of
+    every live signal.
+    """
+    candles = _fetch_candles_raw(pair, timeframe, market_type, limit=min(num_candles + 60, 1000))
+    if len(candles) < 100:
+        return {"error": "Bitget se itni purani candle history nahi mili is pair/timeframe ke liye — "
+                          "kam candles maango ya doosra timeframe try karo."}
+
+    opens = [float(c[1]) for c in candles]
+    highs = [float(c[2]) for c in candles]
+    lows = [float(c[3]) for c in candles]
+    closes = [float(c[4]) for c in candles]
+    n = len(closes)
+
+    trades = []
+    i = 55
+    while i < n - 1:
+        snap = _backtest_signal_at(closes, highs, lows, i)
+        if not snap or snap["direction"] == "NEUTRAL":
+            i += 1
+            continue
+
+        direction = snap["direction"]
+        atr = snap["atr"]
+        entry_i = i + 1
+        entry = opens[entry_i]
+
+        if direction == "LONG":
+            sl = entry - atr * sl_mult
+            tp = entry + atr * sl_mult * tp_mult
+        else:
+            sl = entry + atr * sl_mult
+            tp = entry - atr * sl_mult * tp_mult
+
+        outcome, exit_price, bars_held = None, None, 0
+        for j in range(entry_i, min(entry_i + max_hold_bars, n)):
+            bars_held = j - entry_i + 1
+            hi, lo = highs[j], lows[j]
+            if direction == "LONG":
+                hit_sl, hit_tp = lo <= sl, hi >= tp
+            else:
+                hit_sl, hit_tp = hi >= sl, lo <= tp
+            if hit_sl:
+                outcome, exit_price = "SL", sl
+                break
+            elif hit_tp:
+                outcome, exit_price = "TP", tp
+                break
+        if outcome is None:
+            outcome = "TIMEOUT"
+            exit_price = closes[min(entry_i + max_hold_bars - 1, n - 1)]
+
+        pnl_pct = (((exit_price - entry) / entry) * 100 if direction == "LONG"
+                   else ((entry - exit_price) / entry) * 100)
+
+        trades.append({
+            "direction": direction, "entry": round(entry, 8), "exit": round(exit_price, 8),
+            "outcome": outcome, "pnl_pct": round(pnl_pct, 2), "bars_held": bars_held,
+        })
+        i = entry_i + bars_held  # no overlapping trades — move past this one entirely
+
+    if not trades:
+        return {"error": "Is history mein koi bhi clear EMA/RSI signal nahi bana — "
+                          "zyada candles ya doosra timeframe try karo."}
+
+    wins = [t for t in trades if t["pnl_pct"] > 0]
+    losses = [t for t in trades if t["pnl_pct"] <= 0]
+    win_rate = len(wins) / len(trades) * 100
+    avg_win = sum(t["pnl_pct"] for t in wins) / len(wins) if wins else 0
+    avg_loss = sum(t["pnl_pct"] for t in losses) / len(losses) if losses else 0
+    total_pnl = sum(t["pnl_pct"] for t in trades)
+    expectancy = total_pnl / len(trades)
+
+    return {
+        "pair": pair, "market_type": market_type, "timeframe": timeframe,
+        "total_trades": len(trades), "win_rate": round(win_rate, 1),
+        "wins": len(wins), "losses": len(losses),
+        "avg_win_pnl": round(avg_win, 2), "avg_loss_pnl": round(avg_loss, 2),
+        "total_pnl_pct": round(total_pnl, 2), "expectancy_pct": round(expectancy, 2),
+        "trades": list(reversed(trades))[:50],  # most recent 50, newest first
+    }
+
+
+# ─────────────────────────────────────────────────────────────
+#   OPPORTUNITY SCANNER — auto-scan many coins, surface the best setups
+# ─────────────────────────────────────────────────────────────
+def scan_top_coins(market_type, timeframe, top_n=20, min_accuracy=65,
+                    newsapi_key=None, use_news=False, log=lambda msg: None):
+    """Runs the same live-analysis pipeline used by the Live Dashboard
+    across the top-N coins (ranked by 24h traded volume) and returns only
+    the ones currently passing the accuracy threshold — so instead of
+    manually picking coins one at a time to check, the good setups get
+    surfaced automatically."""
+    log("Loading symbol list...")
+    symbols = get_spot_symbols() if market_type == "spot" else get_futures_symbols()
+    if not symbols:
+        return []
+
+    log("Ranking by 24h volume...")
+    tickers = get_all_tickers(market_type)
+    ranked = sorted(symbols, key=lambda s: tickers.get(s["symbol"], {}).get("volume", 0), reverse=True)
+    top = ranked[:top_n]
+
+    hits = []
+    for idx, s in enumerate(top):
+        log(f"Scanning {s['base']} ({idx + 1}/{len(top)})...")
+        res = run_live_analysis(
+            coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
+            timeframe=timeframe, newsapi_key=newsapi_key, use_news=use_news,
+        )
+        if not res or "error" in res:
+            continue
+        v = res["verdict"]
+        if v["agreement"] != "CONFLICT" and v["accuracy"] >= min_accuracy:
+            hits.append((s, res))
+        time.sleep(0.2)
+
+    hits.sort(key=lambda x: x[1]["verdict"]["accuracy"], reverse=True)
+    return hits
+
+
+# ─────────────────────────────────────────────────────────────
 #   FULL PIPELINE (called by the Streamlit app)
 # ─────────────────────────────────────────────────────────────
 def normalize_timeframe(raw):
@@ -1891,14 +2338,17 @@ def run_full_analysis(image, gemini_key, newsapi_key, library, market_type="spot
     log("Checking higher-timeframe trend...")
     htf = get_htf_trend(chart["pair"], market_type, lookup_tf)
 
+    log("Checking whale activity...")
+    whale = get_whale_activity(chart["pair"], market_type)
+
     log("Building final verdict...")
     verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news, matched,
-                             has_ai_opinion=True, htf=htf)
+                             has_ai_opinion=True, htf=htf, whale=whale)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,
         "funding": funding, "indicators": indicators, "news": news,
-        "matched_patterns": matched, "verdict": verdict,
+        "matched_patterns": matched, "verdict": verdict, "whale": whale,
     }
 
 
@@ -1947,14 +2397,17 @@ def run_live_analysis(coin_symbol, pair, market_type, timeframe, newsapi_key,
     log("Checking higher-timeframe trend...")
     htf = get_htf_trend(pair, market_type, timeframe)
 
+    log("Checking whale activity...")
+    whale = get_whale_activity(pair, market_type)
+
     chart = build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indicators)
 
     log("Building final verdict...")
     verdict = final_verdict(chart, market, orderbook, fg, funding, indicators, news,
-                             matched_patterns=[], has_ai_opinion=False, htf=htf)
+                             matched_patterns=[], has_ai_opinion=False, htf=htf, whale=whale)
 
     return {
         "chart": chart, "market": market, "orderbook": orderbook, "fg": fg,
         "funding": funding, "indicators": indicators, "news": news,
-        "matched_patterns": [], "verdict": verdict,
+        "matched_patterns": [], "verdict": verdict, "whale": whale,
     }
