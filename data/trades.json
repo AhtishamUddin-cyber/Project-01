@@ -1524,5 +1524,33 @@
     "balance_applied": false,
     "current_price": 0.2125,
     "pnl_pct": 0.0
+  },
+  {
+    "id": "APLDUSDT_1785522732309",
+    "coin": "APLD",
+    "pair": "APLDUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 28.21619643,
+    "entry": 28.21619643,
+    "entry_low": 28.13825,
+    "entry_high": 28.29414286,
+    "invalidate_price": 26.89110715,
+    "tp1": 31.02226785,
+    "tp2": 33.32948213,
+    "sl": 26.98464286,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-31 18:32",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 76.8,
+    "vote_margin": 6,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
