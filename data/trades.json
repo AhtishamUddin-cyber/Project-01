@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.066,
+    "current_price": 0.0664,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005792,
-    "pnl_pct": 0.33
+    "current_price": 0.005805,
+    "pnl_pct": 0.55
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004306,
-    "pnl_pct": -2.23
+    "current_price": 0.004304,
+    "pnl_pct": -2.27
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4991,
-    "pnl_pct": 3.96
+    "current_price": 0.4992,
+    "pnl_pct": 3.98
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1582,7 +1582,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.05164,
+    "current_price": 0.05162,
     "pnl_pct": null
   },
   {
@@ -1592,7 +1592,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 236.12898215,
-    "entry": 236.12898215,
+    "entry": 236.22,
     "entry_low": 235.97925,
     "entry_high": 236.27871429,
     "invalidate_price": 233.58353572,
@@ -1601,9 +1601,9 @@
     "sl": 233.76321429,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-31 18:54",
-    "confirmed_at": null,
+    "confirmed_at": "2026-07-31 19:03",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.5,
@@ -1612,7 +1612,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 235.56,
-    "pnl_pct": null
+    "current_price": 236.22,
+    "pnl_pct": 0.0
   }
 ]
