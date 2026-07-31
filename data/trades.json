@@ -1582,5 +1582,33 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "LASERTECUSDT_1785524076416",
+    "coin": "LASERTEC",
+    "pair": "LASERTECUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 236.12898215,
+    "entry": 236.12898215,
+    "entry_low": 235.97925,
+    "entry_high": 236.27871429,
+    "invalidate_price": 233.58353572,
+    "tp1": 241.51933927,
+    "tp2": 245.95141069,
+    "sl": 233.76321429,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-07-31 18:54",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.5,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
