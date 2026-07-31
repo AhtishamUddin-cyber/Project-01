@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004306,
-    "pnl_pct": -2.23
+    "current_price": 0.004303,
+    "pnl_pct": -2.29
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1522,8 +1522,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2125,
-    "pnl_pct": 0.0
+    "current_price": 0.2121,
+    "pnl_pct": -0.19
   },
   {
     "id": "APLDUSDT_1785522732309",
@@ -1551,6 +1551,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 27.92,
+    "pnl_pct": null
   }
 ]
