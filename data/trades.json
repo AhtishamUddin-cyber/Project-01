@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0678,
+    "current_price": 0.0699,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1483.08,
+    "current_price": 1483.96,
     "pnl_pct": null
   },
   {
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004317,
-    "pnl_pct": -1.98
+    "current_price": 0.004307,
+    "pnl_pct": -2.2
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4728,
-    "pnl_pct": -1.52
+    "current_price": 0.4724,
+    "pnl_pct": -1.6
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1552,7 +1552,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 27.8,
+    "current_price": 27.68,
     "pnl_pct": null
   },
   {
@@ -1582,7 +1582,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.05065,
+    "current_price": 0.0507,
     "pnl_pct": null
   },
   {
@@ -1612,8 +1612,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 237.39,
-    "pnl_pct": 0.5
+    "current_price": 237.76,
+    "pnl_pct": 0.65
   },
   {
     "id": "0GUSDT_1785524736248",
@@ -1672,7 +1672,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1345,
+    "current_price": 0.1348,
     "pnl_pct": null
   }
 ]
