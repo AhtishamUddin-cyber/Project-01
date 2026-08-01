@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0649,
+    "current_price": 0.0678,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1485.56,
+    "current_price": 1483.08,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005804,
-    "pnl_pct": 0.54
+    "current_price": 0.005756,
+    "pnl_pct": -0.29
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004427,
-    "pnl_pct": 0.52
+    "current_price": 0.004317,
+    "pnl_pct": -1.98
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4823,
-    "pnl_pct": 0.46
+    "current_price": 0.4728,
+    "pnl_pct": -1.52
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1511,19 +1511,19 @@
     "sl": 0.21126429,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-07-31 16:32",
     "confirmed_at": "2026-07-31 18:29",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-01 20:30",
+    "exit_price": 0.21126429,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.2125,
-    "pnl_pct": 0.0
+    "dollar_pnl": -0.21,
+    "balance_applied": true,
+    "current_price": 0.2081,
+    "pnl_pct": -2.07
   },
   {
     "id": "APLDUSDT_1785522732309",
@@ -1582,7 +1582,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.05057,
+    "current_price": 0.05065,
     "pnl_pct": null
   },
   {
@@ -1612,8 +1612,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 237.26,
-    "pnl_pct": 0.44
+    "current_price": 237.39,
+    "pnl_pct": 0.5
   },
   {
     "id": "0GUSDT_1785524736248",
@@ -1631,19 +1631,19 @@
     "sl": 0.14011785,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-31 19:05",
     "confirmed_at": "2026-08-01 04:46",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-01 20:30",
+    "exit_price": 0.1475,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.1469,
-    "pnl_pct": 2.58
+    "dollar_pnl": 0.35,
+    "balance_applied": true,
+    "current_price": 0.1482,
+    "pnl_pct": 3.49
   },
   {
     "id": "LABUSDT_1785616208937",
@@ -1671,6 +1671,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.1345,
+    "pnl_pct": null
   }
 ]
