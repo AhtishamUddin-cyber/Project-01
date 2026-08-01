@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0648,
+    "current_price": 0.0641,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1484.43,
+    "current_price": 1483.17,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005882,
-    "pnl_pct": 1.89
+    "current_price": 0.005895,
+    "pnl_pct": 2.11
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004329,
-    "pnl_pct": -1.7
+    "current_price": 0.004319,
+    "pnl_pct": -1.93
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4976,
-    "pnl_pct": 3.65
+    "current_price": 0.4945,
+    "pnl_pct": 3.0
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1522,8 +1522,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2134,
-    "pnl_pct": 0.42
+    "current_price": 0.2133,
+    "pnl_pct": 0.38
   },
   {
     "id": "APLDUSDT_1785522732309",
@@ -1552,7 +1552,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 27.11,
+    "current_price": 27.09,
     "pnl_pct": null
   },
   {
@@ -1582,7 +1582,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.05116,
+    "current_price": 0.05072,
     "pnl_pct": null
   },
   {
@@ -1612,8 +1612,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 237.36,
-    "pnl_pct": 0.48
+    "current_price": 237.28,
+    "pnl_pct": 0.45
   },
   {
     "id": "0GUSDT_1785524736248",
@@ -1642,7 +1642,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1438,
-    "pnl_pct": 0.42
+    "current_price": 0.143,
+    "pnl_pct": -0.14
   }
 ]
