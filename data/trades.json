@@ -1674,5 +1674,33 @@
     "balance_applied": false,
     "current_price": 0.1348,
     "pnl_pct": null
+  },
+  {
+    "id": "CLUSDT_1785658742379",
+    "coin": "CL",
+    "pair": "CLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 81.29669465,
+    "entry": 81.29669465,
+    "entry_low": 81.201775,
+    "entry_high": 81.39161429,
+    "invalidate_price": 79.68306072,
+    "tp1": 84.71380177,
+    "tp2": 87.52342319,
+    "sl": 79.79696429,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-02 08:19",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
