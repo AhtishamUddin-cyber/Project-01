@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0651,
+    "current_price": 0.0646,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1488.92,
+    "current_price": 1485.07,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005784,
-    "pnl_pct": 0.19
+    "current_price": 0.005719,
+    "pnl_pct": -0.94
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004288,
-    "pnl_pct": -2.63
+    "current_price": 0.004306,
+    "pnl_pct": -2.23
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1462,8 +1462,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.4824,
-    "pnl_pct": 0.48
+    "current_price": 0.4825,
+    "pnl_pct": 0.5
   },
   {
     "id": "1000BONKUSDT_1785428585640",
@@ -1552,7 +1552,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 27.1,
+    "current_price": 27.19,
     "pnl_pct": null
   },
   {
@@ -1612,8 +1612,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 237.36,
-    "pnl_pct": 0.48
+    "current_price": 237.32,
+    "pnl_pct": 0.47
   },
   {
     "id": "0GUSDT_1785524736248",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1368,
-    "pnl_pct": 0.0
+    "current_price": 0.1366,
+    "pnl_pct": -0.15
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1682,7 +1682,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 81.29669465,
-    "entry": 81.29669465,
+    "entry": 81.897,
     "entry_low": 81.201775,
     "entry_high": 81.39161429,
     "invalidate_price": 79.68306072,
@@ -1691,9 +1691,9 @@
     "sl": 79.79696429,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-02 08:19",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-02 13:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.7,
@@ -1702,7 +1702,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 80.939,
-    "pnl_pct": null
+    "current_price": 81.897,
+    "pnl_pct": 0.0
   }
 ]
