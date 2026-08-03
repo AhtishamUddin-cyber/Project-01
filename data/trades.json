@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1498.19,
+    "current_price": 1492.77,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005813,
-    "pnl_pct": 0.69
+    "current_price": 0.005819,
+    "pnl_pct": 0.8
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004305,
-    "pnl_pct": -2.25
+    "current_price": 0.004304,
+    "pnl_pct": -2.27
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1552,8 +1552,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 29.92,
-    "pnl_pct": 5.28
+    "current_price": 29.26,
+    "pnl_pct": 2.96
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.138,
-    "pnl_pct": 0.88
+    "current_price": 0.1379,
+    "pnl_pct": 0.8
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1712,7 +1712,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 165.95123215,
-    "entry": 165.95123215,
+    "entry": 166.17,
     "entry_low": 165.88775,
     "entry_high": 166.01471429,
     "invalidate_price": 163.36146429,
@@ -1721,9 +1721,9 @@
     "sl": 163.43764286,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-03 16:23",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-03 17:09",
     "closed_at": null,
     "exit_price": null,
     "confidence": 80.0,
@@ -1732,8 +1732,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 165.45,
-    "pnl_pct": null
+    "current_price": 166.17,
+    "pnl_pct": 0.0
   },
   {
     "id": "DRAMUSDT_1785774201358",
@@ -1742,7 +1742,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 50.52039285,
-    "entry": 50.52039285,
+    "entry": 50.61,
     "entry_low": 50.5045,
     "entry_high": 50.53628571,
     "invalidate_price": 49.73278571,
@@ -1751,9 +1751,9 @@
     "sl": 49.75185714,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-03 16:23",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-03 17:09",
     "closed_at": null,
     "exit_price": null,
     "confidence": 70.0,
@@ -1762,7 +1762,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 50.41,
-    "pnl_pct": null
+    "current_price": 50.61,
+    "pnl_pct": 0.0
   }
 ]
