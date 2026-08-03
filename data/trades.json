@@ -1704,5 +1704,33 @@
     "balance_applied": true,
     "current_price": 79.406,
     "pnl_pct": -3.04
+  },
+  {
+    "id": "SAMSUNGUSDT_1785774188024",
+    "coin": "SAMSUNG",
+    "pair": "SAMSUNGUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 165.95123215,
+    "entry": 165.95123215,
+    "entry_low": 165.88775,
+    "entry_high": 166.01471429,
+    "invalidate_price": 163.36146429,
+    "tp1": 172.01301785,
+    "tp2": 176.91323213,
+    "sl": 163.43764286,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-03 16:23",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 80.0,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
