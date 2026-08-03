@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0647,
+    "current_price": 0.0659,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1483.58,
+    "current_price": 1496.98,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005731,
-    "pnl_pct": -0.73
+    "current_price": 0.00585,
+    "pnl_pct": 1.33
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004288,
-    "pnl_pct": -2.63
+    "current_price": 0.004294,
+    "pnl_pct": -2.5
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1532,7 +1532,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 28.21619643,
-    "entry": 28.21619643,
+    "entry": 28.42,
     "entry_low": 28.13825,
     "entry_high": 28.29414286,
     "invalidate_price": 26.89110715,
@@ -1541,9 +1541,9 @@
     "sl": 26.98464286,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-31 18:32",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-03 02:22",
     "closed_at": null,
     "exit_price": null,
     "confidence": 76.8,
@@ -1552,8 +1552,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 27.11,
-    "pnl_pct": null
+    "current_price": 29.46,
+    "pnl_pct": 3.66
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1601,19 +1601,19 @@
     "sl": 233.76321429,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-07-31 18:54",
     "confirmed_at": "2026-07-31 19:03",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-03 02:22",
+    "exit_price": 245.95141069,
     "confidence": 75.5,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 237.3,
-    "pnl_pct": 0.46
+    "dollar_pnl": 1.21,
+    "balance_applied": true,
+    "current_price": 264.86,
+    "pnl_pct": 12.12
   },
   {
     "id": "0GUSDT_1785524736248",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1407,
-    "pnl_pct": 2.85
+    "current_price": 0.1377,
+    "pnl_pct": 0.66
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1691,18 +1691,18 @@
     "sl": 79.79696429,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-02 08:19",
     "confirmed_at": "2026-08-02 13:33",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-03 06:36",
+    "exit_price": 79.79696429,
     "confidence": 75.7,
     "vote_margin": 9,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 80.782,
-    "pnl_pct": -1.36
+    "dollar_pnl": -0.3,
+    "balance_applied": true,
+    "current_price": 79.406,
+    "pnl_pct": -3.04
   }
 ]
