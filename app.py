@@ -152,9 +152,19 @@ with st.sidebar:
     account_balance = st.number_input("Account Balance (USDT)", min_value=0.0, value=100.0, step=10.0)
     risk_pct = st.slider("Risk per trade (%)", min_value=0.5, max_value=5.0, value=1.0, step=0.5)
     leverage = st.number_input("Leverage (futures only)", min_value=1, max_value=125, value=1, step=1)
+    st.caption(
+        "⚠️ Zyada leverage se liquidation price entry ke kareeb aa jati hai — agar woh tumhare "
+        "SL se pehle aa gayi, to trade SL par nahi, liquidation par band hogi (poora margin loss). "
+        "Har trade ke sath 'Safe Leverage' suggestion dekho jo us trade ke SL distance ke hisaab se hai."
+    )
 
     st.divider()
     st.caption("Data source: Bitget (live) · CoinGecko · Alternative.me")
+
+
+@st.cache_data(ttl=20, show_spinner=False)
+def _cached_trades(token):
+    return az.load_trades(github_token=token)
 
 
 tab_live, tab_scan, tab_shot, tab_lib, tab_track, tab_backtest = st.tabs(
@@ -332,6 +342,14 @@ with tab_live:
                     if whale.get("available") or whale.get("wall_side"):
                         st.caption(f"🐋 Whale activity: {whale.get('note', 'N/A')}")
 
+                    hist = az.coin_trade_history(_cached_trades(github_token), s["base"])
+                    if hist["count"] > 0:
+                        st.caption(
+                            f"📜 **{s['base']} ki pichli trades:** {hist['count']} closed — "
+                            f"{hist['wins']} profit, {hist['losses']} loss ({hist['win_rate']:.0f}% win rate), "
+                            f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
+                        )
+
                     if v["agreement"] != "CONFLICT" and v["entry_low"]:
                         st.divider()
                         entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
@@ -345,6 +363,20 @@ with tab_live:
                             p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
                             if market_type == "futures" and leverage > 1:
                                 st.caption(f"Margin required at {leverage}x leverage: ${pos['margin_required']:,.2f}")
+
+                        if market_type == "futures":
+                            safe_lev = az.suggest_max_safe_leverage(entry_ref, v["sl"])
+                            if safe_lev:
+                                l1, l2 = st.columns(2)
+                                l1.metric("🛡️ Safe Leverage (this trade)", f"{safe_lev['safe_leverage']}x")
+                                l2.metric("SL distance", f"{safe_lev['sl_distance_pct']:.2f}%")
+                                if leverage > safe_lev["safe_leverage"]:
+                                    st.warning(
+                                        f"⚠️ Sidebar mein {leverage}x set hai, lekin is trade ke SL distance "
+                                        f"({safe_lev['sl_distance_pct']:.2f}%) ke hisaab se ~{safe_lev['safe_leverage']}x "
+                                        f"se zyada leverage par liquidation SL se pehle aa sakti hai — trade SL "
+                                        f"par nahi, liquidation par (poora margin loss) band ho sakti hai."
+                                    )
 
                         tcol1, tcol2, tcol3 = st.columns([2, 1.2, 1])
                         with tcol1:
@@ -424,7 +456,12 @@ with tab_scan:
                                 help="Zyada coins = zyada accurate coverage, lekin zyada time lagega "
                                      "(Bitget API rate limits ki wajah se).")
     with sc4:
-        scan_min_acc = st.slider("Min confidence %", min_value=40, max_value=90, value=65, step=5)
+        scan_acc_range = st.slider(
+            "Confidence range %", min_value=40, max_value=100, value=(65, 100), step=5,
+            help="Sirf is range ke andar wale confidence score wale coins dikhenge. Upper bound ko "
+                 "100 par rehne do agar 'X% aur usse zyada, sab' dekhna ho.",
+        )
+        scan_min_acc, scan_max_acc = scan_acc_range
 
     scan_news = st.checkbox("Include news sentiment in scan", value=False,
                              help="Slower — ek NewsAPI call per scanned coin.", key="scan_news")
@@ -440,20 +477,22 @@ with tab_scan:
         with st.spinner(f"Scanning top {scan_top_n} {scan_market} coins..."):
             hits = az.scan_top_coins(
                 scan_market, scan_tf, top_n=scan_top_n, min_accuracy=scan_min_acc,
-                newsapi_key=newsapi_key, use_news=scan_news, log=scan_log,
+                max_accuracy=scan_max_acc, newsapi_key=newsapi_key, use_news=scan_news, log=scan_log,
             )
         log_box.empty()
         st.session_state["scan_hits"] = hits
-        st.session_state["scan_meta"] = {"market": scan_market, "tf": scan_tf}
+        st.session_state["scan_meta"] = {"market": scan_market, "tf": scan_tf,
+                                          "min_acc": scan_min_acc, "max_acc": scan_max_acc}
 
     hits = st.session_state.get("scan_hits")
     if hits is not None:
+        meta = st.session_state.get("scan_meta", {})
+        range_txt = f"{meta.get('min_acc', 40)}%–{meta.get('max_acc', 100)}%"
         if not hits:
-            st.info("Is threshold pe abhi koi coin qualify nahi kar raha. Min confidence kam karke dobara try karo.")
+            st.info(f"{range_txt} confidence range mein abhi koi coin qualify nahi kar raha. Range badla karke dobara try karo.")
         else:
-            meta = st.session_state.get("scan_meta", {})
             st.success(f"{len(hits)} coin(s) mile jo {meta.get('tf','')} timeframe pe entry-worthy hain "
-                       f"({meta.get('market','')} market):")
+                       f"({meta.get('market','')} market, confidence {range_txt}):")
 
             rows = []
             for s, res in hits:
@@ -493,14 +532,35 @@ with tab_scan:
                         icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
                         st.markdown(f"- {icon} {text}")
 
-                    pos = az.position_size(account_balance, risk_pct,
-                                            (v["entry_low"] + v["entry_high"]) / 2 if v["entry_low"] else None,
+                    hist = az.coin_trade_history(_cached_trades(github_token), s["base"])
+                    if hist["count"] > 0:
+                        st.caption(
+                            f"📜 **{s['base']} ki pichli trades:** {hist['count']} closed — "
+                            f"{hist['wins']} profit, {hist['losses']} loss ({hist['win_rate']:.0f}% win rate), "
+                            f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
+                        )
+
+                    entry_mid = (v["entry_low"] + v["entry_high"]) / 2 if v["entry_low"] else None
+                    pos = az.position_size(account_balance, risk_pct, entry_mid,
                                             v["sl"], leverage if scan_market == "futures" else 1)
                     if pos:
                         p1, p2, p3 = st.columns(3)
                         p1.metric("Position Size", f"{pos['units']:,.4f} {s['base']}")
                         p2.metric("Position Value", f"${pos['position_value']:,.2f}")
                         p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
+
+                    if scan_market == "futures" and entry_mid:
+                        safe_lev = az.suggest_max_safe_leverage(entry_mid, v["sl"])
+                        if safe_lev:
+                            l1, l2 = st.columns(2)
+                            l1.metric("🛡️ Safe Leverage (this trade)", f"{safe_lev['safe_leverage']}x")
+                            l2.metric("SL distance", f"{safe_lev['sl_distance_pct']:.2f}%")
+                            if leverage > safe_lev["safe_leverage"]:
+                                st.warning(
+                                    f"⚠️ Sidebar mein {leverage}x set hai, lekin is trade ke SL distance "
+                                    f"({safe_lev['sl_distance_pct']:.2f}%) ke hisaab se ~{safe_lev['safe_leverage']}x "
+                                    f"se zyada leverage par liquidation SL se pehle aa sakti hai."
+                                )
 
             st.divider()
             st.caption("⚠️ Scanner bhi AI-assisted analysis hai, financial advice nahi. Hamesha apna stop-loss lagao.")
@@ -764,6 +824,36 @@ with tab_track:
                     st.success("✅ High-confidence trades tumhare data mein waqai behtar perform kar rahe hain.")
 
         st.divider()
+        st.markdown("### 🔎 Coin History Search")
+        st.caption("Koi bhi coin select karo — uski sab pichli closed trades (profit/loss/confidence) dikh jayengi.")
+        traded_coins = sorted({t["coin"] for t in trades})
+        if traded_coins:
+            search_coin = st.selectbox("Coin", traded_coins, key="coin_history_search")
+            hist = az.coin_trade_history(trades, search_coin)
+            if hist["count"] == 0:
+                st.caption(f"{search_coin} ki abhi koi closed trade nahi hai.")
+            else:
+                hc1, hc2, hc3, hc4 = st.columns(4)
+                hc1.metric("Closed Trades", hist["count"])
+                hc2.metric("Win Rate", f"{hist['win_rate']:.0f}%", f"{hist['wins']}W / {hist['losses']}L")
+                hc3.metric("Avg P&L", f"{hist['avg_pnl']:+.2f}%")
+                hc4.metric("Total $ P&L", f"${hist['total_dollar_pnl']:+,.2f}")
+                hist_rows = [
+                    {
+                        "Direction": t["direction"],
+                        "Confidence": f"{t['confidence']:.0f}%" if t.get("confidence") is not None else "—",
+                        "Entry": f"{t['entry']:,.6f}",
+                        "Exit": f"{t['exit_price']:,.6f}" if t.get("exit_price") else "N/A",
+                        "Result": t["status"],
+                        "P&L %": f"{t['pnl_pct']:+.2f}%" if t.get("pnl_pct") is not None else "—",
+                        "P&L $": f"${t['dollar_pnl']:+,.2f}" if t.get("dollar_pnl") is not None else "—",
+                        "Closed": t.get("closed_at") or "—",
+                    }
+                    for t in hist["trades"]
+                ]
+                st.dataframe(hist_rows, use_container_width=True, hide_index=True)
+
+        st.divider()
         pending_trades = [t for t in trades if t["status"] == "PENDING"]
         open_trades = [t for t in trades if t["status"] == "OPEN"]
         closed_trades = [t for t in trades if t["status"] not in ("OPEN", "PENDING")]
@@ -833,11 +923,13 @@ with tab_track:
                 rows.append({
                     "Coin": f"{dir_emoji} {t['coin']}",
                     "Direction": t["direction"],
+                    "Confidence": f"{t['confidence']:.0f}%" if t.get("confidence") is not None else "—",
                     "Entry": f"{t['entry']:,.6f}",
                     "Exit": f"{t['exit_price']:,.6f}" if t.get("exit_price") else "N/A",
                     "Result": status_map.get(t["status"], t["status"]),
                     "P&L %": f"{t['pnl_pct']:+.2f}%" if t.get("pnl_pct") is not None else "—",
                     "P&L $": f"${t['dollar_pnl']:+,.2f}" if t.get("dollar_pnl") is not None else "—",
+                    "Leverage": f"{t.get('leverage', 1)}x",
                     "Opened": t["opened_at"],
                     "Closed": t.get("closed_at") or "—",
                 })

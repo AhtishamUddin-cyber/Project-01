@@ -283,6 +283,73 @@ def position_size(account_balance, risk_pct, entry, sl, leverage=1):
     }
 
 
+def suggest_max_safe_leverage(entry, sl, maintenance_margin_rate=0.01,
+                               safety_multiplier=1.3, min_leverage=1, max_leverage_cap=20):
+    """Estimates the highest leverage that keeps the exchange's forced-liquidation
+    price BEYOND this specific trade's own Stop Loss — so if the trade goes wrong,
+    the SL fires first, not a liquidation.
+
+    On isolated margin, a position is liquidated (roughly) once the adverse move
+    eats up the initial margin minus the maintenance margin the exchange holds back:
+        liquidation_distance_pct ≈ (1 / leverage) - maintenance_margin_rate
+    So if leverage is set too high for a given SL distance, the liquidation price
+    sits CLOSER to entry than the SL does — the exchange force-closes the position
+    before the coded SL logic ever gets a chance to fire. That's what happens when
+    a wide-ATR-based SL (say 3-5% away) is paired with very high leverage (say
+    40x, whose theoretical liquidation distance is only ~2.5% before maintenance
+    margin) — liquidation wins the race, and the loss becomes the full margin
+    instead of the smaller SL-defined risk.
+
+    `safety_multiplier` (default 1.3 = 30% cushion) leaves room for slippage and
+    funding-fee drift on margin. `maintenance_margin_rate` defaults to a
+    conservative 1% — actual rates vary by coin/exchange tier, so always sanity
+    check the exact tier rate on Bitget for that coin/position size before trusting
+    this at the edge."""
+    if not entry or not sl or entry <= 0:
+        return None
+    sl_distance_pct = abs(entry - sl) / entry
+    if sl_distance_pct <= 0:
+        return None
+    denom = (sl_distance_pct * safety_multiplier) + maintenance_margin_rate
+    if denom <= 0:
+        return None
+    raw_leverage = 1 / denom
+    safe_leverage = max(min_leverage, min(max_leverage_cap, int(raw_leverage)))
+    return {
+        "safe_leverage": safe_leverage,
+        "sl_distance_pct": round(sl_distance_pct * 100, 2),
+        "raw_max_leverage": round(raw_leverage, 1),
+    }
+
+
+def coin_trade_history(trades, coin_symbol):
+    """Trader ke apne closed trades isi coin ke liye — taake naya trade lene se
+    pehle dekha ja sake ke pichli baar isi coin mein kya hua tha (kitni dafa
+    profit, kitni dafa loss, average outcome), instead of relying on memory."""
+    coin_symbol = (coin_symbol or "").upper()
+    closed = [t for t in trades if (t.get("coin") or "").upper() == coin_symbol
+              and t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")]
+    if not closed:
+        return {"coin": coin_symbol, "count": 0, "trades": []}
+    wins = [t for t in closed if t["status"] in ("TP1_HIT", "TP2_HIT")
+            or (t["status"] == "CLOSED_MANUAL" and (t.get("pnl_pct") or 0) > 0)]
+    win_ids = {id(t) for t in wins}
+    losses = [t for t in closed if id(t) not in win_ids]
+    total_dollar = sum(t.get("dollar_pnl") or 0 for t in closed)
+    avg_pnl = sum(t.get("pnl_pct", 0) or 0 for t in closed) / len(closed)
+    ordered = sorted(closed, key=lambda x: x.get("closed_at") or "", reverse=True)
+    return {
+        "coin": coin_symbol,
+        "count": len(closed),
+        "wins": len(wins),
+        "losses": len(losses),
+        "win_rate": round(len(wins) / len(closed) * 100, 1),
+        "avg_pnl": round(avg_pnl, 2),
+        "total_dollar_pnl": round(total_dollar, 2),
+        "trades": ordered,
+    }
+
+
 def performance_by_confidence(trades):
     """Real win-rate feedback from the trader's OWN closed trades, bucketed
     by how confident the tool was when the trade was opened. This is the
@@ -2232,13 +2299,14 @@ def run_backtest(pair, market_type, timeframe, num_candles=300,
 # ─────────────────────────────────────────────────────────────
 #   OPPORTUNITY SCANNER — auto-scan many coins, surface the best setups
 # ─────────────────────────────────────────────────────────────
-def scan_top_coins(market_type, timeframe, top_n=20, min_accuracy=65,
+def scan_top_coins(market_type, timeframe, top_n=20, min_accuracy=65, max_accuracy=100,
                     newsapi_key=None, use_news=False, log=lambda msg: None):
     """Runs the same live-analysis pipeline used by the Live Dashboard
     across the top-N coins (ranked by 24h traded volume) and returns only
-    the ones currently passing the accuracy threshold — so instead of
-    manually picking coins one at a time to check, the good setups get
-    surfaced automatically."""
+    the ones currently within the [min_accuracy, max_accuracy] confidence
+    range — so instead of manually picking coins one at a time to check,
+    the good setups get surfaced automatically. max_accuracy defaults to
+    100 (no upper cap, i.e. "min_accuracy and above")."""
     log("Loading symbol list...")
     symbols = get_spot_symbols() if market_type == "spot" else get_futures_symbols()
     if not symbols:
@@ -2259,7 +2327,7 @@ def scan_top_coins(market_type, timeframe, top_n=20, min_accuracy=65,
         if not res or "error" in res:
             continue
         v = res["verdict"]
-        if v["agreement"] != "CONFLICT" and v["accuracy"] >= min_accuracy:
+        if v["agreement"] != "CONFLICT" and min_accuracy <= v["accuracy"] <= max_accuracy:
             hits.append((s, res))
         time.sleep(0.2)
 
