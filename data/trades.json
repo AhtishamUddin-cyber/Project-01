@@ -1732,5 +1732,33 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "DRAMUSDT_1785774201358",
+    "coin": "DRAM",
+    "pair": "DRAMUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 50.52039285,
+    "entry": 50.52039285,
+    "entry_low": 50.5045,
+    "entry_high": 50.53628571,
+    "invalidate_price": 49.73278571,
+    "tp1": 52.00978572,
+    "tp2": 53.13875001,
+    "sl": 49.75185714,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-03 16:23",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
