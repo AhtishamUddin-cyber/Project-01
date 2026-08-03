@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0659,
+    "current_price": 0.0658,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1493.48,
+    "current_price": 1493.84,
     "pnl_pct": null
   },
   {
@@ -1372,8 +1372,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.004307,
-    "pnl_pct": -2.2
+    "current_price": 0.004293,
+    "pnl_pct": -2.52
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1552,8 +1552,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 29.63,
-    "pnl_pct": 4.26
+    "current_price": 29.61,
+    "pnl_pct": 4.19
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1377,
-    "pnl_pct": 0.66
+    "current_price": 0.1376,
+    "pnl_pct": 0.58
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1732,8 +1732,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 167.35,
-    "pnl_pct": 0.71
+    "current_price": 167.86,
+    "pnl_pct": 1.02
   },
   {
     "id": "DRAMUSDT_1785774201358",
@@ -1762,7 +1762,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 50.92,
-    "pnl_pct": 0.61
+    "current_price": 50.99,
+    "pnl_pct": 0.75
   }
 ]
