@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0682,
+    "current_price": 0.0684,
     "pnl_pct": null
   },
   {
@@ -1541,19 +1541,19 @@
     "sl": 26.98464286,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-07-31 18:32",
     "confirmed_at": "2026-08-03 02:22",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:17",
+    "exit_price": 31.02226785,
     "confidence": 76.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 31.02,
-    "pnl_pct": 9.15
+    "dollar_pnl": 0.92,
+    "balance_applied": true,
+    "current_price": 31.04,
+    "pnl_pct": 9.22
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1822,8 +1822,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 18.568,
-    "pnl_pct": 1.01
+    "current_price": 18.585,
+    "pnl_pct": 1.1
   },
   {
     "id": "BTCUSDT_1785856608372",
@@ -1852,7 +1852,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64029.9,
+    "current_price": 64013.2,
     "pnl_pct": null
   }
 ]
