@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0661,
+    "current_price": 0.0687,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1496.42,
+    "current_price": 1505.29,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005694,
-    "pnl_pct": -1.37
+    "current_price": 0.005645,
+    "pnl_pct": -2.22
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1361,19 +1361,19 @@
     "sl": 0.0042425,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-07-28 15:58",
     "confirmed_at": "2026-07-29 09:57",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:04",
+    "exit_price": 0.0042425,
     "confidence": 75.5,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.004274,
-    "pnl_pct": -2.95
+    "dollar_pnl": -0.49,
+    "balance_applied": true,
+    "current_price": 0.004187,
+    "pnl_pct": -4.93
   },
   {
     "id": "EDGEUSDT_1785254997691",
@@ -1552,8 +1552,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 30.15,
-    "pnl_pct": 6.09
+    "current_price": 31.0,
+    "pnl_pct": 9.08
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1401,
-    "pnl_pct": 2.41
+    "current_price": 0.1392,
+    "pnl_pct": 1.75
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1721,19 +1721,19 @@
     "sl": 163.43764286,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-08-03 16:23",
     "confirmed_at": "2026-08-03 17:09",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:04",
+    "exit_price": 176.91323213,
     "confidence": 80.0,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 166.81,
-    "pnl_pct": 0.39
+    "dollar_pnl": 0.65,
+    "balance_applied": true,
+    "current_price": 176.94,
+    "pnl_pct": 6.48
   },
   {
     "id": "DRAMUSDT_1785774201358",
@@ -1751,19 +1751,19 @@
     "sl": 49.75185714,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-08-03 16:23",
     "confirmed_at": "2026-08-03 17:09",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:04",
+    "exit_price": 53.13875001,
     "confidence": 70.0,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 51.52,
-    "pnl_pct": 1.8
+    "dollar_pnl": 0.72,
+    "balance_applied": true,
+    "current_price": 54.24,
+    "pnl_pct": 7.17
   },
   {
     "id": "HOMEUSDT_1785779263271",
@@ -1781,19 +1781,19 @@
     "sl": 0.00784075,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-08-03 17:47",
     "confirmed_at": "2026-08-04 05:50",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:04",
+    "exit_price": 0.00954504,
     "confidence": 75.7,
     "vote_margin": 9,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.008285,
-    "pnl_pct": 0.27
+    "dollar_pnl": 3.31,
+    "balance_applied": true,
+    "current_price": 0.010995,
+    "pnl_pct": 33.06
   },
   {
     "id": "KORUUSDT_1785855617520",
@@ -1802,7 +1802,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 18.29101429,
-    "entry": 18.29101429,
+    "entry": 18.383,
     "entry_low": 18.2818,
     "entry_high": 18.30022857,
     "invalidate_price": 18.13437142,
@@ -1811,9 +1811,9 @@
     "sl": 18.14542856,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-04 15:00",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-04 15:04",
     "closed_at": null,
     "exit_price": null,
     "confidence": 83.6,
@@ -1821,6 +1821,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 18.383,
+    "pnl_pct": 0.0
   }
 ]
