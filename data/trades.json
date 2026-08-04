@@ -1732,8 +1732,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 164.72,
-    "pnl_pct": -0.87
+    "current_price": 164.98,
+    "pnl_pct": -0.72
   },
   {
     "id": "DRAMUSDT_1785774201358",
@@ -1762,8 +1762,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 51.14,
-    "pnl_pct": 1.05
+    "current_price": 51.18,
+    "pnl_pct": 1.13
   },
   {
     "id": "HOMEUSDT_1785779263271",
@@ -1792,7 +1792,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.008263,
-    "pnl_pct": 0.0
+    "current_price": 0.008273,
+    "pnl_pct": 0.12
   }
 ]
