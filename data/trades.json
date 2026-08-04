@@ -1794,5 +1794,33 @@
     "balance_applied": false,
     "current_price": 0.008285,
     "pnl_pct": 0.27
+  },
+  {
+    "id": "KORUUSDT_1785855617520",
+    "coin": "KORU",
+    "pair": "KORUUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 18.29101429,
+    "entry": 18.29101429,
+    "entry_low": 18.2818,
+    "entry_high": 18.30022857,
+    "invalidate_price": 18.13437142,
+    "tp1": 18.6227286,
+    "tp2": 18.89547148,
+    "sl": 18.14542856,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-04 15:00",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 83.6,
+    "vote_margin": 10,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
