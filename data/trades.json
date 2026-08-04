@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0687,
+    "current_price": 0.0682,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1505.29,
+    "current_price": 1505.55,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005645,
-    "pnl_pct": -2.22
+    "current_price": 0.005658,
+    "pnl_pct": -1.99
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1552,8 +1552,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 31.0,
-    "pnl_pct": 9.08
+    "current_price": 31.02,
+    "pnl_pct": 9.15
   },
   {
     "id": "LAUSDT_1785523937512",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1392,
-    "pnl_pct": 1.75
+    "current_price": 0.1394,
+    "pnl_pct": 1.9
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1822,8 +1822,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 18.383,
-    "pnl_pct": 0.0
+    "current_price": 18.568,
+    "pnl_pct": 1.01
   },
   {
     "id": "BTCUSDT_1785856608372",
@@ -1851,6 +1851,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 64029.9,
+    "pnl_pct": null
   }
 ]
