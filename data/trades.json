@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.069,
+    "current_price": 0.0684,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1507.25,
+    "current_price": 1508.52,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005658,
-    "pnl_pct": -1.99
+    "current_price": 0.005661,
+    "pnl_pct": -1.94
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1398,
-    "pnl_pct": 2.19
+    "current_price": 0.1405,
+    "pnl_pct": 2.7
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1811,19 +1811,19 @@
     "sl": 18.14542856,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-08-04 15:00",
     "confirmed_at": "2026-08-04 15:04",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:46",
+    "exit_price": 18.6227286,
     "confidence": 83.6,
     "vote_margin": 10,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 18.594,
-    "pnl_pct": 1.15
+    "dollar_pnl": 0.25,
+    "balance_applied": true,
+    "current_price": 18.837,
+    "pnl_pct": 2.47
   },
   {
     "id": "BTCUSDT_1785856608372",
@@ -1852,7 +1852,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63976.1,
-    "pnl_pct": -0.01
+    "current_price": 64131.0,
+    "pnl_pct": -0.26
   }
 ]
