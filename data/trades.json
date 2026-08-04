@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0684,
+    "current_price": 0.0687,
     "pnl_pct": null
   },
   {
@@ -1672,8 +1672,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1405,
-    "pnl_pct": 2.7
+    "current_price": 0.1404,
+    "pnl_pct": 2.63
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1841,18 +1841,18 @@
     "sl": 64152.675,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-04 15:16",
     "confirmed_at": "2026-08-04 15:23",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-04 15:47",
+    "exit_price": 64152.675,
     "confidence": 69.3,
     "vote_margin": -5,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 64131.0,
-    "pnl_pct": -0.26
+    "dollar_pnl": -0.03,
+    "balance_applied": true,
+    "current_price": 64173.5,
+    "pnl_pct": -0.32
   }
 ]
