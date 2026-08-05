@@ -982,7 +982,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0687,
+    "current_price": 0.0721,
     "pnl_pct": null
   },
   {
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1508.52,
+    "current_price": 1504.02,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005661,
-    "pnl_pct": -1.94
+    "current_price": 0.005658,
+    "pnl_pct": -1.99
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1661,19 +1661,19 @@
     "sl": 0.13317856,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-08-01 20:30",
     "confirmed_at": "2026-08-02 08:19",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-05 04:32",
+    "exit_price": 0.14553398,
     "confidence": 78.6,
     "vote_margin": 10,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.1404,
-    "pnl_pct": 2.63
+    "dollar_pnl": 0.92,
+    "balance_applied": true,
+    "current_price": 0.1494,
+    "pnl_pct": 9.21
   },
   {
     "id": "CLUSDT_1785658742379",
@@ -1862,7 +1862,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 78.69544643,
-    "entry": 78.69544643,
+    "entry": 78.68,
     "entry_low": 78.58875,
     "entry_high": 78.80214286,
     "invalidate_price": 76.88160715,
@@ -1871,9 +1871,9 @@
     "sl": 77.00964286,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-05 02:47",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-05 04:32",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -1881,6 +1881,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 78.68,
+    "pnl_pct": 0.0
   }
 ]
