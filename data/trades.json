@@ -962,7 +962,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.08376607,
-    "entry": 0.08376607,
+    "entry": 0.1045,
     "entry_low": 0.083275,
     "entry_high": 0.08425714,
     "invalidate_price": 0.06153214,
@@ -971,9 +971,9 @@
     "sl": 0.06212143,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-07-26 21:09",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-06 17:22",
     "closed_at": null,
     "exit_price": null,
     "confidence": 82.7,
@@ -982,8 +982,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.0733,
-    "pnl_pct": null
+    "current_price": 0.1045,
+    "pnl_pct": 0.0
   },
   {
     "id": "BTCUSDT_1785133910197",
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1494.76,
+    "current_price": 1493.4,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005766,
-    "pnl_pct": -0.12
+    "current_price": 0.005812,
+    "pnl_pct": 0.68
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 79.82,
-    "pnl_pct": 1.45
+    "current_price": 82.71,
+    "pnl_pct": 5.12
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1901,16 +1901,18 @@
     "sl": 0.03423785,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-06 17:16",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-06 17:22",
+    "exit_price": 0.03413,
     "confidence": 84.3,
     "vote_margin": 12,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.03413,
+    "pnl_pct": null
   }
 ]
