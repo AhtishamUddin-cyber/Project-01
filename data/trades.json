@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1496.03,
+    "current_price": 1492.95,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005821,
-    "pnl_pct": 0.83
+    "current_price": 0.005841,
+    "pnl_pct": 1.18
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 83.47,
-    "pnl_pct": 6.09
+    "current_price": 81.8,
+    "pnl_pct": 3.97
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1961,19 +1961,19 @@
     "sl": 0.01259735,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-08-07 15:25",
     "confirmed_at": "2026-08-07 15:38",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-07 19:31",
+    "exit_price": 0.01428365,
     "confidence": 77.9,
     "vote_margin": 8,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.013571,
-    "pnl_pct": 3.71
+    "dollar_pnl": 1.64,
+    "balance_applied": true,
+    "current_price": 0.015226,
+    "pnl_pct": 16.36
   },
   {
     "id": "ACEUSDT_1786118285786",
@@ -2012,7 +2012,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 130.30369643,
-    "entry": 130.30369643,
+    "entry": 131.29,
     "entry_low": 130.06325,
     "entry_high": 130.54414286,
     "invalidate_price": 126.21610714,
@@ -2021,9 +2021,9 @@
     "sl": 126.50464285,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-07 19:02",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-07 19:31",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -2031,7 +2031,9 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 131.29,
+    "pnl_pct": 0.0
   },
   {
     "id": "ETHUSDT_1786129351795",
@@ -2040,7 +2042,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 1917.16635714,
-    "entry": 1917.16635714,
+    "entry": 1917.29,
     "entry_low": 1915.391,
     "entry_high": 1918.94171428,
     "invalidate_price": 1886.98528572,
@@ -2049,9 +2051,9 @@
     "sl": 1889.11571429,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-07 19:02",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-07 19:31",
     "closed_at": null,
     "exit_price": null,
     "confidence": 77.9,
@@ -2059,6 +2061,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 1917.29,
+    "pnl_pct": 0.0
   }
 ]
