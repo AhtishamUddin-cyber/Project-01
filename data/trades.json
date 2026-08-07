@@ -2064,5 +2064,33 @@
     "balance_applied": false,
     "current_price": 1917.27,
     "pnl_pct": -0.0
+  },
+  {
+    "id": "SOLUSDT_1786135335539",
+    "coin": "SOL",
+    "pair": "SOLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 74.11974107,
+    "entry": 74.11974107,
+    "entry_low": 74.056125,
+    "entry_high": 74.18335714,
+    "invalidate_price": 73.03826785,
+    "tp1": 76.40991965,
+    "tp2": 78.29295537,
+    "sl": 73.11460714,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-07 20:42",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 78.6,
+    "vote_margin": 10,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
