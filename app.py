@@ -1,5 +1,3 @@
-import io
-import os
 import time
 from datetime import datetime
 
@@ -176,11 +174,156 @@ tab_live, tab_scan, tab_shot, tab_lib, tab_track, tab_backtest = st.tabs(
 # ─────────────────────────────────────────────────────────────
 #   TAB 1 — LIVE DASHBOARD (main feature, no screenshots)
 # ─────────────────────────────────────────────────────────────
+ALL_TIMEFRAMES = ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d"]
+
+
+def render_coin_tf_detail(s, res, market_type, timeframe, github_token, account_balance,
+                           risk_pct, leverage, key_prefix):
+    """Renders the full detail block (metrics, factors, tracker button, download)
+    for one coin on one timeframe. key_prefix must be unique per coin+timeframe
+    combination so widget keys never collide when multiple timeframes for the
+    same coin are shown together (All-timeframes mode)."""
+    chart = res["chart"]
+    v = res["verdict"]
+    indicators = res["indicators"]
+    funding = res["funding"]
+    orderbook = res["orderbook"]
+    fg = res["fg"]
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Live Price", f"${chart['price']:,.6f}" if chart["price"] else "N/A")
+    m2.metric("Trend", chart["trend"])
+    m3.metric("RSI (14)", f"{indicators.get('rsi', 0):.1f}")
+    atr = indicators.get("atr")
+    atr_pct = (atr / chart["price"] * 100) if (atr and chart["price"]) else 0
+    m4.metric("Volatility (ATR)", f"{atr_pct:.2f}%" if atr else "N/A")
+
+    if v["agreement"] == "CONFLICT":
+        st.error("🚫 Data aur trend direction alag hain — is coin/timeframe ko abhi skip karo.")
+    else:
+        e1, e2, e3, e4 = st.columns(4)
+        e1.metric("Entry Zone", f"{v['entry_low']:,.6f} - {v['entry_high']:,.6f}" if v["entry_low"] else "N/A")
+        e2.metric("Take Profit 1", f"{v['tp1']:,.6f}" if v["tp1"] else "N/A")
+        e3.metric("Take Profit 2", f"{v['tp2']:,.6f}" if v["tp2"] else "N/A")
+        e4.metric("Stop Loss", f"{v['sl']:,.6f}" if v["sl"] else "N/A")
+        st.caption(f"Risk:Reward = 1:{v['rr']}  |  {v['entry_note']}")
+
+        htf_trend = v.get("htf_trend")
+        htf_tf = v.get("htf_timeframe", "-")
+        if htf_trend and htf_trend != v["final_direction"] and htf_trend != "NEUTRAL":
+            st.warning(f"⚠️ Counter-trend: {htf_tf} higher-timeframe trend is {htf_trend}, this trade is {v['final_direction']}. Higher risk — size down or skip.")
+        elif htf_trend == v["final_direction"]:
+            st.caption(f"✅ Higher timeframe ({htf_tf}) trend agrees: {htf_trend}")
+
+    st.markdown("**Signal breakdown:**")
+    for level, text in v["factors"]:
+        icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
+        st.markdown(f"- {icon} {text}")
+
+    d1, d2, d3, d4 = st.columns(4)
+    d1.metric("Order Book", f"Buy {orderbook.get('buy_pct',50):.0f}% / Sell {orderbook.get('sell_pct',50):.0f}%")
+    d2.metric("Fear & Greed", f"{fg.get('value',50)} — {fg.get('label','')}")
+    d3.metric("Funding Rate", f"{funding.get('rate',0):+.4f}% ({funding.get('signal','NEUTRAL')})")
+    whale = res.get("whale", {})
+    d4.metric("RSI Divergence", indicators.get("rsi_divergence", "NONE").title())
+    if whale.get("available") or whale.get("wall_side"):
+        st.caption(f"🐋 Whale activity: {whale.get('note', 'N/A')}")
+
+    hist = az.coin_trade_history(_cached_trades(github_token), s["base"])
+    if hist["count"] > 0:
+        st.caption(
+            f"📜 **{s['base']} ki pichli trades:** {hist['count']} closed — "
+            f"{hist['wins']} profit, {hist['losses']} loss ({hist['win_rate']:.0f}% win rate), "
+            f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
+        )
+
+    if v["agreement"] != "CONFLICT" and v["entry_low"]:
+        st.divider()
+        entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
+
+        pos = az.position_size(account_balance, risk_pct, entry_ref, v["sl"],
+                                leverage if market_type == "futures" else 1)
+        if pos:
+            p1, p2, p3 = st.columns(3)
+            p1.metric("Position Size", f"{pos['units']:,.4f} {s['base']}")
+            p2.metric("Position Value", f"${pos['position_value']:,.2f}")
+            p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
+            if market_type == "futures" and leverage > 1:
+                st.caption(f"Margin required at {leverage}x leverage: ${pos['margin_required']:,.2f}")
+
+        if market_type == "futures":
+            safe_lev = az.suggest_max_safe_leverage(entry_ref, v["sl"])
+            if safe_lev:
+                l1, l2 = st.columns(2)
+                l1.metric("🛡️ Safe Leverage (this trade)", f"{safe_lev['safe_leverage']}x")
+                l2.metric("SL distance", f"{safe_lev['sl_distance_pct']:.2f}%")
+                if leverage > safe_lev["safe_leverage"]:
+                    st.warning(
+                        f"⚠️ Sidebar mein {leverage}x set hai, lekin is trade ke SL distance "
+                        f"({safe_lev['sl_distance_pct']:.2f}%) ke hisaab se ~{safe_lev['safe_leverage']}x "
+                        f"se zyada leverage par liquidation SL se pehle aa sakti hai — trade SL "
+                        f"par nahi, liquidation par (poora margin loss) band ho sakti hai."
+                    )
+
+        tcol1, tcol2, tcol3 = st.columns([2, 1.2, 1])
+        with tcol1:
+            st.caption(
+                f"📒 Log this as a real trade — Entry ~{entry_ref:,.6f}, "
+                f"TP1 {v['tp1']:,.6f}, TP2 {v['tp2']:,.6f}, SL {v['sl']:,.6f}"
+            )
+        with tcol2:
+            stake_amt = st.number_input(
+                "Amount ($)", min_value=0.0, value=10.0, step=5.0,
+                key=f"stake_{key_prefix}",
+                help="Demo balance mein se itna $ is trade mein daala jayega. 0 rakho agar sirf track karna hai, balance na chhuye.",
+            )
+        with tcol3:
+            st.write("")
+            if st.button("➕ Add to Tracker", key=f"track_{key_prefix}"):
+                new_trade = az.add_trade(
+                    coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
+                    direction=v["final_direction"], entry=entry_ref,
+                    tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
+                    github_token=github_token,
+                    confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
+                    entry_low=v["entry_low"], entry_high=v["entry_high"],
+                    invalidate_price=v.get("invalidate_price"),
+                    stake=stake_amt if stake_amt > 0 else None,
+                    leverage=leverage,
+                )
+                if github_token and not new_trade.get("_github_synced"):
+                    st.error(
+                        f"⚠️ Saved locally but GitHub sync FAILED — this trade will be "
+                        f"lost on the next app restart unless this is fixed: "
+                        f"{new_trade.get('_github_error') or 'unknown error'}. "
+                        f"Use 'Test GitHub Connection' in the sidebar to diagnose."
+                    )
+                else:
+                    st.success(
+                        f"{s['base']} added as a PENDING setup — it only becomes a real "
+                        f"open trade once price actually confirms at {entry_ref:,.6f}. "
+                        f"Check the 📒 Trade Tracker tab."
+                    )
+
+    try:
+        docx_bytes = az.generate_docx_bytes(chart, res["market"], funding, indicators, v, [], None)
+        st.download_button(
+            "📥 Download Word Report", data=docx_bytes,
+            file_name=f"{s['base']}_{timeframe}_{datetime.now().strftime('%Y%m%d_%H%M')}.docx",
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            key=f"dl_{key_prefix}",
+        )
+    except Exception as e:
+        st.caption(f"Report generation skipped: {e}")
+
+
 with tab_live:
     st.subheader("Live multi-coin analysis")
     st.caption(
         "Bitget ke sare live coins/pairs yahan se select karo — Entry, TP, SL aur "
-        "Direction automatically calculate ho jayega, har coin ke liye alag."
+        "Direction automatically calculate ho jayega, har coin ke liye alag. "
+        "'All' timeframe select karke ek hi coin ke liye sare timeframes (1m se 1d tak) "
+        "ek sath compare bhi kar sakte ho."
     )
 
     c1, c2, c3 = st.columns([1, 2, 1])
@@ -189,12 +332,22 @@ with tab_live:
                                 format_func=lambda x: "Spot" if x == "spot" else "Futures")
     with c2:
         timeframe = st.selectbox(
-            "Chart timeframe", ["5m", "15m", "30m", "1h", "2h", "4h", "1d"],
-            index=3, key="live_tf",
+            "Chart timeframe", ALL_TIMEFRAMES + ["All"],
+            index=4, key="live_tf",
+            help="'All' select karo taake har selected coin ka har timeframe (1m→1d) ek sath dikhe — "
+                 "kis timeframe pe Long favor hai, kis pe Short, sab ek jagah.",
         )
     with c3:
         include_news = st.checkbox("Include news", value=False,
-                                    help="Slower — one NewsAPI call per selected coin.")
+                                    help="Slower — one NewsAPI call per selected coin (per timeframe in 'All' mode).")
+
+    is_all_tf = (timeframe == "All")
+    if is_all_tf:
+        st.info(
+            "ℹ️ 'All' mode mein har coin ke liye 8 timeframes (1m, 5m, 15m, 30m, 1h, 2h, 4h, 1d) "
+            "analyze honge — is liye yeh normal se kaafi slower hoga aur kam coins select karna behtar hai.",
+            icon="ℹ️",
+        )
 
     @st.cache_data(ttl=300, show_spinner=False)
     def _symbols(mtype):
@@ -223,51 +376,111 @@ with tab_live:
             labels.append(label)
             label_to_symbol[label] = s
 
+        max_coins = 4 if is_all_tf else 12
         selected_labels = st.multiselect(
             f"Coins select karo ({len(symbols)} available on {market_type})",
             options=labels,
-            max_selections=12,
-            help="Ek baar mein max 12 coins — taake analysis fast aur reliable rahe.",
+            max_selections=max_coins,
+            help=(f"'All' timeframe mode mein max {max_coins} coins — har coin 8 timeframes analyze "
+                  f"karega is liye zyada coins bohot slow ho jayenge." if is_all_tf else
+                  "Ek baar mein max 12 coins — taake analysis fast aur reliable rahe."),
         )
 
         run_btn = st.button("🚀 Analyze Selected Coins", type="primary", disabled=not selected_labels)
 
         if run_btn:
+            tfs_to_run = ALL_TIMEFRAMES if is_all_tf else [timeframe]
             results = []
             errors = []
+            total_steps = max(len(selected_labels) * len(tfs_to_run), 1)
+            step = 0
             progress = st.progress(0.0, text="Starting...")
-            for i, lbl in enumerate(selected_labels):
+            for lbl in selected_labels:
                 s = label_to_symbol[lbl]
-                progress.progress((i) / len(selected_labels), text=f"Analyzing {s['base']}...")
-                res = az.run_live_analysis(
-                    coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
-                    timeframe=timeframe, newsapi_key=newsapi_key, use_news=include_news,
-                )
-                if res and "error" not in res:
-                    results.append((s, res))
-                else:
-                    err_msg = res.get("error", "Unknown error") if res else "No response"
-                    errors.append(f"{s['base']}: {err_msg}")
-                time.sleep(0.3)
+                tf_results = {}
+                for tf in tfs_to_run:
+                    step += 1
+                    progress.progress(step / total_steps, text=f"Analyzing {s['base']} ({tf})...")
+                    res = az.run_live_analysis(
+                        coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
+                        timeframe=tf, newsapi_key=newsapi_key, use_news=include_news,
+                    )
+                    if res and "error" not in res:
+                        tf_results[tf] = res
+                    else:
+                        err_msg = res.get("error", "Unknown error") if res else "No response"
+                        errors.append(f"{s['base']} ({tf}): {err_msg}")
+                    time.sleep(0.3)
+                if tf_results:
+                    results.append((s, tf_results))
             progress.progress(1.0, text="Done!")
             time.sleep(0.3)
             progress.empty()
             st.session_state["live_results"] = results
             st.session_state["live_errors"] = errors
+            st.session_state["live_mode_all"] = is_all_tf
 
         errors = st.session_state.get("live_errors", [])
         if errors:
-            with st.expander(f"⚠️ {len(errors)} coin(s) could not be analyzed — click for details"):
+            with st.expander(f"⚠️ {len(errors)} analysis attempt(s) failed — click for details"):
                 for e in errors:
                     st.write(f"- {e}")
 
         results = st.session_state.get("live_results", [])
-        if results:
+        mode_all = st.session_state.get("live_mode_all", False)
+
+        if results and mode_all:
+            st.divider()
+            st.markdown("### 📋 Summary — every coin across every timeframe")
+            st.caption(
+                "Har row ek coin hai, har column ek timeframe — dekho kis timeframe pe woh coin "
+                "abhi 🟢 LONG favor kar raha hai aur kis pe 🔴 SHORT, sath confidence % ke."
+            )
+            matrix_rows = []
+            for s, tf_results in results:
+                row = {"Coin": s["base"]}
+                long_tfs, short_tfs = [], []
+                for tf in ALL_TIMEFRAMES:
+                    res = tf_results.get(tf)
+                    if not res:
+                        row[tf] = "—"
+                        continue
+                    v = res["verdict"]
+                    dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
+                    row[tf] = f"{dir_emoji} {v['final_direction'][0]} {v['accuracy']:.0f}%"
+                    if v["final_direction"] == "LONG":
+                        long_tfs.append(tf)
+                    else:
+                        short_tfs.append(tf)
+                row["Long on"] = ", ".join(long_tfs) if long_tfs else "—"
+                row["Short on"] = ", ".join(short_tfs) if short_tfs else "—"
+                matrix_rows.append(row)
+            st.dataframe(matrix_rows, use_container_width=True, hide_index=True)
+
+            st.divider()
+            st.markdown("### 🔍 Per-coin, per-timeframe details")
+            for s, tf_results in results:
+                available_tfs = [tf for tf in ALL_TIMEFRAMES if tf in tf_results]
+                with st.expander(f"📌 {s['base']} — {len(available_tfs)} timeframe(s) analyzed"):
+                    tf_tabs = st.tabs(available_tfs)
+                    for tab, tf in zip(tf_tabs, available_tfs):
+                        with tab:
+                            res = tf_results[tf]
+                            v = res["verdict"]
+                            dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
+                            st.markdown(f"**{dir_emoji} {v['final_direction']} — {v['accuracy']:.0f}% confidence on {tf}**")
+                            render_coin_tf_detail(
+                                s, res, market_type, tf, github_token, account_balance,
+                                risk_pct, leverage, key_prefix=f"{s['base']}_{s['symbol']}_{tf}",
+                            )
+
+        elif results:
             st.divider()
             st.markdown("### 📋 Summary — all selected coins")
 
             rows = []
-            for s, res in results:
+            for s, tf_results in results:
+                res = tf_results.get(timeframe) or next(iter(tf_results.values()))
                 v = res["verdict"]
                 dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
                 if v["agreement"] == "CONFLICT":
@@ -293,144 +506,19 @@ with tab_live:
 
             st.divider()
             st.markdown("### 🔍 Per-coin details")
-            for s, res in results:
-                chart = res["chart"]
+            for s, tf_results in results:
+                res = tf_results.get(timeframe) or next(iter(tf_results.values()))
                 v = res["verdict"]
-                indicators = res["indicators"]
-                funding = res["funding"]
-                orderbook = res["orderbook"]
-                fg = res["fg"]
-
                 dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
                 with st.expander(f"{dir_emoji} {s['base']} — {v['final_direction']} ({v['accuracy']:.0f}% confidence)"):
-                    m1, m2, m3, m4 = st.columns(4)
-                    m1.metric("Live Price", f"${chart['price']:,.6f}" if chart["price"] else "N/A")
-                    m2.metric("Trend", chart["trend"])
-                    m3.metric("RSI (14)", f"{indicators.get('rsi', 0):.1f}")
-                    atr = indicators.get("atr")
-                    atr_pct = (atr / chart["price"] * 100) if (atr and chart["price"]) else 0
-                    m4.metric("Volatility (ATR)", f"{atr_pct:.2f}%" if atr else "N/A")
-
-                    if v["agreement"] == "CONFLICT":
-                        st.error("🚫 Data aur trend direction alag hain — is coin ko abhi skip karo.")
-                    else:
-                        e1, e2, e3, e4 = st.columns(4)
-                        e1.metric("Entry Zone", f"{v['entry_low']:,.6f} - {v['entry_high']:,.6f}" if v["entry_low"] else "N/A")
-                        e2.metric("Take Profit 1", f"{v['tp1']:,.6f}" if v["tp1"] else "N/A")
-                        e3.metric("Take Profit 2", f"{v['tp2']:,.6f}" if v["tp2"] else "N/A")
-                        e4.metric("Stop Loss", f"{v['sl']:,.6f}" if v["sl"] else "N/A")
-                        st.caption(f"Risk:Reward = 1:{v['rr']}  |  {v['entry_note']}")
-
-                        htf_trend = v.get("htf_trend")
-                        htf_tf = v.get("htf_timeframe", "-")
-                        if htf_trend and htf_trend != v["final_direction"] and htf_trend != "NEUTRAL":
-                            st.warning(f"⚠️ Counter-trend: {htf_tf} higher-timeframe trend is {htf_trend}, this trade is {v['final_direction']}. Higher risk — size down or skip.")
-                        elif htf_trend == v["final_direction"]:
-                            st.caption(f"✅ Higher timeframe ({htf_tf}) trend agrees: {htf_trend}")
-
-                    st.markdown("**Signal breakdown:**")
-                    for level, text in v["factors"]:
-                        icon = "✅" if level == "good" else ("⚠️" if level == "warn" else "❌")
-                        st.markdown(f"- {icon} {text}")
-
-                    d1, d2, d3, d4 = st.columns(4)
-                    d1.metric("Order Book", f"Buy {orderbook.get('buy_pct',50):.0f}% / Sell {orderbook.get('sell_pct',50):.0f}%")
-                    d2.metric("Fear & Greed", f"{fg.get('value',50)} — {fg.get('label','')}")
-                    d3.metric("Funding Rate", f"{funding.get('rate',0):+.4f}% ({funding.get('signal','NEUTRAL')})")
-                    whale = res.get("whale", {})
-                    d4.metric("RSI Divergence", indicators.get("rsi_divergence", "NONE").title())
-                    if whale.get("available") or whale.get("wall_side"):
-                        st.caption(f"🐋 Whale activity: {whale.get('note', 'N/A')}")
-
-                    hist = az.coin_trade_history(_cached_trades(github_token), s["base"])
-                    if hist["count"] > 0:
-                        st.caption(
-                            f"📜 **{s['base']} ki pichli trades:** {hist['count']} closed — "
-                            f"{hist['wins']} profit, {hist['losses']} loss ({hist['win_rate']:.0f}% win rate), "
-                            f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
-                        )
-
-                    if v["agreement"] != "CONFLICT" and v["entry_low"]:
-                        st.divider()
-                        entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
-
-                        pos = az.position_size(account_balance, risk_pct, entry_ref, v["sl"],
-                                                leverage if market_type == "futures" else 1)
-                        if pos:
-                            p1, p2, p3 = st.columns(3)
-                            p1.metric("Position Size", f"{pos['units']:,.4f} {s['base']}")
-                            p2.metric("Position Value", f"${pos['position_value']:,.2f}")
-                            p3.metric("Risking", f"${pos['risk_amount']:,.2f}")
-                            if market_type == "futures" and leverage > 1:
-                                st.caption(f"Margin required at {leverage}x leverage: ${pos['margin_required']:,.2f}")
-
-                        if market_type == "futures":
-                            safe_lev = az.suggest_max_safe_leverage(entry_ref, v["sl"])
-                            if safe_lev:
-                                l1, l2 = st.columns(2)
-                                l1.metric("🛡️ Safe Leverage (this trade)", f"{safe_lev['safe_leverage']}x")
-                                l2.metric("SL distance", f"{safe_lev['sl_distance_pct']:.2f}%")
-                                if leverage > safe_lev["safe_leverage"]:
-                                    st.warning(
-                                        f"⚠️ Sidebar mein {leverage}x set hai, lekin is trade ke SL distance "
-                                        f"({safe_lev['sl_distance_pct']:.2f}%) ke hisaab se ~{safe_lev['safe_leverage']}x "
-                                        f"se zyada leverage par liquidation SL se pehle aa sakti hai — trade SL "
-                                        f"par nahi, liquidation par (poora margin loss) band ho sakti hai."
-                                    )
-
-                        tcol1, tcol2, tcol3 = st.columns([2, 1.2, 1])
-                        with tcol1:
-                            st.caption(
-                                f"📒 Log this as a real trade — Entry ~{entry_ref:,.6f}, "
-                                f"TP1 {v['tp1']:,.6f}, TP2 {v['tp2']:,.6f}, SL {v['sl']:,.6f}"
-                            )
-                        with tcol2:
-                            stake_amt = st.number_input(
-                                "Amount ($)", min_value=0.0, value=10.0, step=5.0,
-                                key=f"stake_{s['base']}_{s['symbol']}",
-                                help="Demo balance mein se itna $ is trade mein daala jayega. 0 rakho agar sirf track karna hai, balance na chhuye.",
-                            )
-                        with tcol3:
-                            st.write("")
-                            if st.button("➕ Add to Tracker", key=f"track_{s['base']}_{s['symbol']}"):
-                                new_trade = az.add_trade(
-                                    coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
-                                    direction=v["final_direction"], entry=entry_ref,
-                                    tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"], timeframe=timeframe,
-                                    github_token=github_token,
-                                    confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
-                                    entry_low=v["entry_low"], entry_high=v["entry_high"],
-                                    invalidate_price=v.get("invalidate_price"),
-                                    stake=stake_amt if stake_amt > 0 else None,
-                                    leverage=leverage,
-                                )
-                                if github_token and not new_trade.get("_github_synced"):
-                                    st.error(
-                                        f"⚠️ Saved locally but GitHub sync FAILED — this trade will be "
-                                        f"lost on the next app restart unless this is fixed: "
-                                        f"{new_trade.get('_github_error') or 'unknown error'}. "
-                                        f"Use 'Test GitHub Connection' in the sidebar to diagnose."
-                                    )
-                                else:
-                                    st.success(
-                                        f"{s['base']} added as a PENDING setup — it only becomes a real "
-                                        f"open trade once price actually confirms at {entry_ref:,.6f}. "
-                                        f"Check the 📒 Trade Tracker tab."
-                                    )
-
-                    try:
-                        docx_bytes = az.generate_docx_bytes(chart, res["market"], funding, indicators, v, [], None)
-                        st.download_button(
-                            "📥 Download Word Report", data=docx_bytes,
-                            file_name=f"{s['base']}_{datetime.now().strftime('%Y%m%d_%H%M')}.docx",
-                            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                            key=f"dl_{s['base']}_{s['symbol']}",
-                        )
-                    except Exception as e:
-                        st.caption(f"Report generation skipped: {e}")
+                    render_coin_tf_detail(
+                        s, res, market_type, timeframe, github_token, account_balance,
+                        risk_pct, leverage, key_prefix=f"{s['base']}_{s['symbol']}",
+                    )
 
         st.divider()
         st.caption("⚠️ Ye AI-assisted analysis hai, financial advice nahi. Hamesha apna stop-loss lagao — max 2% risk per trade.")
+
 
 
 # ─────────────────────────────────────────────────────────────
