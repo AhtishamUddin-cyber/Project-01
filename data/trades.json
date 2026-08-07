@@ -1944,5 +1944,33 @@
     "balance_applied": false,
     "current_price": 0.008793,
     "pnl_pct": null
+  },
+  {
+    "id": "BLESSUSDT_1786116356311",
+    "coin": "BLESS",
+    "pair": "BLESSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.0131117,
+    "entry": 0.0131117,
+    "entry_low": 0.01307915,
+    "entry_high": 0.01314426,
+    "invalidate_price": 0.01255829,
+    "tp1": 0.01428365,
+    "tp2": 0.01524725,
+    "sl": 0.01259735,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-07 15:25",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 77.9,
+    "vote_margin": 8,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
