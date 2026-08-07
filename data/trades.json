@@ -2004,5 +2004,33 @@
     "balance_applied": true,
     "current_price": 0.107,
     "pnl_pct": -2.99
+  },
+  {
+    "id": "SPCXUSDT_1786129341727",
+    "coin": "SPCX",
+    "pair": "SPCXUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 130.30369643,
+    "entry": 130.30369643,
+    "entry_low": 130.06325,
+    "entry_high": 130.54414286,
+    "invalidate_price": 126.21610714,
+    "tp1": 138.95976788,
+    "tp2": 146.07698218,
+    "sl": 126.50464285,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-07 19:02",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
