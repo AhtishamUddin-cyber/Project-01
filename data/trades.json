@@ -2032,5 +2032,33 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "ETHUSDT_1786129351795",
+    "coin": "ETH",
+    "pair": "ETHUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 1917.16635714,
+    "entry": 1917.16635714,
+    "entry_low": 1915.391,
+    "entry_high": 1918.94171428,
+    "invalidate_price": 1886.98528572,
+    "tp1": 1981.07921428,
+    "tp2": 2033.6297857,
+    "sl": 1889.11571429,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-07 19:02",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 77.9,
+    "vote_margin": 8,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
