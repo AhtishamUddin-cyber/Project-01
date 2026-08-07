@@ -982,8 +982,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1085,
-    "pnl_pct": 3.83
+    "current_price": 0.1096,
+    "pnl_pct": 4.88
   },
   {
     "id": "BTCUSDT_1785133910197",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 83.28,
-    "pnl_pct": 5.85
+    "current_price": 83.2,
+    "pnl_pct": 5.74
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1972,7 +1972,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.013058,
-    "pnl_pct": -0.21
+    "current_price": 0.012883,
+    "pnl_pct": -1.54
   }
 ]
