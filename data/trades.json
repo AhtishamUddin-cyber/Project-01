@@ -982,8 +982,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1098,
-    "pnl_pct": 5.07
+    "current_price": 0.1095,
+    "pnl_pct": 4.78
   },
   {
     "id": "BTCUSDT_1785133910197",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 83.26,
-    "pnl_pct": 5.82
+    "current_price": 83.21,
+    "pnl_pct": 5.76
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1952,7 +1952,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.0131117,
-    "entry": 0.0131117,
+    "entry": 0.013085,
     "entry_low": 0.01307915,
     "entry_high": 0.01314426,
     "invalidate_price": 0.01255829,
@@ -1961,9 +1961,9 @@
     "sl": 0.01259735,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-07 15:25",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-07 15:38",
     "closed_at": null,
     "exit_price": null,
     "confidence": 77.9,
@@ -1972,7 +1972,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.013072,
-    "pnl_pct": null
+    "current_price": 0.013085,
+    "pnl_pct": 0.0
   }
 ]
