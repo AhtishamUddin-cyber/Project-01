@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1496.04,
+    "current_price": 1496.03,
     "pnl_pct": null
   },
   {
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 83.25,
-    "pnl_pct": 5.81
+    "current_price": 83.47,
+    "pnl_pct": 6.09
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1972,8 +1972,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.013078,
-    "pnl_pct": -0.05
+    "current_price": 0.013571,
+    "pnl_pct": 3.71
   },
   {
     "id": "ACEUSDT_1786118285786",
@@ -1991,18 +1991,18 @@
     "sl": 0.10773929,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-07 15:58",
     "confirmed_at": "2026-08-07 16:06",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-07 16:25",
+    "exit_price": 0.10773929,
     "confidence": 72.9,
     "vote_margin": 8,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.1089,
-    "pnl_pct": -1.27
+    "dollar_pnl": -0.3,
+    "balance_applied": true,
+    "current_price": 0.107,
+    "pnl_pct": -2.99
   }
 ]
