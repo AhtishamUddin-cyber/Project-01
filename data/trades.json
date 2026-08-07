@@ -982,8 +982,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1045,
-    "pnl_pct": 0.0
+    "current_price": 0.1245,
+    "pnl_pct": 19.14
   },
   {
     "id": "BTCUSDT_1785133910197",
@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1493.4,
+    "current_price": 1488.22,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005812,
-    "pnl_pct": 0.68
+    "current_price": 0.005756,
+    "pnl_pct": -0.29
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 82.71,
-    "pnl_pct": 5.12
+    "current_price": 83.79,
+    "pnl_pct": 6.49
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -1931,16 +1931,18 @@
     "sl": 0.00967776,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-06 17:23",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-07 04:44",
+    "exit_price": 0.008793,
     "confidence": 84.3,
     "vote_margin": 12,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.008793,
+    "pnl_pct": null
   }
 ]
