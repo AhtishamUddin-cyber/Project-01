@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1490.36,
+    "current_price": 1493.06,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005837,
-    "pnl_pct": 1.11
+    "current_price": 0.005825,
+    "pnl_pct": 0.9
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 81.91,
-    "pnl_pct": 4.11
+    "current_price": 81.81,
+    "pnl_pct": 3.98
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -2032,8 +2032,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 132.05,
-    "pnl_pct": 0.58
+    "current_price": 132.17,
+    "pnl_pct": 0.67
   },
   {
     "id": "ETHUSDT_1786129351795",
@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1913.03,
-    "pnl_pct": -0.22
+    "current_price": 1916.26,
+    "pnl_pct": -0.05
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2072,7 +2072,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 74.11974107,
-    "entry": 74.11974107,
+    "entry": 74.548,
     "entry_low": 74.056125,
     "entry_high": 74.18335714,
     "invalidate_price": 73.03826785,
@@ -2081,9 +2081,9 @@
     "sl": 73.11460714,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-07 20:42",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-08 05:02",
     "closed_at": null,
     "exit_price": null,
     "confidence": 78.6,
@@ -2092,7 +2092,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 73.855,
-    "pnl_pct": null
+    "current_price": 74.548,
+    "pnl_pct": 0.0
   }
 ]
