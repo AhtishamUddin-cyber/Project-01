@@ -2094,5 +2094,33 @@
     "balance_applied": true,
     "current_price": 76.463,
     "pnl_pct": 2.57
+  },
+  {
+    "id": "ONDOUSDT_1786221035906",
+    "coin": "ONDO",
+    "pair": "ONDOUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.3577241,
+    "entry": 0.3577241,
+    "entry_low": 0.3571125,
+    "entry_high": 0.35833571,
+    "invalidate_price": 0.34732678,
+    "tp1": 0.37974198,
+    "tp2": 0.39784556,
+    "sl": 0.34806071,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-08 20:30",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
