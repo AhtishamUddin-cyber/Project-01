@@ -2032,8 +2032,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 137.38,
-    "pnl_pct": 4.64
+    "current_price": 137.35,
+    "pnl_pct": 4.62
   },
   {
     "id": "ETHUSDT_1786129351795",
@@ -2062,7 +2062,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1919.24,
+    "current_price": 1919.25,
     "pnl_pct": 0.1
   },
   {
