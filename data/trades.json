@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 82.5,
-    "pnl_pct": 4.86
+    "current_price": 82.49,
+    "pnl_pct": 4.84
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -2032,8 +2032,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 137.35,
-    "pnl_pct": 4.62
+    "current_price": 137.3,
+    "pnl_pct": 4.58
   },
   {
     "id": "ETHUSDT_1786129351795",
@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1919.25,
-    "pnl_pct": 0.1
+    "current_price": 1919.08,
+    "pnl_pct": 0.09
   },
   {
     "id": "SOLUSDT_1786135335539",
