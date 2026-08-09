@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1491.39,
+    "current_price": 1490.95,
     "pnl_pct": null
   },
   {
@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1913.5,
-    "pnl_pct": -0.2
+    "current_price": 1913.67,
+    "pnl_pct": -0.19
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2152,7 +2152,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 601.11,
+    "current_price": 601.34,
     "pnl_pct": null
   }
 ]
