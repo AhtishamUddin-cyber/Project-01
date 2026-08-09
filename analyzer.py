@@ -44,6 +44,7 @@ FUTURES_PRODUCT_TYPES = ["usdt-futures", "susdt-futures", "usdc-futures", "coin-
 
 PATTERN_LIBRARY_FILE = "pattern_library.json"
 TRADE_TRACKER_FILE = "trades.json"
+SHADOW_SIGNAL_FILE = "signals_shadow.json"
 DEMO_BALANCE_FILE = "demo_balance.json"
 
 
@@ -198,6 +199,129 @@ def save_trades(trades, github_token=None):
     if github_token:
         return _github_put("data/trades.json", github_token, content, "Update trade tracker")
     return False, None  # no token given - local-only save, not an error
+
+
+# ─────────────────────────────────────────────────────────────
+#   SIGNAL SHADOW-LOG — auto-track EVERY signal generated, whether or not
+#   it's ever taken as a real trade. Exists specifically to remove the
+#   selection bias in trade_stats()/performance_by_confidence(): those only
+#   reflect trades Ahtisham chose to log manually, which is a biased sample
+#   (he's more likely to add trades he already feels good about). This
+#   shadow-log is the unbiased dataset needed to actually answer "is the
+#   confidence score predictive?" with real sample size, and eventually to
+#   recalibrate the confidence formula's weights against real outcomes
+#   instead of hand-picked weights.
+# ─────────────────────────────────────────────────────────────
+
+def load_shadow_signals(github_token=None):
+    if github_token:
+        content, _, _ = _github_get("data/signals_shadow.json", github_token)
+        if content is not None:
+            try:
+                signals = json.loads(content)
+                with open(SHADOW_SIGNAL_FILE, "w") as f:
+                    f.write(content)
+                return signals
+            except Exception:
+                pass
+    if os.path.exists(SHADOW_SIGNAL_FILE):
+        with open(SHADOW_SIGNAL_FILE, "r") as f:
+            return json.load(f)
+    return []
+
+
+def save_shadow_signals(signals, github_token=None):
+    content = json.dumps(signals, indent=2)
+    with open(SHADOW_SIGNAL_FILE, "w") as f:
+        f.write(content)
+    if github_token:
+        return _github_put("data/signals_shadow.json", github_token, content, "Update signal shadow-log")
+    return False, None
+
+
+def log_signal_shadow(coin_symbol, pair, market_type, direction, tp1, tp2, sl, timeframe,
+                       confidence=None, vote_margin=None, entry_low=None, entry_high=None,
+                       invalidate_price=None, github_token=None):
+    """Logs a signal into the shadow-log the moment it's shown to the user,
+    regardless of whether it's ever taken as a real trade.
+
+    Dedup guard: skips logging if a PENDING or OPEN shadow signal already
+    exists for this exact pair+timeframe+direction. Without this, Streamlit
+    re-runs the whole script on every single widget interaction, so the
+    same still-active setup would get logged dozens of times per session
+    and flood both storage and the GitHub API.
+    """
+    signals = load_shadow_signals(github_token)
+    already_active = any(
+        s["pair"] == pair and s["timeframe"] == timeframe and s["direction"] == direction
+        and s["status"] in ("PENDING", "OPEN")
+        for s in signals
+    )
+    if already_active:
+        return None  # same setup already being shadow-tracked, don't duplicate
+    signal = {
+        "id": f"shadow_{pair}_{int(time.time()*1000)}",
+        "coin": coin_symbol, "pair": pair, "market_type": market_type,
+        "direction": direction,
+        "entry": entry_low if direction == "LONG" else entry_high,  # placeholder until confirmed
+        "entry_low": entry_low, "entry_high": entry_high,
+        "invalidate_price": invalidate_price,
+        "tp1": tp1, "tp2": tp2, "sl": sl,
+        "timeframe": timeframe,
+        "status": "PENDING",
+        "opened_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "confirmed_at": None, "closed_at": None, "exit_price": None,
+        "confidence": confidence, "vote_margin": vote_margin,
+        "last_checked_at": None,
+        "stake": None, "leverage": 1, "dollar_pnl": None, "balance_applied": False,
+        "is_shadow": True,
+    }
+    signals.append(signal)
+    save_shadow_signals(signals, github_token)
+    return signal
+
+
+def refresh_shadow_signals(github_token=None):
+    """Same price-action re-check as refresh_all_trades(), but for shadow
+    signals. Never touches the demo balance (no stake on shadow entries)."""
+    signals = load_shadow_signals(github_token)
+    updated = []
+    for t in signals:
+        if t["status"] in ("OPEN", "PENDING"):
+            price = get_single_ticker_price(t["pair"], t["market_type"])
+            price_low, price_high = None, None
+            since_str = t.get("last_checked_at") or t.get("confirmed_at") or t.get("opened_at")
+            since_dt = _parse_trade_dt(since_str)
+            if since_dt and price is not None:
+                price_low, price_high = get_price_extremes_since(t["pair"], t["market_type"], since_dt)
+            t = evaluate_trade(t, price, price_low, price_high)
+            t["last_checked_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+        updated.append(t)
+    save_shadow_signals(updated, github_token)
+    return updated
+
+
+def shadow_signal_stats(signals):
+    """Unbiased win-rate by confidence bucket, across EVERY signal ever
+    generated (not just the ones taken as real trades) — the number that
+    actually answers 'is the confidence score predictive', without the
+    selection bias of only counting trades Ahtisham chose to log."""
+    closed = [s for s in signals if s["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT")]
+    buckets = [("Low (<55%)", 0, 55), ("Medium (55-70%)", 55, 70),
+               ("High (70-85%)", 70, 85), ("Very High (85%+)", 85, 101)]
+    results = []
+    for label, lo, hi in buckets:
+        group = [s for s in closed if s.get("confidence") is not None and lo <= s["confidence"] < hi]
+        wins = [s for s in group if s["status"] in ("TP1_HIT", "TP2_HIT")]
+        win_rate = (len(wins) / len(group) * 100) if group else None
+        avg_pnl = (sum(s.get("pnl_pct") or 0 for s in group) / len(group)) if group else None
+        results.append({"bucket": label, "signals": len(group), "win_rate": win_rate, "avg_pnl": avg_pnl})
+    return {
+        "total_logged": len(signals),
+        "total_closed": len(closed),
+        "still_open_or_pending": len([s for s in signals if s["status"] in ("OPEN", "PENDING")]),
+        "by_confidence": results,
+    }
 
 
 def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",

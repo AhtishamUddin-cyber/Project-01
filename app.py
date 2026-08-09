@@ -237,6 +237,19 @@ def render_coin_tf_detail(s, res, market_type, timeframe, github_token, account_
             f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
         )
 
+    # ── Signal Shadow-Log ───────────────────────────────────────────────
+    # Auto-log this signal (whether or not it's ever taken as a real trade)
+    # so the confidence score's real predictive power can be measured on an
+    # unbiased sample, not just the trades Ahtisham chose to log manually.
+    if v["agreement"] != "CONFLICT" and v.get("entry_low"):
+        az.log_signal_shadow(
+            coin_symbol=s["base"], pair=s["symbol"], market_type=market_type,
+            direction=v["final_direction"], tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"],
+            timeframe=timeframe, confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
+            entry_low=v["entry_low"], entry_high=v["entry_high"],
+            invalidate_price=v.get("invalidate_price"), github_token=github_token,
+        )
+
     # ── Past SL-hit lessons for this exact coin+direction ──────────────
     # Surfaces prior setups on this coin that looked good (high confidence)
     # but still stopped out, along with WHY, so a repeat pattern gets extra
@@ -619,6 +632,14 @@ with tab_scan:
             for s, res in hits:
                 v = res["verdict"]
                 dir_emoji = "🟢" if v["final_direction"] == "LONG" else "🔴"
+                if v.get("entry_low"):
+                    az.log_signal_shadow(
+                        coin_symbol=s["base"], pair=s["symbol"], market_type=scan_market,
+                        direction=v["final_direction"], tp1=v["tp1"], tp2=v["tp2"], sl=v["sl"],
+                        timeframe=scan_tf, confidence=v["accuracy"], vote_margin=v.get("vote_margin"),
+                        entry_low=v["entry_low"], entry_high=v["entry_high"],
+                        invalidate_price=v.get("invalidate_price"), github_token=github_token,
+                    )
                 with st.expander(f"{dir_emoji} {s['base']} — {v['final_direction']} ({v['accuracy']:.0f}% confidence)"):
                     e1, e2, e3, e4 = st.columns(4)
                     e1.metric("Entry Zone", f"{v['entry_low']:,.6f} - {v['entry_high']:,.6f}" if v["entry_low"] else "N/A")
@@ -861,6 +882,7 @@ with tab_track:
         if st.button("🔄 Refresh & Check Status", type="primary"):
             with st.spinner("Checking live prices against TP/SL..."):
                 az.refresh_all_trades(github_token=github_token)
+                az.refresh_shadow_signals(github_token=github_token)
             st.rerun()
     with tcol2:
         if st.button("🔧 Repair Old P&L Data"):
@@ -926,6 +948,43 @@ with tab_track:
                     )
                 else:
                     st.success("✅ High-confidence trades tumhare data mein waqai behtar perform kar rahe hain.")
+            st.caption(
+                "⚠️ Ye sirf un trades ka data hai jo tumne manually 'Add to Tracker' kiya — "
+                "biased sample hai (jo trades achi lagi unhi ko add kiya hoga). Neeche 🕵️ Shadow-Log "
+                "section unbiased comparison deta hai, jisme har generated signal count hota hai, "
+                "chahe tumne trade li ho ya nahi."
+            )
+
+        # ── Signal Shadow-Log Stats ──────────────────────────────────────
+        st.divider()
+        st.markdown("### 🕵️ Unbiased Signal Accuracy (Shadow-Log)")
+        st.caption(
+            "Ye har us signal ko count karta hai jo Live Dashboard ya Opportunity Scanner mein "
+            "kabhi bhi dikhaya gaya — chahe tumne 'Add to Tracker' kiya ho ya nahi. Isse pata chalta "
+            "hai confidence score sach mein predictive hai ya sirf tumhari khud choose ki hui trades "
+            "mein aisa lagta hai. Jitna zyada data collect hoga (100+ signals), utna reliable hoga."
+        )
+        shadow_signals = az.load_shadow_signals(github_token=github_token)
+        if not shadow_signals:
+            st.info("Abhi tak koi signal shadow-log nahi hua. Jaise hi Live Dashboard ya Scanner mein koi analysis dikhao, yahan auto-track hona shuru ho jayega.")
+        else:
+            shadow_stats = az.shadow_signal_stats(shadow_signals)
+            sc1, sc2, sc3 = st.columns(3)
+            sc1.metric("Total Signals Logged", shadow_stats["total_logged"])
+            sc2.metric("Closed (TP/SL)", shadow_stats["total_closed"])
+            sc3.metric("Still Pending/Open", shadow_stats["still_open_or_pending"])
+            if shadow_stats["total_closed"] < 30:
+                st.caption(f"⚠️ Sirf {shadow_stats['total_closed']} closed signals hain abhi — statistically meaningful conclusion ke liye 100+ ka wait karo.")
+            shadow_rows = [
+                {
+                    "Confidence Bucket": b["bucket"],
+                    "Signals": b["signals"],
+                    "Win Rate": f"{b['win_rate']:.0f}%" if b["win_rate"] is not None else "—",
+                    "Avg P&L": f"{b['avg_pnl']:+.2f}%" if b["avg_pnl"] is not None else "—",
+                }
+                for b in shadow_stats["by_confidence"]
+            ]
+            st.dataframe(shadow_rows, use_container_width=True, hide_index=True)
 
         st.divider()
         st.markdown("### 🔎 Coin History Search")
