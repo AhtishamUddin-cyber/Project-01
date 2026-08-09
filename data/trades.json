@@ -2062,7 +2062,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1922.58,
+    "current_price": 1922.71,
     "pnl_pct": 0.28
   },
   {
@@ -2152,7 +2152,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 608.92,
+    "current_price": 608.96,
     "pnl_pct": 0.82
   },
   {
@@ -2182,8 +2182,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2216,
-    "pnl_pct": 0.0
+    "current_price": 0.2208,
+    "pnl_pct": -0.36
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2212,7 +2212,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002984,
-    "pnl_pct": 0.37
+    "current_price": 0.002957,
+    "pnl_pct": -0.54
   }
 ]
