@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1502.68,
+    "current_price": 1502.74,
     "pnl_pct": null,
-    "last_checked_at": "2026-08-09 19:49"
+    "last_checked_at": "2026-08-09 20:32"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -1313,9 +1313,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.006058,
-    "pnl_pct": 4.94,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 0.006056,
+    "pnl_pct": 4.9,
+    "last_checked_at": "2026-08-09 20:32"
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -2064,9 +2064,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1921.02,
-    "pnl_pct": 0.19,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 1919.37,
+    "pnl_pct": 0.11,
+    "last_checked_at": "2026-08-09 20:32"
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2155,9 +2155,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 608.06,
-    "pnl_pct": 0.68,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 607.31,
+    "pnl_pct": 0.55,
+    "last_checked_at": "2026-08-09 20:32"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2186,9 +2186,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2152,
-    "pnl_pct": -2.89,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 0.2115,
+    "pnl_pct": -4.56,
+    "last_checked_at": "2026-08-09 20:32"
   },
   {
     "id": "IOTXUSDT_1786277016246",
