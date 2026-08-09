@@ -532,5 +532,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_MMTUSDT_1786307868189",
+    "coin": "MMT",
+    "pair": "MMTUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.21176,
+    "entry_low": 0.21176,
+    "entry_high": 0.21251714,
+    "invalidate_price": 0.20570285,
+    "tp1": 0.22016429,
+    "tp2": 0.22576715,
+    "sl": 0.20615714,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-09 20:37",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 25.7,
+    "vote_margin": -2,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
