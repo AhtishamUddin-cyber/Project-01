@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1916.87,
-    "pnl_pct": -0.02
+    "current_price": 1916.7,
+    "pnl_pct": -0.03
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2152,8 +2152,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 603.28,
-    "pnl_pct": -0.12
+    "current_price": 603.42,
+    "pnl_pct": -0.09
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2182,7 +2182,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2171,
+    "current_price": 0.2172,
     "pnl_pct": null
   },
   {
@@ -2212,7 +2212,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002968,
-    "pnl_pct": -0.17
+    "current_price": 0.002957,
+    "pnl_pct": -0.54
   }
 ]
