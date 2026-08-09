@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1497.31,
+    "current_price": 1496.29,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005944,
-    "pnl_pct": 2.96
+    "current_price": 0.005952,
+    "pnl_pct": 3.1
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1922.6,
-    "pnl_pct": 0.28
+    "current_price": 1923.99,
+    "pnl_pct": 0.35
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2152,7 +2152,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 608.86,
+    "current_price": 608.87,
     "pnl_pct": 0.81
   },
   {
@@ -2182,8 +2182,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2208,
-    "pnl_pct": -0.36
+    "current_price": 0.22,
+    "pnl_pct": -0.72
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2212,7 +2212,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.00295,
-    "pnl_pct": -0.77
+    "current_price": 0.00298,
+    "pnl_pct": 0.24
   }
 ]
