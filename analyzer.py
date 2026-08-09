@@ -203,7 +203,7 @@ def save_trades(trades, github_token=None):
 def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",
               github_token=None, confidence=None, vote_margin=None,
               entry_low=None, entry_high=None, invalidate_price=None,
-              stake=None, leverage=1):
+              stake=None, leverage=1, atr_at_entry=None):
     """Logs a new trade.
 
     IMPORTANT FIX: the signal's `entry` price is a BREAKOUT-CONFIRMATION
@@ -250,6 +250,11 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
         # instead of just trusting the confidence score in the abstract.
         "confidence": confidence,
         "vote_margin": vote_margin,
+        "atr_at_entry": atr_at_entry,
+        # Tracks when we last checked this trade's price action, so
+        # refresh_all_trades() knows how far back to pull candle extremes
+        # from instead of relying on a single point-in-time ticker price.
+        "last_checked_at": None,
         # Paper-trading fields
         "stake": stake, "leverage": leverage if market_type == "futures" else 1,
         "dollar_pnl": None, "balance_applied": False,
@@ -411,9 +416,208 @@ def get_single_ticker_price(pair, market_type="spot"):
         return None
 
 
-def evaluate_trade(trade, live_price):
-    """Checks a trade's live price against its TP/SL and returns an updated
-    copy with status + unrealized/realized P&L. Doesn't mutate the original."""
+def _parse_trade_dt(date_str):
+    """Trade timestamps are stored as '%Y-%m-%d %H:%M' strings — parse back
+    to a datetime, tolerating missing/malformed values."""
+    if not date_str:
+        return None
+    try:
+        return datetime.strptime(date_str, "%Y-%m-%d %H:%M")
+    except Exception:
+        return None
+
+
+def get_price_extremes_since(pair, market_type, since_dt):
+    """Fetches 1-minute candles and returns (lowest_low, highest_high)
+    touched since `since_dt`. This exists to catch intrabar SL/TP wicks that
+    a single point-in-time ticker price would miss entirely — see the note
+    in evaluate_trade().
+
+    Bitget only keeps a limited window of 1m candles, so if `since_dt` is
+    further back than that window this returns the extremes over whatever
+    history is available (best effort) rather than the true full window —
+    still far more accurate than a single ticker snapshot, but not perfect
+    for gaps of many hours/days between refreshes. Returns (None, None) if
+    candles can't be fetched at all, so callers should fall back to the
+    live ticker price in that case.
+    """
+    try:
+        now = datetime.now()
+        minutes_elapsed = max(2, int((now - since_dt).total_seconds() // 60) + 3)
+        limit = min(1000, minutes_elapsed)
+        candles = []
+        if market_type == "futures":
+            for ptype in FUTURES_PRODUCT_TYPES:
+                try:
+                    r = requests.get(
+                        "https://api.bitget.com/api/v2/mix/market/candles",
+                        params={"symbol": pair, "granularity": "1m", "limit": str(limit), "productType": ptype},
+                        timeout=10,
+                    )
+                    candles = r.json().get("data", [])
+                    if candles:
+                        break
+                except Exception:
+                    continue
+        else:
+            r = requests.get(
+                "https://api.bitget.com/api/v2/spot/market/candles",
+                params={"symbol": pair, "granularity": "1min", "limit": str(limit)}, timeout=10,
+            )
+            candles = r.json().get("data", [])
+        if not candles:
+            return None, None
+        since_ms = int(since_dt.timestamp() * 1000)
+        relevant = [c for c in candles if int(c[0]) >= since_ms - 60000]
+        if not relevant:
+            relevant = candles[:3]  # since_dt older than available history - use most recent as fallback
+        highs = [float(c[2]) for c in relevant]
+        lows = [float(c[3]) for c in relevant]
+        return min(lows), max(highs)
+    except Exception:
+        return None, None
+
+
+def build_sl_hit_analysis(t):
+    """Builds a rule-based post-mortem for a trade the moment it hits SL —
+    the 'why did this stop out despite looking good' breakdown Ahtisham
+    asked for. Deterministic (no LLM call), based on data already on the
+    trade record. `whipsaw_checked`/`whipsaw` get filled in later, on a
+    follow-up refresh, once there's been time to see whether price reversed
+    back in the original direction after stopping the trade out (see
+    check_sl_whipsaw_followups()).
+    """
+    entry = t.get("entry")
+    sl = t.get("sl")
+    confidence = t.get("confidence")
+    opened = _parse_trade_dt(t.get("confirmed_at") or t.get("opened_at"))
+    closed = _parse_trade_dt(t.get("closed_at"))
+    risk_pct = round(abs(entry - sl) / entry * 100, 2) if entry and sl else None
+    minutes_in_trade = None
+    if opened and closed:
+        minutes_in_trade = round((closed - opened).total_seconds() / 60)
+
+    analysis = {
+        "confidence_at_entry": confidence,
+        "risk_pct": risk_pct,
+        "minutes_in_trade": minutes_in_trade,
+        "high_confidence_sl": bool(confidence is not None and confidence >= 70),
+        "fast_stopout": bool(minutes_in_trade is not None and minutes_in_trade <= 15),
+        "whipsaw_checked": False,
+        "whipsaw": None,
+    }
+    return analysis
+
+
+def check_sl_whipsaw_followups(trades, github_token=None, persist=True):
+    """For recently SL_HIT trades whose whipsaw check hasn't run yet, waits
+    ~30 min after close then checks live price: did it reverse back past the
+    original entry in the trade's intended direction shortly after stopping
+    us out (classic stop-hunt/whipsaw), or did it keep going the SL's
+    direction (a genuine move against the setup)? Mutates and returns the
+    trades list; only touches trades closed within the last 48h to avoid
+    unbounded API calls on old history."""
+    now = datetime.now()
+    changed = False
+    for t in trades:
+        if t.get("status") != "SL_HIT":
+            continue
+        analysis = t.get("sl_hit_analysis")
+        if not analysis or analysis.get("whipsaw_checked"):
+            continue
+        closed = _parse_trade_dt(t.get("closed_at"))
+        if not closed:
+            continue
+        age_minutes = (now - closed).total_seconds() / 60
+        if age_minutes < 30:
+            continue  # too soon to tell yet
+        if age_minutes > 48 * 60:
+            analysis["whipsaw_checked"] = True  # give up gracefully, too old to bother
+            analysis["whipsaw"] = None
+            changed = True
+            continue
+        price = get_single_ticker_price(t["pair"], t["market_type"])
+        if price is None:
+            continue
+        entry = t.get("entry")
+        direction = t.get("direction")
+        if entry is None:
+            continue
+        if direction == "LONG":
+            reversed_back = price >= entry
+        else:
+            reversed_back = price <= entry
+        analysis["whipsaw_checked"] = True
+        analysis["whipsaw"] = reversed_back
+        changed = True
+    if changed and persist:
+        save_trades(trades, github_token)
+    return trades
+
+
+def sl_hit_conclusion_text(t):
+    """Turns a trade's sl_hit_analysis into a short, plain-language reason —
+    used both on the closed-trade record itself and when warning about a
+    similar setup next time (see sl_hit_lessons_for_coin())."""
+    a = t.get("sl_hit_analysis")
+    if not a:
+        return "Analysis not available for this trade (closed before this feature was added)."
+    bits = []
+    if a.get("high_confidence_sl"):
+        bits.append(
+            f"Confidence {a.get('confidence_at_entry'):.0f}% thi phir bhi SL hit hua — "
+            f"confidence sirf ek factor hai, guarantee nahi."
+        )
+    if a.get("fast_stopout"):
+        bits.append(
+            f"SL sirf ~{a.get('minutes_in_trade')} min mein hit hua — entry timing ya "
+            f"noise/wick ka shikaar lagta hai, trend reversal nahi."
+        )
+    elif a.get("minutes_in_trade") is not None:
+        bits.append(f"Trade ~{a.get('minutes_in_trade')} min open raha before SL — genuine move against the setup lagta hai.")
+    if a.get("whipsaw_checked") and a.get("whipsaw") is True:
+        bits.append("⚠️ Stop-hunt pattern: SL hit hone ke baad price wapas entry ke paar chali gayi apni asal direction mein — SL thoda wide rakhna ya retest ka wait karna madad kar sakta hai.")
+    elif a.get("whipsaw_checked") and a.get("whipsaw") is False:
+        bits.append("SL hit hone ke baad price wahi (SL ki) direction mein continue hui — yeh genuine trend reversal tha, SL ne sahi kaam kiya.")
+    if a.get("risk_pct") is not None:
+        bits.append(f"Risk distance entry se SL tak: {a.get('risk_pct')}%.")
+    return " ".join(bits) if bits else "No specific pattern detected — normal stop-out."
+
+
+def sl_hit_lessons_for_coin(trades, coin, direction=None, min_confidence=60):
+    """Returns past SL_HIT trades for this coin (optionally filtered to the
+    same direction) that had confidence >= min_confidence — the 'this
+    pattern failed before despite looking good' lessons to surface before
+    taking a similar new trade. Most recent first."""
+    matches = [
+        t for t in trades
+        if t.get("coin") == coin and t.get("status") == "SL_HIT"
+        and (direction is None or t.get("direction") == direction)
+        and (t.get("confidence") or 0) >= min_confidence
+    ]
+    matches.sort(key=lambda t: t.get("closed_at") or "", reverse=True)
+    return matches
+
+
+def evaluate_trade(trade, live_price, price_low=None, price_high=None):
+    """Checks a trade's price action against its TP/SL and returns an updated
+    copy with status + unrealized/realized P&L. Doesn't mutate the original.
+
+    IMPORTANT FIX: previously this only compared the single point-in-time
+    `live_price` (a ticker snapshot at the moment of refresh) against SL/TP.
+    That misses intrabar wicks — if price dipped to the SL and bounced back
+    up before the next refresh, a real exchange SL order would have fired on
+    that wick, but a ticker-only check would see the recovered price and
+    conclude nothing happened. This is exactly why the tracker kept showing
+    a trade as OPEN after its SL had already been hit and closed on the
+    real Bitget account.
+
+    `price_low`/`price_high` should be the lowest low / highest high touched
+    since this trade was last checked (see get_price_extremes_since() and
+    refresh_all_trades()) — not just the current price. When they're not
+    available (e.g. candle history couldn't be fetched), this falls back to
+    the old point-in-time behavior using live_price for both.
+    """
     t = dict(trade)
     if live_price is None:
         t["current_price"] = None
@@ -421,6 +625,8 @@ def evaluate_trade(trade, live_price):
         return t
 
     t["current_price"] = live_price
+    check_low = price_low if price_low is not None else live_price
+    check_high = price_high if price_high is not None else live_price
     direction = t["direction"]
 
     if t["status"] == "PENDING":
@@ -429,11 +635,11 @@ def evaluate_trade(trade, live_price):
         invalidate_price = t.get("invalidate_price")
 
         if direction == "LONG":
-            confirmed = entry_low is not None and live_price >= entry_low
-            invalidated = invalidate_price is not None and live_price <= invalidate_price
+            confirmed = entry_low is not None and check_high >= entry_low
+            invalidated = invalidate_price is not None and check_low <= invalidate_price
         else:
-            confirmed = entry_high is not None and live_price <= entry_high
-            invalidated = invalidate_price is not None and live_price >= invalidate_price
+            confirmed = entry_high is not None and check_low <= entry_high
+            invalidated = invalidate_price is not None and check_high >= invalidate_price
 
         if invalidated and not confirmed:
             t["status"] = "INVALIDATED"
@@ -442,11 +648,13 @@ def evaluate_trade(trade, live_price):
             t["pnl_pct"] = None  # setup never triggered - not a real win or loss
             return t
         elif confirmed:
-            # Breakout actually happened - the trade is now really open, and
-            # the REAL fill price is today's live price, not the theoretical
-            # entry_ref calculated when the signal was first generated.
+            # Breakout actually happened - the trade is now really open. Fill
+            # at the confirmation threshold itself (entry_low/entry_high) when
+            # that's where the wick crossed, rather than "wherever price
+            # happens to be right now at refresh time" which can be far past
+            # the real fill point.
             t["status"] = "OPEN"
-            t["entry"] = live_price
+            t["entry"] = entry_low if direction == "LONG" else entry_high
             t["confirmed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         else:
             # Still waiting for price to reach the confirmation zone.
@@ -466,18 +674,19 @@ def evaluate_trade(trade, live_price):
         tp2 = t.get("tp2")
 
         if direction == "LONG":
-            hit_sl = sl and live_price <= sl
-            hit_tp2 = tp2 and live_price >= tp2
-            hit_tp1 = tp1 and live_price >= tp1
+            hit_sl = sl and check_low <= sl
+            hit_tp2 = tp2 and check_high >= tp2
+            hit_tp1 = tp1 and check_high >= tp1
         else:
-            hit_sl = sl and live_price >= sl
-            hit_tp2 = tp2 and live_price <= tp2
-            hit_tp1 = tp1 and live_price <= tp1
+            hit_sl = sl and check_high >= sl
+            hit_tp2 = tp2 and check_low <= tp2
+            hit_tp1 = tp1 and check_low <= tp1
 
         if hit_sl:
             t["status"] = "SL_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = sl
+            t["sl_hit_analysis"] = build_sl_hit_analysis(t)
         elif hit_tp2:
             t["status"] = "TP2_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -506,17 +715,30 @@ def _finalize_stake_pnl(t, github_token=None):
 
 
 def refresh_all_trades(github_token=None):
-    """Re-checks every OPEN/PENDING trade's live price and updates status in
-    storage. Any staked trade that closes this refresh has its realized $
-    P&L applied to the demo balance. Returns the fully refreshed list."""
+    """Re-checks every OPEN/PENDING trade's price action and updates status
+    in storage. Any staked trade that closes this refresh has its realized $
+    P&L applied to the demo balance. Returns the fully refreshed list.
+
+    Uses candle extremes (lowest low / highest high) since each trade's
+    last check, not just the current ticker price, so intrabar SL/TP wicks
+    aren't missed between refreshes (see evaluate_trade() / 
+    get_price_extremes_since() for why the old point-in-time check could
+    show a trade as still OPEN after its SL had already fired for real)."""
     trades = load_trades(github_token)
     updated = []
     for t in trades:
         if t["status"] in ("OPEN", "PENDING"):
             price = get_single_ticker_price(t["pair"], t["market_type"])
-            t = evaluate_trade(t, price)
+            price_low, price_high = None, None
+            since_str = t.get("last_checked_at") or t.get("confirmed_at") or t.get("opened_at")
+            since_dt = _parse_trade_dt(since_str)
+            if since_dt and price is not None:
+                price_low, price_high = get_price_extremes_since(t["pair"], t["market_type"], since_dt)
+            t = evaluate_trade(t, price, price_low, price_high)
+            t["last_checked_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t = _finalize_stake_pnl(t, github_token)
         updated.append(t)
+    updated = check_sl_whipsaw_followups(updated, github_token=github_token, persist=False)  # saved below, once
     save_trades(updated, github_token)
     return updated
 

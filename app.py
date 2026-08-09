@@ -237,6 +237,22 @@ def render_coin_tf_detail(s, res, market_type, timeframe, github_token, account_
             f"avg P&L {hist['avg_pnl']:+.2f}%, total ${hist['total_dollar_pnl']:+,.2f}"
         )
 
+    # ── Past SL-hit lessons for this exact coin+direction ──────────────
+    # Surfaces prior setups on this coin that looked good (high confidence)
+    # but still stopped out, along with WHY, so a repeat pattern gets extra
+    # scrutiny before taking it again — not just a blind confidence number.
+    if v["agreement"] != "CONFLICT":
+        past_sl = az.sl_hit_lessons_for_coin(
+            _cached_trades(github_token), s["base"], direction=v["final_direction"], min_confidence=60
+        )
+        if past_sl:
+            with st.expander(f"⚠️ {s['base']} {v['final_direction']} setups jo pehle SL hit hue ({len(past_sl)}) — dekho pehle", expanded=False):
+                for pt in past_sl[:5]:
+                    st.markdown(
+                        f"- **{pt.get('closed_at', '—')}** — confidence {pt.get('confidence', 0):.0f}%: "
+                        f"{az.sl_hit_conclusion_text(pt)}"
+                    )
+
     if v["agreement"] != "CONFLICT" and v["entry_low"]:
         st.divider()
         entry_ref = round((v["entry_low"] + v["entry_high"]) / 2, 8)
@@ -289,7 +305,7 @@ def render_coin_tf_detail(s, res, market_type, timeframe, github_token, account_
                     entry_low=v["entry_low"], entry_high=v["entry_high"],
                     invalidate_price=v.get("invalidate_price"),
                     stake=stake_amt if stake_amt > 0 else None,
-                    leverage=leverage,
+                    leverage=leverage, atr_at_entry=indicators.get("atr"),
                 )
                 if github_token and not new_trade.get("_github_synced"):
                     st.error(
@@ -1032,11 +1048,31 @@ with tab_track:
                 az.delete_trade(trade_id, github_token=github_token)
                 st.rerun()
 
+        # ── SL Hit Post-Mortems ─────────────────────────────────────────
+        sl_hit_trades = [t for t in closed_trades if t.get("status") == "SL_HIT"]
+        if sl_hit_trades:
+            st.divider()
+            st.markdown("### ❌ Stop-Loss Post-Mortems")
+            st.caption(
+                "Har SL_HIT trade ki wajah aur conclusion — takke agla trade lene se pehle "
+                "same pattern/coin par thora zyada dhyan diya jaaye."
+            )
+            for t in sorted(sl_hit_trades, key=lambda x: x.get("closed_at") or "", reverse=True):
+                dir_emoji = "🟢" if t["direction"] == "LONG" else "🔴"
+                conf_txt = f"{t['confidence']:.0f}%" if t.get("confidence") is not None else "—"
+                with st.expander(f"{dir_emoji} {t['coin']} — {t.get('closed_at', '—')} (confidence {conf_txt})"):
+                    st.write(az.sl_hit_conclusion_text(t))
+                    a = t.get("sl_hit_analysis")
+                    if a and not a.get("whipsaw_checked"):
+                        st.caption("↻ Whipsaw check abhi pending hai — SL hit hone ke ~30 min baad next refresh par pata chalega ke price wapas mudi ya nahi.")
+
         st.divider()
         st.caption(
-            "⚠️ Status sirf jab tum 'Refresh' dabate ho tab ke live price se check hota hai — "
-            "agar price beech mein SL aur TP dono cross kar chuki ho refresh se pehle, to sirf latest "
-            "price ke hisaab se result dikhega. Bitget app/exchange par apna actual order hamesha confirm karo."
+            "✅ Refresh ab candle history check karta hai (last-checked se ab tak ka low/high), "
+            "sirf abhi ka point price nahi — isse beech mein wick se SL/TP hit hona bhi pakda jayega. "
+            "Phir bhi, bahut lambe gap ke baad refresh karo (jaise kai din) to purani candle history "
+            "exchange par available na ho to woh window miss ho sakti hai — jitna jaldi refresh karoge, "
+            "utna accurate. Bitget app/exchange par apna actual order hamesha confirm karo."
         )
 
 
