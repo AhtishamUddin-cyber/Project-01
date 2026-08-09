@@ -390,5 +390,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SETHSUSDT_1786307734045",
+    "coin": "SETH",
+    "pair": "SETHSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1925.24275,
+    "entry_low": 1925.24275,
+    "entry_high": 1929.159,
+    "invalidate_price": 1844.19075,
+    "tp1": 2082.64725,
+    "tp2": 2200.700625,
+    "sl": 1846.5405,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-09 20:35",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
