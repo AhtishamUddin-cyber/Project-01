@@ -250,5 +250,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ETHUSDT_1786307663468",
+    "coin": "ETH",
+    "pair": "ETHUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1925.17625,
+    "entry_low": 1925.17625,
+    "entry_high": 1929.095,
+    "invalidate_price": 1844.41625,
+    "tp1": 2081.99375,
+    "tp2": 2199.606875,
+    "sl": 1846.7675,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-09 20:34",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
