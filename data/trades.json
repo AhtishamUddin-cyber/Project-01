@@ -1222,7 +1222,7 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1491.19,
+    "current_price": 1491.39,
     "pnl_pct": null
   },
   {
@@ -1312,8 +1312,8 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.005927,
-    "pnl_pct": 2.67
+    "current_price": 0.005947,
+    "pnl_pct": 3.01
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -1882,8 +1882,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 82.55,
-    "pnl_pct": 4.92
+    "current_price": 82.93,
+    "pnl_pct": 5.4
   },
   {
     "id": "CTSIUSDT_1786036604691",
@@ -2032,8 +2032,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 135.43,
-    "pnl_pct": 3.15
+    "current_price": 137.26,
+    "pnl_pct": 4.55
   },
   {
     "id": "ETHUSDT_1786129351795",
@@ -2062,8 +2062,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1919.81,
-    "pnl_pct": 0.13
+    "current_price": 1913.5,
+    "pnl_pct": -0.2
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2111,18 +2111,18 @@
     "sl": 0.34806071,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-08 20:30",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-09 05:38",
+    "exit_price": 0.3463,
     "confidence": 75.0,
     "vote_margin": 7,
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.3553,
+    "current_price": 0.3463,
     "pnl_pct": null
   },
   {
@@ -2151,6 +2151,8 @@
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 601.11,
+    "pnl_pct": null
   }
 ]
