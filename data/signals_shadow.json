@@ -26,5 +26,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_IOTXUSDT_1786307652532",
+    "coin": "IOTX",
+    "pair": "IOTXUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.00295555,
+    "entry_low": 0.00295555,
+    "entry_high": 0.00296166,
+    "invalidate_price": 0.00290669,
+    "tp1": 0.00306855,
+    "tp2": 0.00315895,
+    "sl": 0.00291035,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-09 20:34",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 78.6,
+    "vote_margin": 10,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
