@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1505.02,
+    "current_price": 1505.14,
     "pnl_pct": null,
-    "last_checked_at": "2026-08-10 18:40"
+    "last_checked_at": "2026-08-10 19:21"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 599.07,
-    "pnl_pct": -0.81,
-    "last_checked_at": "2026-08-10 18:40"
+    "current_price": 600.08,
+    "pnl_pct": -0.65,
+    "last_checked_at": "2026-08-10 19:21"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2167,
-    "pnl_pct": -2.21,
-    "last_checked_at": "2026-08-10 18:40"
+    "current_price": 0.2148,
+    "pnl_pct": -3.07,
+    "last_checked_at": "2026-08-10 19:21"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,12 +2269,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-10 18:40",
+    "last_checked_at": "2026-08-10 19:21",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63812.5,
+    "current_price": 63953.3,
     "pnl_pct": null
   }
 ]
