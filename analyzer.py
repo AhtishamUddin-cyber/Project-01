@@ -241,7 +241,7 @@ def save_shadow_signals(signals, github_token=None):
 
 def log_signal_shadow(coin_symbol, pair, market_type, direction, tp1, tp2, sl, timeframe,
                        confidence=None, vote_margin=None, entry_low=None, entry_high=None,
-                       invalidate_price=None, github_token=None):
+                       invalidate_price=None, github_token=None, atr_at_entry=None, entry_snapshot=None):
     """Logs a signal into the shadow-log the moment it's shown to the user,
     regardless of whether it's ever taken as a real trade.
 
@@ -272,6 +272,8 @@ def log_signal_shadow(coin_symbol, pair, market_type, direction, tp1, tp2, sl, t
         "opened_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "confirmed_at": None, "closed_at": None, "exit_price": None,
         "confidence": confidence, "vote_margin": vote_margin,
+        "atr_at_entry": atr_at_entry,
+        "entry_snapshot": entry_snapshot,
         "last_checked_at": None,
         "stake": None, "leverage": 1, "dollar_pnl": None, "balance_applied": False,
         "is_shadow": True,
@@ -313,12 +315,22 @@ def shadow_signal_stats(signals):
     for label, lo, hi in buckets:
         group = [s for s in closed if s.get("confidence") is not None and lo <= s["confidence"] < hi]
         wins = [s for s in group if s["status"] in ("TP1_HIT", "TP2_HIT")]
+        losses = [s for s in group if s["status"] == "SL_HIT"]
         win_rate = (len(wins) / len(group) * 100) if group else None
         avg_pnl = (sum(s.get("pnl_pct") or 0 for s in group) / len(group)) if group else None
-        results.append({"bucket": label, "signals": len(group), "win_rate": win_rate, "avg_pnl": avg_pnl})
+        results.append({
+            "bucket": label, "signals": len(group),
+            "wins": len(wins), "losses": len(losses),
+            "win_rate": win_rate, "avg_pnl": avg_pnl,
+        })
+    overall_wins = [s for s in closed if s["status"] in ("TP1_HIT", "TP2_HIT")]
+    overall_losses = [s for s in closed if s["status"] == "SL_HIT"]
     return {
         "total_logged": len(signals),
         "total_closed": len(closed),
+        "total_wins": len(overall_wins),
+        "total_losses": len(overall_losses),
+        "overall_win_rate": round(len(overall_wins) / len(closed) * 100, 1) if closed else None,
         "still_open_or_pending": len([s for s in signals if s["status"] in ("OPEN", "PENDING")]),
         "by_confidence": results,
     }
@@ -327,7 +339,7 @@ def shadow_signal_stats(signals):
 def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, timeframe, note="",
               github_token=None, confidence=None, vote_margin=None,
               entry_low=None, entry_high=None, invalidate_price=None,
-              stake=None, leverage=1, atr_at_entry=None):
+              stake=None, leverage=1, atr_at_entry=None, entry_snapshot=None):
     """Logs a new trade.
 
     IMPORTANT FIX: the signal's `entry` price is a BREAKOUT-CONFIRMATION
@@ -375,6 +387,12 @@ def add_trade(coin_symbol, pair, market_type, direction, entry, tp1, tp2, sl, ti
         "confidence": confidence,
         "vote_margin": vote_margin,
         "atr_at_entry": atr_at_entry,
+        # Snapshot of WHY this direction/confidence was picked (RSI, HTF
+        # trend, funding, whale signal, divergence at the moment of entry).
+        # Stored so a later SL-hit post-mortem can point at real numbers
+        # ("RSI was already 68 at entry, close to overbought") instead of
+        # only having price/time to reason from.
+        "entry_snapshot": entry_snapshot,
         # Tracks when we last checked this trade's price action, so
         # refresh_all_trades() knows how far back to pull candle extremes
         # from instead of relying on a single point-in-time ticker price.
@@ -605,15 +623,18 @@ def get_price_extremes_since(pair, market_type, since_dt):
 def build_sl_hit_analysis(t):
     """Builds a rule-based post-mortem for a trade the moment it hits SL —
     the 'why did this stop out despite looking good' breakdown Ahtisham
-    asked for. Deterministic (no LLM call), based on data already on the
-    trade record. `whipsaw_checked`/`whipsaw` get filled in later, on a
-    follow-up refresh, once there's been time to see whether price reversed
-    back in the original direction after stopping the trade out (see
-    check_sl_whipsaw_followups()).
-    """
+    asked for. Deterministic (no LLM call, no invented reasons) - every
+    field here is computed from data that was actually recorded on the
+    trade at entry time (entry_snapshot, atr_at_entry) plus the close-time
+    outcome. If entry_snapshot/atr_at_entry are missing (trade opened
+    before this feature existed), those specific checks are simply skipped
+    rather than guessed at. `whipsaw_checked`/`whipsaw` get filled in later,
+    on a follow-up refresh (see check_sl_whipsaw_followups())."""
     entry = t.get("entry")
     sl = t.get("sl")
     confidence = t.get("confidence")
+    atr_at_entry = t.get("atr_at_entry")
+    snap = t.get("entry_snapshot") or {}
     opened = _parse_trade_dt(t.get("confirmed_at") or t.get("opened_at"))
     closed = _parse_trade_dt(t.get("closed_at"))
     risk_pct = round(abs(entry - sl) / entry * 100, 2) if entry and sl else None
@@ -621,12 +642,57 @@ def build_sl_hit_analysis(t):
     if opened and closed:
         minutes_in_trade = round((closed - opened).total_seconds() / 60)
 
+    # SL distance vs the coin's own volatility at entry (ATR), instead of
+    # judging risk_pct against a generic number - a 2% SL is tight on a
+    # low-volatility coin but normal on a high-volatility one.
+    atr_ratio = None
+    sl_tighter_than_normal = None
+    if atr_at_entry and entry and sl:
+        sl_distance = abs(entry - sl)
+        atr_ratio = round(sl_distance / atr_at_entry, 2)
+        sl_tighter_than_normal = atr_ratio < 1.0  # SL closer than 1x ATR = inside normal noise range
+
+    direction = t.get("direction")
+    counter_trend = None
+    htf_trend = snap.get("htf_trend")
+    if htf_trend and htf_trend not in ("NEUTRAL", None):
+        counter_trend = (htf_trend != direction)
+
+    rsi_extended = None
+    rsi_val = snap.get("rsi")
+    if rsi_val is not None and direction:
+        if direction == "LONG" and rsi_val >= 65:
+            rsi_extended = True
+        elif direction == "SHORT" and rsi_val <= 35:
+            rsi_extended = True
+        else:
+            rsi_extended = False
+
+    funding_against = None
+    fund_signal = snap.get("fund_signal")
+    if fund_signal and fund_signal != "NEUTRAL" and direction:
+        funding_against = (fund_signal != direction)
+
+    thin_vote = None
+    vote_margin = t.get("vote_margin")
+    if vote_margin is not None:
+        thin_vote = abs(vote_margin) < 4  # matches the "moderate" threshold used in final_verdict
+
     analysis = {
         "confidence_at_entry": confidence,
         "risk_pct": risk_pct,
         "minutes_in_trade": minutes_in_trade,
         "high_confidence_sl": bool(confidence is not None and confidence >= 70),
         "fast_stopout": bool(minutes_in_trade is not None and minutes_in_trade <= 15),
+        "atr_ratio": atr_ratio,
+        "sl_tighter_than_normal": sl_tighter_than_normal,
+        "counter_trend": counter_trend,
+        "htf_trend_at_entry": htf_trend,
+        "rsi_extended": rsi_extended,
+        "rsi_at_entry": rsi_val,
+        "funding_against": funding_against,
+        "thin_vote": thin_vote,
+        "vote_margin_at_entry": vote_margin,
         "whipsaw_checked": False,
         "whipsaw": None,
     }
@@ -680,13 +746,42 @@ def check_sl_whipsaw_followups(trades, github_token=None, persist=True):
 
 
 def sl_hit_conclusion_text(t):
-    """Turns a trade's sl_hit_analysis into a short, plain-language reason —
-    used both on the closed-trade record itself and when warning about a
-    similar setup next time (see sl_hit_lessons_for_coin())."""
+    """Turns a trade's sl_hit_analysis into a plain-language explanation of
+    WHY it likely stopped out — grounded in the actual entry-time data
+    (ATR, HTF trend, RSI, funding, vote strength) when available, not just
+    a generic 'confidence didn't guarantee a win' line. Falls back to the
+    time/confidence-only reasoning for trades logged before entry_snapshot
+    existed."""
     a = t.get("sl_hit_analysis")
     if not a:
         return "Analysis not available for this trade (closed before this feature was added)."
     bits = []
+
+    # Concrete, data-grounded reasons first (these are the actual "why")
+    if a.get("sl_tighter_than_normal") is True:
+        bits.append(
+            f"⚠️ SL sirf {a.get('atr_ratio')}x ATR distance par tha (1x se kam) — is coin ki normal "
+            f"volatility ke andar hi tha, isliye trend na palte bhi ek normal wick isse hit kar sakti thi."
+        )
+    elif a.get("sl_tighter_than_normal") is False:
+        bits.append(f"SL distance normal volatility ke hisaab se theek tha ({a.get('atr_ratio')}x ATR) — tightness issue nahi tha.")
+
+    if a.get("counter_trend") is True:
+        bits.append(
+            f"⚠️ Ye trade higher-timeframe trend ({a.get('htf_trend_at_entry')}) ke against thi — "
+            f"counter-trend setups ka fail rate naturally zyada hota hai."
+        )
+
+    if a.get("rsi_extended") is True:
+        bits.append(f"⚠️ Entry ke waqt RSI {a.get('rsi_at_entry')} tha — already extended zone mein, jisse reversal ka risk zyada tha.")
+
+    if a.get("funding_against") is True:
+        bits.append("⚠️ Funding rate is trade ki direction ke against tha entry ke waqt.")
+
+    if a.get("thin_vote") is True:
+        bits.append(f"⚠️ Vote margin thin tha entry ke waqt ({a.get('vote_margin_at_entry')}) — low-conviction setup, high confidence score ke bawajood.")
+
+    # Timing/confidence context
     if a.get("high_confidence_sl"):
         bits.append(
             f"Confidence {a.get('confidence_at_entry'):.0f}% thi phir bhi SL hit hua — "
@@ -699,10 +794,12 @@ def sl_hit_conclusion_text(t):
         )
     elif a.get("minutes_in_trade") is not None:
         bits.append(f"Trade ~{a.get('minutes_in_trade')} min open raha before SL — genuine move against the setup lagta hai.")
+
     if a.get("whipsaw_checked") and a.get("whipsaw") is True:
         bits.append("⚠️ Stop-hunt pattern: SL hit hone ke baad price wapas entry ke paar chali gayi apni asal direction mein — SL thoda wide rakhna ya retest ka wait karna madad kar sakta hai.")
     elif a.get("whipsaw_checked") and a.get("whipsaw") is False:
         bits.append("SL hit hone ke baad price wahi (SL ki) direction mein continue hui — yeh genuine trend reversal tha, SL ne sahi kaam kiya.")
+
     if a.get("risk_pct") is not None:
         bits.append(f"Risk distance entry se SL tak: {a.get('risk_pct')}%.")
     return " ".join(bits) if bits else "No specific pattern detected — normal stop-out."
@@ -765,7 +862,15 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
             confirmed = entry_high is not None and check_low <= entry_high
             invalidated = invalidate_price is not None and check_high >= invalidate_price
 
-        if invalidated and not confirmed:
+        # BUG FIX: if price touched BOTH the invalidation level and the
+        # entry level within the same unchecked window, we can't tell from
+        # aggregate low/high alone which happened first. This used to
+        # default to "confirmed" whenever both were true, which silently
+        # treated a stop-hunt-then-recover as a clean breakout. Now treats
+        # it as invalidated instead (the safer read) — a price that swept
+        # the invalidation zone and only THEN came back through entry is a
+        # materially different, riskier setup than a clean move to entry.
+        if invalidated:
             t["status"] = "INVALIDATED"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = live_price
@@ -780,6 +885,15 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
             t["status"] = "OPEN"
             t["entry"] = entry_low if direction == "LONG" else entry_high
             t["confirmed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            # BUG FIX: previously fell through to also check SL/TP against
+            # this SAME price_low/price_high window in this same call. But
+            # that window covers time BEFORE the trade was even confirmed
+            # open - checking it against SL/TP produced phantom hits (e.g.
+            # a dip that happened before entry was ever reached getting
+            # counted as "hit SL right after opening"). SL/TP checks now
+            # only start from a clean window on the NEXT refresh onward.
+            t["pnl_pct"] = None
+            return t
         else:
             # Still waiting for price to reach the confirmation zone.
             t["pnl_pct"] = None
@@ -1568,12 +1682,14 @@ def get_funding_rate(pair, market_type="futures"):
             if not data:
                 continue
             rate = float(data[0].get("fundingRate", 0)) * 100
-            if rate > 0.1:
+            # Cleanup: the >0.1/>0.05 (and <-0.1/<-0.05) branches used to be
+            # separate but produced the identical signal either way - dead
+            # thresholds that looked like graded severity but weren't.
+            # Collapsed to what it actually does: >0.05% = shorts paying
+            # longs a lot -> crowd is long -> contrarian SHORT lean, and the
+            # mirror case for LONG.
+            if rate > 0.05:
                 signal = "SHORT"
-            elif rate > 0.05:
-                signal = "SHORT"
-            elif rate < -0.1:
-                signal = "LONG"
             elif rate < -0.05:
                 signal = "LONG"
             else:
@@ -1600,9 +1716,12 @@ def detect_rsi_divergence(closes, highs, lows, rsi_period=14, pivot_lookback=3, 
     if n < rsi_period + search_window:
         return "NONE"
 
-    # Local RSI series (same Wilder-style calc as the main rsi(), just run
-    # across the whole window so we have one RSI value per candle to compare
-    # against each price pivot).
+    # Local RSI series, computed the same simple-average way at every index
+    # (each point uses its own fixed rsi_period window). This is only used
+    # to compare RSI *between two swing points*, so it's internally
+    # consistent for that purpose - but note it is NOT the same Wilder's-
+    # smoothing calculation as the main rsi() above, so don't expect these
+    # values to match the headline RSI number shown elsewhere.
     rsis = [50.0] * n
     for i in range(rsi_period, n):
         window = closes[i - rsi_period:i + 1]
@@ -1684,16 +1803,30 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         volumes = [float(c[5]) for c in candles]
 
         def rsi(prices, p=14):
-            g, l = [], []
-            for i in range(1, len(prices)):
-                d = prices[i] - prices[i - 1]
-                g.append(max(d, 0))
-                l.append(max(-d, 0))
-            if len(g) < p:
+            # FIX: this was previously a simple average of the last `p`
+            # gains/losses (SMA-based RSI). That's a different, less common
+            # variant from the RSI everyone actually looks at on Bitget/
+            # TradingView, which uses Wilder's smoothing (an exponential
+            # average seeded by the first p periods, carried forward).
+            # The two can genuinely disagree by several points on the same
+            # candle, which meant "RSI overbought/oversold" calls here could
+            # silently mismatch what Ahtisham was seeing on the real chart -
+            # a real, explainable source of the analyzer "feeling wrong"
+            # even when the rest of the logic was fine.
+            if len(prices) < p + 1:
                 return 50
-            ag = sum(g[-p:]) / p
-            al = sum(l[-p:]) / p
-            return 50 if al == 0 else round(100 - (100 / (1 + ag / al)), 2)
+            deltas = [prices[i] - prices[i - 1] for i in range(1, len(prices))]
+            gains = [max(d, 0) for d in deltas]
+            losses = [max(-d, 0) for d in deltas]
+            avg_gain = sum(gains[:p]) / p
+            avg_loss = sum(losses[:p]) / p
+            for i in range(p, len(gains)):
+                avg_gain = (avg_gain * (p - 1) + gains[i]) / p
+                avg_loss = (avg_loss * (p - 1) + losses[i]) / p
+            if avg_loss == 0:
+                return 100 if avg_gain > 0 else 50
+            rs = avg_gain / avg_loss
+            return round(100 - (100 / (1 + rs)), 2)
 
         def ema(prices, p):
             if len(prices) < p:
