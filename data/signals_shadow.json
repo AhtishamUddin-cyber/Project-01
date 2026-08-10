@@ -3343,5 +3343,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SKHYNIXUSDT_1786378557981",
+    "coin": "SKHYNIX",
+    "pair": "SKHYNIXUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1006.03075,
+    "entry_low": 1006.03075,
+    "entry_high": 1009.567,
+    "invalidate_price": 977.74075,
+    "tp1": 1141.14,
+    "tp2": 1097.619625,
+    "sl": 979.8625,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 16:15",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 14.145,
+    "entry_snapshot": {
+      "rsi": 58.42,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
