@@ -2117,5 +2117,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_\u9f99\u867eUSDT_1786342235310",
+    "coin": "\u9f99\u867e",
+    "pair": "\u9f99\u867eUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 0.0178886,
+    "entry_low": 0.01778403,
+    "entry_high": 0.0178886,
+    "invalidate_price": 0.01932223,
+    "tp1": 0.01514682,
+    "tp2": 0.01309049,
+    "sl": 0.01925949,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 06:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 66.4,
+    "vote_margin": -4,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
