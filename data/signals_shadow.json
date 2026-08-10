@@ -3908,5 +3908,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BTCUSDT_1786389850298",
+    "coin": "BTC",
+    "pair": "BTCUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 64031.6875,
+    "entry_low": 64031.6875,
+    "entry_high": 64068.17857143,
+    "invalidate_price": 63739.75892857,
+    "tp1": 64788.0,
+    "tp2": 64706.77232143,
+    "sl": 63761.65357143,
+    "timeframe": "30m",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 19:24",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 41.4,
+    "vote_margin": 4,
+    "atr_at_entry": 145.96428571,
+    "entry_snapshot": {
+      "rsi": 56.18,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
