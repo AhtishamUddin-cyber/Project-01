@@ -1501,5 +1501,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BZUSDT_1786331177140",
+    "coin": "BZ",
+    "pair": "BZUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 83.8335,
+    "entry_low": 83.8335,
+    "entry_high": 83.85028571,
+    "invalidate_price": 83.69921428,
+    "tp1": 84.02,
+    "tp2": 84.3924643,
+    "sl": 83.70928571,
+    "timeframe": "1m",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 03:06",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 78.6,
+    "vote_margin": 10,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
