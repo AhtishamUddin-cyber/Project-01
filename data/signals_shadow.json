@@ -1249,5 +1249,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_TUTUSDT_1786330855239",
+    "coin": "TUT",
+    "pair": "TUTUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.20147525,
+    "entry_low": 0.20147525,
+    "entry_high": 0.20157186,
+    "invalidate_price": 0.2007024,
+    "tp1": 0.20254758,
+    "tp2": 0.20326247,
+    "sl": 0.20076036,
+    "timeframe": "All",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 03:00",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 27.9,
+    "vote_margin": 1,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
