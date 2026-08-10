@@ -1137,5 +1137,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SKYAIUSDT_1786330710574",
+    "coin": "SKYAI",
+    "pair": "SKYAIUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.10498775,
+    "entry_low": 0.10498775,
+    "entry_high": 0.10647186,
+    "invalidate_price": 0.09311489,
+    "tp1": 0.12695255,
+    "tp2": 0.14342615,
+    "sl": 0.09400535,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 02:58",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
