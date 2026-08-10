@@ -1949,5 +1949,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_LINKUSDT_1786342225535",
+    "coin": "LINK",
+    "pair": "LINKUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 8.251975,
+    "entry_low": 8.251975,
+    "entry_high": 8.27267143,
+    "invalidate_price": 8.08640358,
+    "tp1": 8.55828212,
+    "tp2": 8.78801246,
+    "sl": 8.09882144,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 06:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
