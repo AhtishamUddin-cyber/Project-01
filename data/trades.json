@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1502.21,
+    "current_price": 1507.59,
     "pnl_pct": null,
-    "last_checked_at": "2026-08-09 21:42"
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -1302,20 +1302,20 @@
     "sl": 0.00562379,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-07-28 04:32",
     "confirmed_at": "2026-07-28 12:11",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-10 06:12",
+    "exit_price": 0.00617441,
     "confidence": 71.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 30,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.006018,
-    "pnl_pct": 4.24,
-    "last_checked_at": "2026-08-09 21:42"
+    "dollar_pnl": 12.48,
+    "balance_applied": true,
+    "current_price": 0.006013,
+    "pnl_pct": 4.16,
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -2064,9 +2064,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1924.19,
-    "pnl_pct": 0.36,
-    "last_checked_at": "2026-08-09 21:42"
+    "current_price": 1924.67,
+    "pnl_pct": 0.38,
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2155,9 +2155,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 607.95,
-    "pnl_pct": 0.66,
-    "last_checked_at": "2026-08-09 21:42"
+    "current_price": 603.04,
+    "pnl_pct": -0.16,
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2186,9 +2186,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.207,
-    "pnl_pct": -6.59,
-    "last_checked_at": "2026-08-09 21:42"
+    "current_price": 0.2013,
+    "pnl_pct": -9.16,
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "IOTXUSDT_1786277016246",
