@@ -3690,5 +3690,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_LITEUSDT_1786387087610",
+    "coin": "LITE",
+    "pair": "LITEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 828.1895,
+    "entry_low": 828.1895,
+    "entry_high": 829.69628571,
+    "invalidate_price": 816.13521428,
+    "tp1": 850.48992858,
+    "tp2": 867.21525002,
+    "sl": 817.03928571,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 18:38",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 6.02714286,
+    "entry_snapshot": {
+      "rsi": 34.83,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
