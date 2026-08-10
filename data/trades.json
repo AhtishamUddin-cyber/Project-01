@@ -2238,5 +2238,41 @@
       "whipsaw": true
     },
     "last_checked_at": "2026-08-09 19:16"
+  },
+  {
+    "id": "BTCUSDT_1786378596967",
+    "coin": "BTC",
+    "pair": "BTCUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 64269.39089286,
+    "entry": 64269.39089286,
+    "entry_low": 64240.0775,
+    "entry_high": 64298.70428572,
+    "invalidate_price": 62853.47178571,
+    "tp1": 67618.65160715,
+    "tp2": 70321.51089287,
+    "sl": 62888.64785714,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 16:16",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 234.50714286,
+    "entry_snapshot": {
+      "rsi": 50.99,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
