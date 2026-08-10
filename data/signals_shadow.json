@@ -1781,5 +1781,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SNDKUSDT_1786335806385",
+    "coin": "SNDK",
+    "pair": "SNDKUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1223.369,
+    "entry_low": 1223.369,
+    "entry_high": 1224.04685714,
+    "invalidate_price": 1215.57985714,
+    "tp1": 1234.44264286,
+    "tp2": 1241.82507142,
+    "sl": 1215.98657143,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 04:23",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 35.0,
+    "vote_margin": 0,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
