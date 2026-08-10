@@ -3098,5 +3098,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SOLUSDT_1786378471969",
+    "coin": "SOL",
+    "pair": "SOLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 76.14595,
+    "entry_low": 76.14595,
+    "entry_high": 76.25305714,
+    "invalidate_price": 75.28909285,
+    "tp1": 77.73113572,
+    "tp2": 78.92002501,
+    "sl": 75.35335714,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 16:14",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.42842857,
+    "entry_snapshot": {
+      "rsi": 53.18,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
