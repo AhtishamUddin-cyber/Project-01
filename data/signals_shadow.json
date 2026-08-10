@@ -1333,5 +1333,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_XLMUSDT_1786331053077",
+    "coin": "XLM",
+    "pair": "XLMUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 0.16251825,
+    "entry_low": 0.16210272,
+    "entry_high": 0.16251825,
+    "invalidate_price": 0.17274796,
+    "tp1": 0.14255747,
+    "tp2": 0.12758688,
+    "sl": 0.17249864,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 03:04",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": -7,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
