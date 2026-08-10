@@ -1977,5 +1977,33 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_XAGUSDT_1786342227482",
+    "coin": "XAG",
+    "pair": "XAGUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 64.25475,
+    "entry_low": 64.25475,
+    "entry_high": 64.30814286,
+    "invalidate_price": 63.82760715,
+    "tp1": 65.04496428,
+    "tp2": 65.63762499,
+    "sl": 63.85964286,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 06:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
