@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1502.68,
+    "current_price": 1506.31,
     "pnl_pct": null,
-    "last_checked_at": "2026-08-09 19:49"
+    "last_checked_at": "2026-08-10 15:29"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -1302,20 +1302,20 @@
     "sl": 0.00562379,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-07-28 04:32",
     "confirmed_at": "2026-07-28 12:11",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-10 06:12",
+    "exit_price": 0.00617441,
     "confidence": 71.8,
     "vote_margin": 6,
     "stake": 10.0,
     "leverage": 30,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.006058,
-    "pnl_pct": 4.94,
-    "last_checked_at": "2026-08-09 19:49"
+    "dollar_pnl": 12.48,
+    "balance_applied": true,
+    "current_price": 0.006013,
+    "pnl_pct": 4.16,
+    "last_checked_at": "2026-08-10 06:12"
   },
   {
     "id": "BTCUSDT_1785250730195",
@@ -2053,20 +2053,29 @@
     "sl": 1889.11571429,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-07 19:02",
     "confirmed_at": "2026-08-07 19:31",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-10 15:29",
+    "exit_price": 1889.11571429,
     "confidence": 77.9,
     "vote_margin": 8,
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 1921.02,
-    "pnl_pct": 0.19,
-    "last_checked_at": "2026-08-09 19:49"
+    "dollar_pnl": -0.22,
+    "balance_applied": true,
+    "current_price": 1875.9,
+    "pnl_pct": -2.16,
+    "last_checked_at": "2026-08-10 15:29",
+    "sl_hit_analysis": {
+      "confidence_at_entry": 77.9,
+      "risk_pct": 1.47,
+      "minutes_in_trade": 4078,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "SOLUSDT_1786135335539",
@@ -2155,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 608.06,
-    "pnl_pct": 0.68,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 600.08,
+    "pnl_pct": -0.65,
+    "last_checked_at": "2026-08-10 15:29"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2186,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2152,
-    "pnl_pct": -2.89,
-    "last_checked_at": "2026-08-09 19:49"
+    "current_price": 0.2119,
+    "pnl_pct": -4.38,
+    "last_checked_at": "2026-08-10 15:29"
   },
   {
     "id": "IOTXUSDT_1786277016246",
