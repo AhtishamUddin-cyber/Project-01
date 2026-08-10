@@ -3168,5 +3168,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SBTCSUSDT_1786378478094",
+    "coin": "SBTC",
+    "pair": "SBTCSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 64316.395,
+    "entry_low": 64316.395,
+    "entry_high": 64383.46285714,
+    "invalidate_price": 62814.97785714,
+    "tp1": 67238.74785714,
+    "tp2": 69430.51249999,
+    "sl": 62855.21857143,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-10 16:14",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.1,
+    "vote_margin": 6,
+    "atr_at_entry": 268.27142857,
+    "entry_snapshot": {
+      "rsi": 51.1,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
