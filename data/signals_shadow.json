@@ -4686,5 +4686,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SAMSUNGUSDT_1786437058328",
+    "coin": "SAMSUNG",
+    "pair": "SAMSUNGUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 169.58825,
+    "entry_low": 169.58825,
+    "entry_high": 170.52985714,
+    "invalidate_price": 162.05539286,
+    "tp1": 183.5240357,
+    "tp2": 193.97587497,
+    "sl": 162.62035715,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-11 08:30",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 3.76642857,
+    "entry_snapshot": {
+      "rsi": 57.56,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
