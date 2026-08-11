@@ -4616,5 +4616,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_DOGEUSDT_1786437039885",
+    "coin": "DOGE",
+    "pair": "DOGEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.07030825,
+    "entry_low": 0.07030825,
+    "entry_high": 0.07044272,
+    "invalidate_price": 0.06972796,
+    "tp1": 0.07130747,
+    "tp2": 0.07205688,
+    "sl": 0.06980864,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-11 08:30",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.00053786,
+    "entry_snapshot": {
+      "rsi": 52.66,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
