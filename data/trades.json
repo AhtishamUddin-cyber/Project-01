@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1517.61,
-    "pnl_pct": 0.57,
-    "last_checked_at": "2026-08-11 09:18"
+    "current_price": 1519.42,
+    "pnl_pct": 0.69,
+    "last_checked_at": "2026-08-11 10:06"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 606.21,
-    "pnl_pct": 0.37,
-    "last_checked_at": "2026-08-11 09:18"
+    "current_price": 606.76,
+    "pnl_pct": 0.46,
+    "last_checked_at": "2026-08-11 10:06"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.233,
-    "pnl_pct": 5.14,
-    "last_checked_at": "2026-08-11 09:18"
+    "current_price": 0.225,
+    "pnl_pct": 1.53,
+    "last_checked_at": "2026-08-11 10:06"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2246,7 +2246,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 64269.39089286,
-    "entry": 64269.39089286,
+    "entry": 64240.0775,
     "entry_low": 64240.0775,
     "entry_high": 64298.70428572,
     "invalidate_price": 62853.47178571,
@@ -2255,9 +2255,9 @@
     "sl": 62888.64785714,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-10 16:16",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-11 10:06",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -2269,12 +2269,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 09:18",
+    "last_checked_at": "2026-08-11 10:06",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64145.8,
+    "current_price": 64270.0,
     "pnl_pct": null
   },
   {
@@ -2307,13 +2307,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 09:18",
+    "last_checked_at": "2026-08-11 10:06",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.03902,
-    "pnl_pct": -2.6
+    "current_price": 0.03834,
+    "pnl_pct": -4.3
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2345,12 +2345,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-11 09:18",
+    "last_checked_at": "2026-08-11 10:06",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01277,
+    "current_price": 0.012556,
     "pnl_pct": null
   }
 ]
