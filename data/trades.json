@@ -1224,7 +1224,7 @@
     "balance_applied": false,
     "current_price": 1517.61,
     "pnl_pct": 0.57,
-    "last_checked_at": "2026-08-11 09:15"
+    "last_checked_at": "2026-08-11 09:18"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 605.28,
-    "pnl_pct": 0.22,
-    "last_checked_at": "2026-08-11 09:15"
+    "current_price": 606.21,
+    "pnl_pct": 0.37,
+    "last_checked_at": "2026-08-11 09:18"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2299,
-    "pnl_pct": 3.75,
-    "last_checked_at": "2026-08-11 09:15"
+    "current_price": 0.233,
+    "pnl_pct": 5.14,
+    "last_checked_at": "2026-08-11 09:18"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,12 +2269,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 09:15",
+    "last_checked_at": "2026-08-11 09:18",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64115.1,
+    "current_price": 64145.8,
     "pnl_pct": null
   },
   {
@@ -2307,13 +2307,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 09:15",
+    "last_checked_at": "2026-08-11 09:18",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.03928,
-    "pnl_pct": null
+    "current_price": 0.03902,
+    "pnl_pct": -2.6
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2345,12 +2345,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-11 09:15",
+    "last_checked_at": "2026-08-11 09:18",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.012727,
+    "current_price": 0.01277,
     "pnl_pct": null
   }
 ]
