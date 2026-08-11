@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1513.93,
-    "pnl_pct": 0.33,
-    "last_checked_at": "2026-08-11 08:27"
+    "current_price": 1515.13,
+    "pnl_pct": 0.41,
+    "last_checked_at": "2026-08-11 08:37"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 604.53,
-    "pnl_pct": 0.09,
-    "last_checked_at": "2026-08-11 08:27"
+    "current_price": 604.8,
+    "pnl_pct": 0.14,
+    "last_checked_at": "2026-08-11 08:37"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2249,
-    "pnl_pct": 1.49,
-    "last_checked_at": "2026-08-11 08:27"
+    "current_price": 0.2272,
+    "pnl_pct": 2.53,
+    "last_checked_at": "2026-08-11 08:37"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,12 +2269,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 08:27",
+    "last_checked_at": "2026-08-11 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64057.0,
+    "current_price": 64054.9,
     "pnl_pct": null
   },
   {
@@ -2307,11 +2307,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-11 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.03901,
+    "pnl_pct": null
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2343,10 +2345,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-11 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.012561,
+    "pnl_pct": null
   }
 ]
