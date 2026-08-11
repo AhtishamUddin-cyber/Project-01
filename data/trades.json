@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1527.98,
-    "pnl_pct": 1.26,
-    "last_checked_at": "2026-08-11 18:03"
+    "current_price": 1530.34,
+    "pnl_pct": 1.42,
+    "last_checked_at": "2026-08-11 18:55"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 609.89,
-    "pnl_pct": 0.98,
-    "last_checked_at": "2026-08-11 18:03"
+    "current_price": 609.21,
+    "pnl_pct": 0.87,
+    "last_checked_at": "2026-08-11 18:55"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2093,
-    "pnl_pct": -5.55,
-    "last_checked_at": "2026-08-11 18:03"
+    "current_price": 0.2064,
+    "pnl_pct": -6.86,
+    "last_checked_at": "2026-08-11 18:55"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,13 +2269,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 18:03",
+    "last_checked_at": "2026-08-11 18:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63597.5,
-    "pnl_pct": -1.0
+    "current_price": 63350.7,
+    "pnl_pct": -1.38
   },
   {
     "id": "BICOUSDT_1786437155092",
@@ -2307,13 +2307,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 18:03",
+    "last_checked_at": "2026-08-11 18:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.03894,
-    "pnl_pct": -2.8
+    "current_price": 0.03932,
+    "pnl_pct": -1.85
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2345,12 +2345,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-11 18:03",
+    "last_checked_at": "2026-08-11 18:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.013288,
-    "pnl_pct": -0.84
+    "current_price": 0.013294,
+    "pnl_pct": -0.79
   }
 ]
