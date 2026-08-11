@@ -5211,5 +5211,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BICOUSDT_1786437447594",
+    "coin": "BICO",
+    "pair": "BICOUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.0467555,
+    "entry_low": 0.0467555,
+    "entry_high": 0.05221657,
+    "invalidate_price": 0.00306693,
+    "tp1": 0.10737339,
+    "tp2": 0.14778532,
+    "sl": 0.00634357,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-11 08:37",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 44.3,
+    "vote_margin": 5,
+    "atr_at_entry": 0.02184429,
+    "entry_snapshot": {
+      "rsi": 53.22,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
