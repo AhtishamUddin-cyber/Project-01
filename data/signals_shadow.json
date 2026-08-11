@@ -5071,5 +5071,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BLESSUSDT_1786437395613",
+    "coin": "BLESS",
+    "pair": "BLESSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.01306997,
+    "entry_low": 0.01306997,
+    "entry_high": 0.01343638,
+    "invalidate_price": 0.01013869,
+    "tp1": 0.017048,
+    "tp2": 0.01984855,
+    "sl": 0.01035854,
+    "timeframe": "30m",
+    "status": "PENDING",
+    "opened_at": "2026-08-11 08:36",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 41.4,
+    "vote_margin": 4,
+    "atr_at_entry": 0.00146564,
+    "entry_snapshot": {
+      "rsi": 60.17,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
