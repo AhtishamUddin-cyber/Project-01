@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1520.7,
-    "pnl_pct": 0.78,
-    "last_checked_at": "2026-08-11 12:06"
+    "current_price": 1527.98,
+    "pnl_pct": 1.26,
+    "last_checked_at": "2026-08-11 18:02"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2164,9 +2164,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 609.22,
-    "pnl_pct": 0.87,
-    "last_checked_at": "2026-08-11 12:06"
+    "current_price": 609.9,
+    "pnl_pct": 0.98,
+    "last_checked_at": "2026-08-11 18:02"
   },
   {
     "id": "MMTUSDT_1786276926832",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2153,
-    "pnl_pct": -2.84,
-    "last_checked_at": "2026-08-11 12:06"
+    "current_price": 0.2101,
+    "pnl_pct": -5.19,
+    "last_checked_at": "2026-08-11 18:02"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,13 +2269,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 12:06",
+    "last_checked_at": "2026-08-11 18:02",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 64395.1,
-    "pnl_pct": 0.24
+    "current_price": 63616.9,
+    "pnl_pct": -0.97
   },
   {
     "id": "BICOUSDT_1786437155092",
@@ -2307,13 +2307,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-11 12:06",
+    "last_checked_at": "2026-08-11 18:02",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.03898,
-    "pnl_pct": -2.7
+    "current_price": 0.03902,
+    "pnl_pct": -2.6
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2322,7 +2322,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.01369771,
-    "entry": 0.01369771,
+    "entry": 0.01340015,
     "entry_low": 0.01340015,
     "entry_high": 0.01399526,
     "invalidate_price": 0.0086393,
@@ -2331,9 +2331,9 @@
     "sl": 0.00899636,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-11 08:33",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-11 18:02",
     "closed_at": null,
     "exit_price": null,
     "confidence": 77.1,
@@ -2345,12 +2345,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-11 12:06",
+    "last_checked_at": "2026-08-11 18:02",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.01315,
+    "current_price": 0.013169,
     "pnl_pct": null
   }
 ]
