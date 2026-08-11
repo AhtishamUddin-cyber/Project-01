@@ -5619,5 +5619,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BNBUSDT_1786449397205",
+    "coin": "BNB",
+    "pair": "BNBUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 608.41625,
+    "entry_low": 608.41625,
+    "entry_high": 608.94928571,
+    "invalidate_price": 604.15196428,
+    "tp1": 614.33294644,
+    "tp2": 618.27741073,
+    "sl": 604.47178571,
+    "timeframe": "2h",
+    "status": "PENDING",
+    "opened_at": "2026-08-11 11:56",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 45.7,
+    "vote_margin": -2,
+    "atr_at_entry": 2.13214286,
+    "entry_snapshot": {
+      "rsi": 41.55,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
