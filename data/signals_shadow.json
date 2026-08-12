@@ -6497,5 +6497,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_NBISUSDT_1786564039986",
+    "coin": "NBIS",
+    "pair": "NBISUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 250.7125,
+    "entry_low": 249.47857143,
+    "entry_high": 250.7125,
+    "invalidate_price": 260.58392858,
+    "tp1": 215.1,
+    "tp2": 218.75374996,
+    "sl": 259.84357144,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-12 19:47",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": -6,
+    "atr_at_entry": 4.93571429,
+    "entry_snapshot": {
+      "rsi": 37.04,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
