@@ -6392,5 +6392,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_XRPUSDT_1786563992253",
+    "coin": "XRP",
+    "pair": "XRPUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1.0097025,
+    "entry_low": 1.0097025,
+    "entry_high": 1.01120429,
+    "invalidate_price": 0.99768822,
+    "tp1": 1.0785,
+    "tp2": 1.04859873,
+    "sl": 0.99858929,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-12 19:46",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.00600714,
+    "entry_snapshot": {
+      "rsi": 58.79,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
