@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1535.92,
-    "pnl_pct": 1.79,
-    "last_checked_at": "2026-08-12 04:44"
+    "current_price": 1536.49,
+    "pnl_pct": 1.82,
+    "last_checked_at": "2026-08-12 04:50"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2195,9 +2195,9 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2019,
-    "pnl_pct": -8.89,
-    "last_checked_at": "2026-08-12 04:44"
+    "current_price": 0.203,
+    "pnl_pct": -8.39,
+    "last_checked_at": "2026-08-12 04:50"
   },
   {
     "id": "IOTXUSDT_1786277016246",
@@ -2269,13 +2269,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-12 04:44",
+    "last_checked_at": "2026-08-12 04:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63747.1,
-    "pnl_pct": -0.77
+    "current_price": 63792.3,
+    "pnl_pct": -0.7
   },
   {
     "id": "BICOUSDT_1786437155092",
@@ -2293,11 +2293,11 @@
     "sl": 0.03650571,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-11 08:32",
     "confirmed_at": "2026-08-11 09:15",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-12 04:50",
+    "exit_price": 0.03650571,
     "confidence": 75.7,
     "vote_margin": 9,
     "atr_at_entry": 0.00192286,
@@ -2307,13 +2307,31 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-12 04:44",
+    "last_checked_at": "2026-08-12 04:50",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.037,
-    "pnl_pct": -7.65
+    "dollar_pnl": -0.98,
+    "balance_applied": true,
+    "current_price": 0.03612,
+    "pnl_pct": -9.84,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 75.7,
+      "risk_pct": 8.88,
+      "minutes_in_trade": 1175,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "atr_ratio": 1.85,
+      "sl_tighter_than_normal": false,
+      "counter_trend": false,
+      "htf_trend_at_entry": "LONG",
+      "rsi_extended": false,
+      "rsi_at_entry": 53.16,
+      "funding_against": null,
+      "thin_vote": false,
+      "vote_margin_at_entry": 9,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2345,13 +2363,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-12 04:44",
+    "last_checked_at": "2026-08-12 04:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.012431,
-    "pnl_pct": -7.23
+    "current_price": 0.012396,
+    "pnl_pct": -7.49
   },
   {
     "id": "TSLAUSDT_1786475603503",
@@ -2383,12 +2401,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-12 04:44",
+    "last_checked_at": "2026-08-12 04:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 333.11,
+    "current_price": 333.23,
     "pnl_pct": null
   }
 ]
