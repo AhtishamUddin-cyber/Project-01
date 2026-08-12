@@ -1213,7 +1213,10 @@ def build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indi
     ema50 = indicators.get("ema50")
     price = live_price or 0
 
-    if ema9 and ema21 and ema50:
+    # FIX: was `if ema9 and ema21 and ema50:` — same truthy-zero issue as
+    # get_realtime_indicators; a real 0.0 EMA reading on a sub-cent coin was
+    # being read as "no EMA data" and silently forced to "Sideways".
+    if ema9 is not None and ema21 is not None and ema50 is not None:
         if price > ema9 > ema21 > ema50:
             trend = "Uptrend"
         elif price < ema9 < ema21 < ema50:
@@ -1840,13 +1843,30 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         def macd(prices):
             e12 = ema(prices, 12)
             e26 = ema(prices, 26)
-            if not e12 or not e26:
+            # FIX: was `if not e12 or not e26` — a correctly-computed EMA of
+            # exactly 0.0 (basically impossible for normal-priced coins, but
+            # real for sub-cent tokens where round(price, 6) can legitimately
+            # land on 0.0) is falsy in Python, so this used to treat a valid
+            # zero reading as "failed to compute" and bail out entirely.
+            if e12 is None or e26 is None:
                 return None, None, None
             ml = round(e12 - e26, 6)
-            mv = [ema(prices[:i + 1], 12) - ema(prices[:i + 1], 26) for i in range(26, len(prices))
-                  if ema(prices[:i + 1], 12) and ema(prices[:i + 1], 26)]
+            mv = []
+            for i in range(26, len(prices)):
+                e12_i = ema(prices[:i + 1], 12)
+                e26_i = ema(prices[:i + 1], 26)
+                # Same fix here: check for None, not truthiness — the MACD
+                # *line* (a difference of two close EMAs) rounding to exactly
+                # 0.000000 is actually the MOST common way this bug bit,
+                # since low-price coins' EMA12-EMA26 gap is tiny to begin
+                # with. Previously any zero-valued point in this history was
+                # silently dropped from the signal-line calculation instead
+                # of counted, which quietly shifted/shortened the signal EMA.
+                if e12_i is not None and e26_i is not None:
+                    mv.append(e12_i - e26_i)
             sig = ema(mv, 9) if len(mv) >= 9 else None
-            return ml, round(sig, 6) if sig else None, round(ml - sig, 6) if sig else None
+            return ml, (round(sig, 6) if sig is not None else None), \
+                   (round(ml - sig, 6) if sig is not None else None)
 
         def bb(prices, p=20, s=2):
             if len(prices) < p:
@@ -1929,17 +1949,23 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         else:
             rt = "NEUTRAL"
 
-        if MACD and SIG:
-            if MACD > SIG and HIST and HIST > 0:
+        # FIX: was `if MACD and SIG:` — MACD/signal of exactly 0.0 is a
+        # real, valid reading for low-price coins (see macd() above), not
+        # "missing". Using truthiness here silently forced mt="NEUTRAL" and
+        # dropped the MACD vote for those coins even when it had a real
+        # (zero-crossing) reading to report.
+        if MACD is not None and SIG is not None:
+            if MACD > SIG and HIST is not None and HIST > 0:
                 mt = "LONG"
-            elif MACD < SIG and HIST and HIST < 0:
+            elif MACD < SIG and HIST is not None and HIST < 0:
                 mt = "SHORT"
             else:
                 mt = "NEUTRAL"
         else:
             mt = "NEUTRAL"
 
-        if EMA9 and EMA21 and EMA50:
+        # FIX: was `if EMA9 and EMA21 and EMA50:` — same truthy-zero issue.
+        if EMA9 is not None and EMA21 is not None and EMA50 is not None:
             if CP > EMA9 > EMA21 > EMA50:
                 et = "LONG"
             elif CP < EMA9 < EMA21 < EMA50:
@@ -1953,7 +1979,8 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         else:
             et = "NEUTRAL"
 
-        if BBU and BBL:
+        # FIX: was `if BBU and BBL:` — same truthy-zero issue.
+        if BBU is not None and BBL is not None:
             if CP >= BBU:
                 bt = "SHORT"
             elif CP <= BBL:
@@ -2062,7 +2089,12 @@ def get_htf_trend(pair, market_type, timeframe):
     ema200 = ind.get("ema200")
     cp = ind.get("last_close")
     trend = "NEUTRAL"
-    if ema50 and ema200 and cp:
+    # FIX: was `if ema50 and ema200 and cp:` — truthy-zero issue again (see
+    # get_realtime_indicators). A legitimate ema50/ema200 of exactly 0.0 for
+    # a low-price coin used to make this silently skip straight to NEUTRAL,
+    # which is exactly the kind of "quietly not really checking" behavior
+    # that made the HTF trend filter look like it was guessing.
+    if ema50 is not None and ema200 is not None and cp is not None:
         if cp > ema50 > ema200:
             trend = "LONG"
         elif cp < ema50 < ema200:
@@ -2071,7 +2103,7 @@ def get_htf_trend(pair, market_type, timeframe):
             trend = "LONG"
         elif cp < ema50:
             trend = "SHORT"
-    elif ema50 and cp:
+    elif ema50 is not None and cp is not None:
         trend = "LONG" if cp > ema50 else "SHORT"
     return {"available": True, "trend": trend, "timeframe": htf_tf}
 
@@ -2302,8 +2334,23 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     # confidence score, so "how far is TP" and "how confident is this"
     # always tell a consistent story instead of a fixed distance being
     # slapped on regardless of setup quality.
+    # BUG FIX: this said "htf_pct >= 50", which is true for BOTH real HTF
+    # agreement (htf_pct=100) AND for a neutral/flat HTF trend or no HTF
+    # data at all (htf_pct=50, the default when unavailable). That let
+    # trades qualify for "aggressive" (far, 2.5x-4.5x-risk) targets purely
+    # because the higher timeframe wasn't actively AGAINST them - not
+    # because it was actually confirming them, which is what the comment
+    # above (and the whole point of scaling TP by setup strength) says
+    # should be required. SL distance does NOT scale with style/confidence
+    # (it's always ~1.5x ATR / just past the nearest swing level) - only TP
+    # does. So a high-confidence trade wrongly pushed into "aggressive"
+    # without real HTF backing was being asked to travel much further to
+    # bank profit while risking the same distance to get stopped out -
+    # exactly the "confidence 70+, but SL keeps hitting before TP" pattern.
+    # Now requires htf_pct == 100 (genuine, confirmed agreement) before
+    # widening the target.
     if target_style == "auto":
-        if accuracy >= 75 and htf_pct >= 50:
+        if accuracy >= 75 and htf_pct == 100:
             eff_style = "aggressive"
         elif accuracy >= 55:
             eff_style = "balanced"
@@ -2657,7 +2704,8 @@ def _backtest_signal_at(closes, highs, lows, i):
     elif r >= 60: votes_long += 1
     elif r <= 40: votes_short += 1
 
-    if ema9 and ema21 and ema50:
+    # FIX: same truthy-zero issue as the live indicator engine.
+    if ema9 is not None and ema21 is not None and ema50 is not None:
         if cp > ema9 > ema21 > ema50: votes_long += 1
         elif cp < ema9 < ema21 < ema50: votes_short += 1
         elif cp > ema21: votes_long += 1
