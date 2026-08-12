@@ -2195,8 +2195,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2016,
-    "pnl_pct": -9.03,
+    "current_price": 0.2019,
+    "pnl_pct": -8.89,
     "last_checked_at": "2026-08-12 04:44"
   },
   {
@@ -2274,7 +2274,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 63747.2,
+    "current_price": 63747.1,
     "pnl_pct": -0.77
   },
   {
@@ -2312,8 +2312,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.03695,
-    "pnl_pct": -7.77
+    "current_price": 0.037,
+    "pnl_pct": -7.65
   },
   {
     "id": "BLESSUSDT_1786437221994",
@@ -2350,8 +2350,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.012413,
-    "pnl_pct": -7.37
+    "current_price": 0.012431,
+    "pnl_pct": -7.23
   },
   {
     "id": "TSLAUSDT_1786475603503",
