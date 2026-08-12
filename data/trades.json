@@ -2462,5 +2462,41 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "LINKUSDT_1786564079398",
+    "coin": "LINK",
+    "pair": "LINKUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 8.75601071,
+    "entry": 8.75601071,
+    "entry_low": 8.74785,
+    "entry_high": 8.76417143,
+    "invalidate_price": 8.61727857,
+    "tp1": 9.04979642,
+    "tp2": 9.29135356,
+    "sl": 8.62707143,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-12 19:47",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.06528571,
+    "entry_snapshot": {
+      "rsi": 53.18,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
