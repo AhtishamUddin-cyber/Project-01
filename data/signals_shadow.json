@@ -6637,5 +6637,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_CBRSUSDT_1786644263304",
+    "coin": "CBRS",
+    "pair": "CBRSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 229.6035,
+    "entry_low": 229.6035,
+    "entry_high": 230.81314286,
+    "invalidate_price": 210.53264286,
+    "tp1": 275.46617857,
+    "tp2": 312.15632143,
+    "sl": 211.25842857,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 18:04",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 4.83857143,
+    "entry_snapshot": {
+      "rsi": 60.83,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
