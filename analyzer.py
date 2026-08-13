@@ -906,6 +906,12 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
         pnl_pct = ((entry - live_price) / entry) * 100 if entry else 0
     t["pnl_pct"] = round(pnl_pct, 2)
 
+    def _pct_at(exit_price):
+        if not entry:
+            return 0
+        return round(((exit_price - entry) / entry) * 100 if direction == "LONG"
+                      else ((entry - exit_price) / entry) * 100, 2)
+
     if t["status"] == "OPEN":
         sl = t.get("sl")
         tp1 = t.get("tp1")
@@ -920,19 +926,33 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
             hit_tp2 = tp2 and check_low <= tp2
             hit_tp1 = tp1 and check_low <= tp1
 
+        # BUG FIX: pnl_pct above was computed from `live_price` - the ticker
+        # price AT THE MOMENT WE HAPPENED TO CHECK, not the actual price the
+        # trade closed at. Refreshes can be hours or even days apart (see
+        # get_price_extremes_since), so by the time we notice an SL/TP was
+        # hit, price may have moved well past that level - sometimes back in
+        # our favor (an SL_HIT trade could show a fake WIN), sometimes much
+        # further against us (a -17% SL shows up as a -24% "loss" because the
+        # coin kept crashing before the next refresh). Now pnl_pct is always
+        # recomputed from the REAL exit level (sl/tp1/tp2) once we know
+        # which one actually triggered, so both the trade log and the demo
+        # balance reflect what actually happened, not refresh-timing luck.
         if hit_sl:
             t["status"] = "SL_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = sl
+            t["pnl_pct"] = _pct_at(sl)
             t["sl_hit_analysis"] = build_sl_hit_analysis(t)
         elif hit_tp2:
             t["status"] = "TP2_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = tp2
+            t["pnl_pct"] = _pct_at(tp2)
         elif hit_tp1:
             t["status"] = "TP1_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = tp1
+            t["pnl_pct"] = _pct_at(tp1)
 
     return t
 
@@ -2459,12 +2479,26 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
 
         rr = round(abs(tp1 - entry_ref) / abs(sl - entry_ref), 1) if sl and abs(sl - entry_ref) > 0 else "N/A"
 
+        # NEW: flag when the ATR-based SL comes out unusually wide as a % of
+        # price. This mostly hits low-liquidity/volatile altcoins where ATR
+        # itself is huge relative to price - the SL math is technically
+        # correct (it IS that coin's real volatility), but silently handing
+        # Ahtisham a 15-30%+ stop on the same fixed stake as a normal ~2%
+        # BTC/ETH stop means wildly inconsistent risk per trade unless he
+        # consciously sizes down. Surfaced as a factor so it's visible
+        # instead of buried in the numbers.
+        sl_risk_pct = round(abs(entry_ref - sl) / entry_ref * 100, 2) if entry_ref and sl else None
+        if sl_risk_pct is not None and sl_risk_pct >= 6:
+            factors.append(("bad", f"⚠️ Wide stop-loss: {sl_risk_pct}% away from entry — this pair's own volatility (ATR) makes a normal stop unusually wide. Same stake here risks much more than a typical BTC/ETH setup; size down or skip."))
+    else:
+        sl_risk_pct = None
+
     return {
         "final_direction": final_direction, "gemini_direction": gemini_direction,
         "data_direction": data_direction, "agreement": agreement, "accuracy": accuracy,
         "vote_margin": margin, "htf_trend": htf.get("trend"), "htf_timeframe": htf.get("timeframe"),
         "target_style": eff_style,
-        "factors": factors, "tp1": tp1, "tp2": tp2, "sl": sl,
+        "factors": factors, "tp1": tp1, "tp2": tp2, "sl": sl, "sl_risk_pct": sl_risk_pct,
         "entry_low": entry_low, "entry_high": entry_high, "entry_note": entry_note,
         "confirm_price": confirm_price, "invalidate_price": invalidate_price,
         "rev_confirm": rev_confirm, "rev_entry_low": rev_entry_low, "rev_entry_high": rev_entry_high,
