@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1581.0,
-    "pnl_pct": 4.77,
-    "last_checked_at": "2026-08-13 18:50"
+    "current_price": 1574.45,
+    "pnl_pct": 4.34,
+    "last_checked_at": "2026-08-13 19:27"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2213,8 +2213,8 @@
       "funding_against": null,
       "thin_vote": false,
       "vote_margin_at_entry": 7,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   },
   {
@@ -2309,8 +2309,8 @@
       "funding_against": null,
       "thin_vote": false,
       "vote_margin_at_entry": 7,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   },
   {
@@ -2421,8 +2421,8 @@
       "funding_against": null,
       "thin_vote": false,
       "vote_margin_at_entry": 6,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   },
   {
@@ -2587,12 +2587,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 18:50",
+    "last_checked_at": "2026-08-13 19:27",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1193.77,
+    "current_price": 1189.13,
     "pnl_pct": null
   },
   {
@@ -2625,12 +2625,12 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 18:50",
+    "last_checked_at": "2026-08-13 19:27",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.28,
+    "current_price": 85.44,
     "pnl_pct": null
   },
   {
@@ -2640,7 +2640,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.00287984,
-    "entry": 0.00287984,
+    "entry": 0.00287357,
     "entry_low": 0.00287357,
     "entry_high": 0.00288612,
     "invalidate_price": 0.00277316,
@@ -2649,9 +2649,9 @@
     "sl": 0.00278069,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-13 18:42",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-13 19:27",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -2663,12 +2663,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 18:50",
+    "last_checked_at": "2026-08-13 19:27",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002852,
+    "current_price": 0.002867,
     "pnl_pct": null
   }
 ]
