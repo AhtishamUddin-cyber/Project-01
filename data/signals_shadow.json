@@ -6602,5 +6602,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_KORUUSDT_1786644261697",
+    "coin": "KORU",
+    "pair": "KORUUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 21.902275,
+    "entry_low": 21.902275,
+    "entry_high": 22.11032857,
+    "invalidate_price": 17.49950357,
+    "tp1": 32.59712322,
+    "tp2": 41.1530018,
+    "sl": 17.62433571,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 18:04",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.83221429,
+    "entry_snapshot": {
+      "rsi": 54.69,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
