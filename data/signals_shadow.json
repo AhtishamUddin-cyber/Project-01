@@ -7076,5 +7076,40 @@
     "is_shadow": true,
     "current_price": 0.13022,
     "pnl_pct": 2.09
+  },
+  {
+    "id": "shadow_ACUUSDT_1786647039006",
+    "coin": "ACU",
+    "pair": "ACUUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.12754825,
+    "entry_low": 0.12754825,
+    "entry_high": 0.12766129,
+    "invalidate_price": 0.12664397,
+    "tp1": 0.12922117,
+    "tp2": 0.13047586,
+    "sl": 0.12671179,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 18:50",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.00045214,
+    "entry_snapshot": {
+      "rsi": 52.48,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
