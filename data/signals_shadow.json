@@ -6532,5 +6532,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_PUMPUSDT_1786644256880",
+    "coin": "PUMP",
+    "pair": "PUMPUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.00284957,
+    "entry_low": 0.00284957,
+    "entry_high": 0.00286212,
+    "invalidate_price": 0.00274916,
+    "tp1": 0.00308177,
+    "tp2": 0.00326753,
+    "sl": 0.00275669,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 18:04",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 77.9,
+    "vote_margin": 8,
+    "atr_at_entry": 5.021e-05,
+    "entry_snapshot": {
+      "rsi": 65.99,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
