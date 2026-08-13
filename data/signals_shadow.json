@@ -6742,5 +6742,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_PROMUSDT_1786644272756",
+    "coin": "PROM",
+    "pair": "PROMUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 2.3248125,
+    "entry_low": 2.3248125,
+    "entry_high": 2.33589286,
+    "invalidate_price": 2.23616964,
+    "tp1": 2.52979913,
+    "tp2": 2.69378843,
+    "sl": 2.24281785,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 18:04",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.04432143,
+    "entry_snapshot": {
+      "rsi": 60.24,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
