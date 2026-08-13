@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1580.34,
-    "pnl_pct": 4.73,
-    "last_checked_at": "2026-08-13 18:49"
+    "current_price": 1581.0,
+    "pnl_pct": 4.77,
+    "last_checked_at": "2026-08-13 18:50"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2587,12 +2587,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 18:49",
+    "last_checked_at": "2026-08-13 18:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1193.58,
+    "current_price": 1193.77,
     "pnl_pct": null
   },
   {
@@ -2625,12 +2625,12 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 18:49",
+    "last_checked_at": "2026-08-13 18:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.29,
+    "current_price": 85.28,
     "pnl_pct": null
   },
   {
@@ -2663,7 +2663,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 18:49",
+    "last_checked_at": "2026-08-13 18:50",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
