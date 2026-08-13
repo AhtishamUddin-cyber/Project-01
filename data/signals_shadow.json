@@ -7329,5 +7329,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_HYPEUSDT_1786659042542",
+    "coin": "HYPE",
+    "pair": "HYPEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 57.43595,
+    "entry_low": 57.43595,
+    "entry_high": 57.48377143,
+    "invalidate_price": 57.05337858,
+    "tp1": 58.14370712,
+    "tp2": 58.67452496,
+    "sl": 57.08207144,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 22:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.19128571,
+    "entry_snapshot": {
+      "rsi": 49.26,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
