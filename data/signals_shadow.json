@@ -7819,5 +7819,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_TSLAUSDT_1786660755005",
+    "coin": "TSLA",
+    "pair": "TSLAUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 346.546,
+    "entry_low": 346.546,
+    "entry_high": 350.21457143,
+    "invalidate_price": 317.19742858,
+    "tp1": 387.26714284,
+    "tp2": 414.4145714,
+    "sl": 319.39857144,
+    "timeframe": "1d",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 22:39",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 35.7,
+    "vote_margin": -2,
+    "atr_at_entry": 14.67428571,
+    "entry_snapshot": {
+      "rsi": 52.18,
+      "htf_trend": "NEUTRAL",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
