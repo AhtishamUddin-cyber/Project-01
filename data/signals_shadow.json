@@ -7148,5 +7148,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SKHYUSDT_1786649735394",
+    "coin": "SKHY",
+    "pair": "SKHYUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 166.855,
+    "entry_low": 166.855,
+    "entry_high": 167.74428571,
+    "invalidate_price": 145.05928571,
+    "tp1": 209.37928572,
+    "tp2": 241.27250001,
+    "sl": 145.59285714,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-13 19:35",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.9,
+    "vote_margin": 8,
+    "atr_at_entry": 3.55714286,
+    "entry_snapshot": {
+      "rsi": 57.1,
+      "htf_trend": "NEUTRAL",
+      "fund_signal": "LONG",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
