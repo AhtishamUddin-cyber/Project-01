@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1573.37,
-    "pnl_pct": 4.27,
-    "last_checked_at": "2026-08-13 21:18"
+    "current_price": 1575.11,
+    "pnl_pct": 4.38,
+    "last_checked_at": "2026-08-13 22:05"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 21:18",
+    "last_checked_at": "2026-08-13 22:05",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1196.65,
-    "pnl_pct": -0.14
+    "current_price": 1220.27,
+    "pnl_pct": 1.83
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,7 +2625,7 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 21:18",
+    "last_checked_at": "2026-08-13 22:05",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 21:18",
+    "last_checked_at": "2026-08-13 22:05",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002842,
-    "pnl_pct": -1.1
+    "current_price": 0.002853,
+    "pnl_pct": -0.72
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2678,7 +2678,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 193.37975,
-    "entry": 193.37975,
+    "entry": 192.9035,
     "entry_low": 192.9035,
     "entry_high": 193.856,
     "invalidate_price": 185.2835,
@@ -2687,9 +2687,9 @@
     "sl": 185.855,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-13 19:37",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-13 22:05",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -2701,12 +2701,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 21:18",
+    "last_checked_at": "2026-08-13 22:05",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 192.62,
+    "current_price": 194.05,
     "pnl_pct": null
   }
 ]
