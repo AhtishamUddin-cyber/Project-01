@@ -1213,10 +1213,7 @@ def build_auto_chart(coin_symbol, pair, market_type, timeframe, live_price, indi
     ema50 = indicators.get("ema50")
     price = live_price or 0
 
-    # FIX: was `if ema9 and ema21 and ema50:` — same truthy-zero issue as
-    # get_realtime_indicators; a real 0.0 EMA reading on a sub-cent coin was
-    # being read as "no EMA data" and silently forced to "Sideways".
-    if ema9 is not None and ema21 is not None and ema50 is not None:
+    if ema9 and ema21 and ema50:
         if price > ema9 > ema21 > ema50:
             trend = "Uptrend"
         elif price < ema9 < ema21 < ema50:
@@ -1805,7 +1802,7 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         lows = [float(c[3]) for c in candles]
         volumes = [float(c[5]) for c in candles]
 
-        def rsi(prices, p=14):
+        def rsi(prices, p=14, return_series=False):
             # FIX: this was previously a simple average of the last `p`
             # gains/losses (SMA-based RSI). That's a different, less common
             # variant from the RSI everyone actually looks at on Bitget/
@@ -1816,20 +1813,31 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
             # silently mismatch what Ahtisham was seeing on the real chart -
             # a real, explainable source of the analyzer "feeling wrong"
             # even when the rest of the logic was fine.
+            #
+            # return_series=True returns the FULL Wilder-smoothed RSI value
+            # at every step (not just the final one) - needed by stoch_rsi()
+            # below so it can take a rolling min/max of a properly continuous
+            # RSI series, instead of re-seeding Wilder's smoothing from
+            # scratch on a tiny window (see stoch_rsi's own note).
             if len(prices) < p + 1:
-                return 50
+                return [50] * len(prices) if return_series else 50
             deltas = [prices[i] - prices[i - 1] for i in range(1, len(prices))]
             gains = [max(d, 0) for d in deltas]
             losses = [max(-d, 0) for d in deltas]
             avg_gain = sum(gains[:p]) / p
             avg_loss = sum(losses[:p]) / p
+
+            def _val(ag, al):
+                if al == 0:
+                    return 100 if ag > 0 else 50
+                return round(100 - (100 / (1 + ag / al)), 2)
+
+            series = [_val(avg_gain, avg_loss)]
             for i in range(p, len(gains)):
                 avg_gain = (avg_gain * (p - 1) + gains[i]) / p
                 avg_loss = (avg_loss * (p - 1) + losses[i]) / p
-            if avg_loss == 0:
-                return 100 if avg_gain > 0 else 50
-            rs = avg_gain / avg_loss
-            return round(100 - (100 / (1 + rs)), 2)
+                series.append(_val(avg_gain, avg_loss))
+            return series if return_series else series[-1]
 
         def ema(prices, p):
             if len(prices) < p:
@@ -1843,30 +1851,13 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         def macd(prices):
             e12 = ema(prices, 12)
             e26 = ema(prices, 26)
-            # FIX: was `if not e12 or not e26` — a correctly-computed EMA of
-            # exactly 0.0 (basically impossible for normal-priced coins, but
-            # real for sub-cent tokens where round(price, 6) can legitimately
-            # land on 0.0) is falsy in Python, so this used to treat a valid
-            # zero reading as "failed to compute" and bail out entirely.
-            if e12 is None or e26 is None:
+            if not e12 or not e26:
                 return None, None, None
             ml = round(e12 - e26, 6)
-            mv = []
-            for i in range(26, len(prices)):
-                e12_i = ema(prices[:i + 1], 12)
-                e26_i = ema(prices[:i + 1], 26)
-                # Same fix here: check for None, not truthiness — the MACD
-                # *line* (a difference of two close EMAs) rounding to exactly
-                # 0.000000 is actually the MOST common way this bug bit,
-                # since low-price coins' EMA12-EMA26 gap is tiny to begin
-                # with. Previously any zero-valued point in this history was
-                # silently dropped from the signal-line calculation instead
-                # of counted, which quietly shifted/shortened the signal EMA.
-                if e12_i is not None and e26_i is not None:
-                    mv.append(e12_i - e26_i)
+            mv = [ema(prices[:i + 1], 12) - ema(prices[:i + 1], 26) for i in range(26, len(prices))
+                  if ema(prices[:i + 1], 12) and ema(prices[:i + 1], 26)]
             sig = ema(mv, 9) if len(mv) >= 9 else None
-            return ml, (round(sig, 6) if sig is not None else None), \
-                   (round(ml - sig, 6) if sig is not None else None)
+            return ml, round(sig, 6) if sig else None, round(ml - sig, 6) if sig else None
 
         def bb(prices, p=20, s=2):
             if len(prices) < p:
@@ -1877,12 +1868,22 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
             return round(m + s * std, 6), round(m, 6), round(m - s * std, 6)
 
         def stoch_rsi(prices, p=14):
-            rv = [rsi(prices[max(0, i - p):i + 1], p) for i in range(p, len(prices))]
-            if len(rv) < p:
+            # BUG FIX: this used to call rsi() fresh on each small window
+            # (prices[i-p:i+1], only p+1 candles). With that few candles,
+            # rsi()'s Wilder-smoothing loop never runs (there's nothing left
+            # to smooth after the initial seed), so every point in `rv` was
+            # silently just the plain SMA-based average, not real Wilder RSI.
+            # The resulting StochRSI values were consistently noisier/
+            # different from what Bitget/TradingView show. Real StochRSI is
+            # the rolling min/max of ONE continuous RSI series - so compute
+            # that series once (reusing the same Wilder logic as the main
+            # RSI above) and take the rolling window over it.
+            series = rsi(prices, p, return_series=True)
+            if len(series) < p:
                 return 50
-            rc = rv[-p:]
+            rc = series[-p:]
             mn, mx = min(rc), max(rc)
-            return 50 if mx == mn else round((rv[-1] - mn) / (mx - mn) * 100, 2)
+            return 50 if mx == mn else round((series[-1] - mn) / (mx - mn) * 100, 2)
 
         def vol_sig(vols):
             if len(vols) < 20:
@@ -1938,10 +1939,30 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         SWING_SUP, SWING_RES = swing_levels(highs, lows, closes)
         DIVERGENCE = detect_rsi_divergence(closes, highs, lows)
 
+        # BUG FIX: RSI overbought/oversold, Bollinger touch, and StochRSI
+        # extremes are MEAN-REVERSION reads (they assume "extended -> due
+        # for a pullback/reversal"). But in a genuinely strong, established
+        # trend (price stacked cleanly above/below EMA9/21/50), staying
+        # "overbought"/"oversold" for a long stretch is normal, healthy
+        # continuation - not a reversal cue. Without this check, these 3 of
+        # the 5 sub-indicators would routinely call a counter-trend
+        # SHORT/LONG purely because RSI crossed 70/30 or price touched a
+        # Bollinger band DURING a strong trend, then gang up 3-vs-2 against
+        # a real trend read (EMA+MACD). Combined with the breakout-style
+        # entry mechanic (entry_ref chases further in final_direction),
+        # this was a real, repeatable way to open counter-trend trades
+        # right as a strong trend kept going - textbook "SL hit because
+        # the trend just continued", not because the setup was actually
+        # wrong. Now: extremes are only read as a REVERSAL when the trend
+        # itself isn't already strongly stacked the other way; inside a
+        # strong trend they go NEUTRAL instead of fighting it.
+        strong_up = bool(EMA9 and EMA21 and EMA50 and CP > EMA9 > EMA21 > EMA50)
+        strong_down = bool(EMA9 and EMA21 and EMA50 and CP < EMA9 < EMA21 < EMA50)
+
         if RSI >= 70:
-            rt = "SHORT"
+            rt = "NEUTRAL" if strong_up else "SHORT"
         elif RSI <= 30:
-            rt = "LONG"
+            rt = "NEUTRAL" if strong_down else "LONG"
         elif RSI >= 60:
             rt = "LONG"
         elif RSI <= 40:
@@ -1949,26 +1970,20 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         else:
             rt = "NEUTRAL"
 
-        # FIX: was `if MACD and SIG:` — MACD/signal of exactly 0.0 is a
-        # real, valid reading for low-price coins (see macd() above), not
-        # "missing". Using truthiness here silently forced mt="NEUTRAL" and
-        # dropped the MACD vote for those coins even when it had a real
-        # (zero-crossing) reading to report.
-        if MACD is not None and SIG is not None:
-            if MACD > SIG and HIST is not None and HIST > 0:
+        if MACD and SIG:
+            if MACD > SIG and HIST and HIST > 0:
                 mt = "LONG"
-            elif MACD < SIG and HIST is not None and HIST < 0:
+            elif MACD < SIG and HIST and HIST < 0:
                 mt = "SHORT"
             else:
                 mt = "NEUTRAL"
         else:
             mt = "NEUTRAL"
 
-        # FIX: was `if EMA9 and EMA21 and EMA50:` — same truthy-zero issue.
-        if EMA9 is not None and EMA21 is not None and EMA50 is not None:
-            if CP > EMA9 > EMA21 > EMA50:
+        if EMA9 and EMA21 and EMA50:
+            if strong_up:
                 et = "LONG"
-            elif CP < EMA9 < EMA21 < EMA50:
+            elif strong_down:
                 et = "SHORT"
             elif CP > EMA21:
                 et = "LONG"
@@ -1979,12 +1994,11 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
         else:
             et = "NEUTRAL"
 
-        # FIX: was `if BBU and BBL:` — same truthy-zero issue.
-        if BBU is not None and BBL is not None:
+        if BBU and BBL:
             if CP >= BBU:
-                bt = "SHORT"
+                bt = "NEUTRAL" if strong_up else "SHORT"
             elif CP <= BBL:
-                bt = "LONG"
+                bt = "NEUTRAL" if strong_down else "LONG"
             elif CP > BBM:
                 bt = "LONG"
             else:
@@ -1993,9 +2007,9 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
             bt = "NEUTRAL"
 
         if SRSI >= 80:
-            st_ = "SHORT"
+            st_ = "NEUTRAL" if strong_up else "SHORT"
         elif SRSI <= 20:
-            st_ = "LONG"
+            st_ = "NEUTRAL" if strong_down else "LONG"
         else:
             st_ = "NEUTRAL"
 
@@ -2089,12 +2103,7 @@ def get_htf_trend(pair, market_type, timeframe):
     ema200 = ind.get("ema200")
     cp = ind.get("last_close")
     trend = "NEUTRAL"
-    # FIX: was `if ema50 and ema200 and cp:` — truthy-zero issue again (see
-    # get_realtime_indicators). A legitimate ema50/ema200 of exactly 0.0 for
-    # a low-price coin used to make this silently skip straight to NEUTRAL,
-    # which is exactly the kind of "quietly not really checking" behavior
-    # that made the HTF trend filter look like it was guessing.
-    if ema50 is not None and ema200 is not None and cp is not None:
+    if ema50 and ema200 and cp:
         if cp > ema50 > ema200:
             trend = "LONG"
         elif cp < ema50 < ema200:
@@ -2103,7 +2112,7 @@ def get_htf_trend(pair, market_type, timeframe):
             trend = "LONG"
         elif cp < ema50:
             trend = "SHORT"
-    elif ema50 is not None and cp is not None:
+    elif ema50 and cp:
         trend = "LONG" if cp > ema50 else "SHORT"
     return {"available": True, "trend": trend, "timeframe": htf_tf}
 
@@ -2236,9 +2245,20 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
 
     winning_votes = ls if final_direction == "LONG" else ss
     losing_votes = ss if final_direction == "LONG" else ls
-    if margin >= 4:
+    # BUG FIX: this used to compare the raw signed `margin` (= ls - ss).
+    # For a SHORT trade, ss > ls, so margin is NEGATIVE - meaning `margin
+    # >= 4` and `margin >= 2` could never be true for a SHORT signal no
+    # matter how one-sided the vote actually was. Every SHORT setup was
+    # therefore always landing in the "Thin/no clear majority" bad bucket,
+    # even a 10-vs-2 blowout, while the same conviction on the LONG side
+    # correctly showed as "Strong". This only affected the displayed
+    # explanation text, not the numeric accuracy score (which already used
+    # abs(margin) via margin_pct below) - but it systematically made SHORT
+    # setups look weaker than they were in the Signal Breakdown.
+    vote_strength = winning_votes - losing_votes
+    if vote_strength >= 4:
         factors.append(("good", f"Strong directional vote ({winning_votes} vs {losing_votes} across all signals)"))
-    elif margin >= 2:
+    elif vote_strength >= 2:
         factors.append(("warn", f"Moderate directional vote ({winning_votes} vs {losing_votes})"))
     else:
         factors.append(("bad", f"Thin/no clear majority ({winning_votes} vs {losing_votes}) — low-conviction setup"))
@@ -2334,23 +2354,8 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
     # confidence score, so "how far is TP" and "how confident is this"
     # always tell a consistent story instead of a fixed distance being
     # slapped on regardless of setup quality.
-    # BUG FIX: this said "htf_pct >= 50", which is true for BOTH real HTF
-    # agreement (htf_pct=100) AND for a neutral/flat HTF trend or no HTF
-    # data at all (htf_pct=50, the default when unavailable). That let
-    # trades qualify for "aggressive" (far, 2.5x-4.5x-risk) targets purely
-    # because the higher timeframe wasn't actively AGAINST them - not
-    # because it was actually confirming them, which is what the comment
-    # above (and the whole point of scaling TP by setup strength) says
-    # should be required. SL distance does NOT scale with style/confidence
-    # (it's always ~1.5x ATR / just past the nearest swing level) - only TP
-    # does. So a high-confidence trade wrongly pushed into "aggressive"
-    # without real HTF backing was being asked to travel much further to
-    # bank profit while risking the same distance to get stopped out -
-    # exactly the "confidence 70+, but SL keeps hitting before TP" pattern.
-    # Now requires htf_pct == 100 (genuine, confirmed agreement) before
-    # widening the target.
     if target_style == "auto":
-        if accuracy >= 75 and htf_pct == 100:
+        if accuracy >= 75 and htf_pct >= 50:
             eff_style = "aggressive"
         elif accuracy >= 55:
             eff_style = "balanced"
@@ -2383,16 +2388,34 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
 
         if final_direction == "LONG":
             entry_ref = round(price + eff_atr * 0.35, 8)
+            # BUG FIX: a nearby swing support used to be used as SL with just
+            # a flat 0.3x ATR buffer and NO minimum-distance check. If that
+            # support happened to sit very close to price, the resulting SL
+            # could end up under 1x ATR away from entry - which the tool's
+            # OWN sl_hit_analysis elsewhere explicitly calls "inside normal
+            # volatility, a normal wick can hit it without a real reversal".
+            # So the analyzer was capable of generating stops it would later
+            # diagnose as too tight. Now the swing-based SL is only used if
+            # it doesn't violate that same 1x ATR floor; otherwise it widens
+            # to the floor instead.
+            min_risk = eff_atr * 1.0
             if swing_sup and swing_sup < price and (price - swing_sup) < eff_atr * 6:
-                sl = round(swing_sup - eff_atr * 0.3, 8)
+                candidate_sl = swing_sup - eff_atr * 0.3
+                sl = round(candidate_sl, 8) if (entry_ref - candidate_sl) >= min_risk else round(entry_ref - min_risk, 8)
             else:
                 sl = round(price - eff_atr * 1.5, 8)
             risk = entry_ref - sl
-            if swing_res and swing_res > entry_ref and (swing_res - entry_ref) >= risk * 1.3:
+            tp2 = round(entry_ref + risk * tp2_mult, 8)
+            # BUG FIX: swing resistance used to be allowed as TP1 with no
+            # upper bound, so a distant resistance could put TP1 FARTHER
+            # than TP2 - inverting the intended near/far target order and
+            # inflating the displayed R:R (which is calculated off TP1).
+            # Now it's only used when it lands strictly between the normal
+            # TP1 distance and TP2's distance.
+            if swing_res and swing_res > entry_ref and risk * 1.3 <= (swing_res - entry_ref) < risk * tp2_mult:
                 tp1 = round(swing_res, 8)
             else:
                 tp1 = round(entry_ref + risk * tp1_mult, 8)
-            tp2 = round(entry_ref + risk * tp2_mult, 8)
             confirm_price = entry_ref
             invalidate_price = round(sl - eff_atr * 0.15, 8)
             entry_low = confirm_price
@@ -2407,16 +2430,20 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
             rev_sl = round(entry_ref + eff_atr * 0.5, 8)
         else:
             entry_ref = round(price - eff_atr * 0.35, 8)
+            # Mirror of the LONG-side fixes above: enforce the same 1x ATR
+            # minimum SL distance, and cap swing-based TP1 below TP2.
+            min_risk = eff_atr * 1.0
             if swing_res and swing_res > price and (swing_res - price) < eff_atr * 6:
-                sl = round(swing_res + eff_atr * 0.3, 8)
+                candidate_sl = swing_res + eff_atr * 0.3
+                sl = round(candidate_sl, 8) if (candidate_sl - entry_ref) >= min_risk else round(entry_ref + min_risk, 8)
             else:
                 sl = round(price + eff_atr * 1.5, 8)
             risk = sl - entry_ref
-            if swing_sup and swing_sup < entry_ref and (entry_ref - swing_sup) >= risk * 1.3:
+            tp2 = round(entry_ref - risk * tp2_mult, 8)
+            if swing_sup and swing_sup < entry_ref and risk * 1.3 <= (entry_ref - swing_sup) < risk * tp2_mult:
                 tp1 = round(swing_sup, 8)
             else:
                 tp1 = round(entry_ref - risk * tp1_mult, 8)
-            tp2 = round(entry_ref - risk * tp2_mult, 8)
             confirm_price = entry_ref
             invalidate_price = round(sl + eff_atr * 0.15, 8)
             entry_low = round(confirm_price - eff_atr * 0.25, 8)
@@ -2704,8 +2731,7 @@ def _backtest_signal_at(closes, highs, lows, i):
     elif r >= 60: votes_long += 1
     elif r <= 40: votes_short += 1
 
-    # FIX: same truthy-zero issue as the live indicator engine.
-    if ema9 is not None and ema21 is not None and ema50 is not None:
+    if ema9 and ema21 and ema50:
         if cp > ema9 > ema21 > ema50: votes_long += 1
         elif cp < ema9 < ema21 < ema50: votes_short += 1
         elif cp > ema21: votes_long += 1
