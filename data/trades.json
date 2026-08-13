@@ -1222,9 +1222,9 @@
     "leverage": 30,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1576.59,
-    "pnl_pct": 4.48,
-    "last_checked_at": "2026-08-13 19:39"
+    "current_price": 1576.33,
+    "pnl_pct": 4.46,
+    "last_checked_at": "2026-08-13 19:42"
   },
   {
     "id": "10000NEXUSDT_1785212973046",
@@ -2587,12 +2587,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 19:39",
+    "last_checked_at": "2026-08-13 19:42",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1190.31,
+    "current_price": 1186.7,
     "pnl_pct": null
   },
   {
@@ -2625,12 +2625,12 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 19:39",
+    "last_checked_at": "2026-08-13 19:42",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.46,
+    "current_price": 85.44,
     "pnl_pct": null
   },
   {
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-13 19:39",
+    "last_checked_at": "2026-08-13 19:42",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002864,
-    "pnl_pct": -0.33
+    "current_price": 0.002872,
+    "pnl_pct": -0.05
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,12 +2701,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-13 19:39",
+    "last_checked_at": "2026-08-13 19:42",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 191.69,
+    "current_price": 191.29,
     "pnl_pct": null
   }
 ]
