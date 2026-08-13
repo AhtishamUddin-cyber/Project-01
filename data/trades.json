@@ -2592,8 +2592,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1220.27,
-    "pnl_pct": 1.83
+    "current_price": 1216.89,
+    "pnl_pct": 1.55
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2706,7 +2706,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 194.05,
-    "pnl_pct": null
+    "current_price": 193.95,
+    "pnl_pct": 0.54
   }
 ]
