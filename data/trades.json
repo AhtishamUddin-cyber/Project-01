@@ -2592,8 +2592,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1198.83,
-    "pnl_pct": 0.04
+    "current_price": 1198.4,
+    "pnl_pct": 0.0
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2630,7 +2630,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.26,
+    "current_price": 85.27,
     "pnl_pct": null
   },
   {
@@ -2668,8 +2668,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.00292,
-    "pnl_pct": 1.62
+    "current_price": 0.002917,
+    "pnl_pct": 1.51
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2706,7 +2706,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 194.43,
-    "pnl_pct": 0.79
+    "current_price": 194.49,
+    "pnl_pct": 0.82
   }
 ]
