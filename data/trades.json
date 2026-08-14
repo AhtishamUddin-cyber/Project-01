@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 09:30",
+    "last_checked_at": "2026-08-14 11:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1175.74,
-    "pnl_pct": -1.89
+    "current_price": 1195.48,
+    "pnl_pct": -0.24
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 09:30",
+    "last_checked_at": "2026-08-14 11:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.66,
-    "pnl_pct": -0.14
+    "current_price": 85.25,
+    "pnl_pct": -0.62
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 09:30",
+    "last_checked_at": "2026-08-14 11:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002875,
-    "pnl_pct": 0.05
+    "current_price": 0.002865,
+    "pnl_pct": -0.3
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,13 +2701,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 09:30",
+    "last_checked_at": "2026-08-14 11:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 193.92,
-    "pnl_pct": 0.53
+    "current_price": 195.77,
+    "pnl_pct": 1.49
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2725,11 +2725,11 @@
     "sl": 0.010735,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "TP1_HIT",
     "opened_at": "2026-08-14 08:37",
     "confirmed_at": "2026-08-14 09:30",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-14 11:41",
+    "exit_price": 0.01157675,
     "confidence": 75.7,
     "vote_margin": 9,
     "atr_at_entry": 0.00013,
@@ -2739,12 +2739,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 09:30",
+    "last_checked_at": "2026-08-14 11:41",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.01124,
-    "pnl_pct": 2.41
+    "dollar_pnl": 0.55,
+    "balance_applied": true,
+    "current_price": 0.01119,
+    "pnl_pct": 5.48
   }
 ]
