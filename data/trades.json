@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 14:05",
+    "last_checked_at": "2026-08-14 20:03",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1204.14,
-    "pnl_pct": 0.48
+    "current_price": 1166.31,
+    "pnl_pct": -2.68
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 14:05",
+    "last_checked_at": "2026-08-14 20:03",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.55,
-    "pnl_pct": -0.27
+    "current_price": 86.46,
+    "pnl_pct": 0.79
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2649,11 +2649,11 @@
     "sl": 0.00278069,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-13 18:42",
     "confirmed_at": "2026-08-13 19:27",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-14 20:03",
+    "exit_price": 0.00278069,
     "confidence": 75.0,
     "vote_margin": 7,
     "atr_at_entry": 5.021e-05,
@@ -2663,13 +2663,31 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 14:05",
+    "last_checked_at": "2026-08-14 20:03",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 0.002853,
-    "pnl_pct": -0.72
+    "dollar_pnl": -0.32,
+    "balance_applied": true,
+    "current_price": 0.002818,
+    "pnl_pct": -3.23,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 75.0,
+      "risk_pct": 3.23,
+      "minutes_in_trade": 1476,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "atr_ratio": 1.85,
+      "sl_tighter_than_normal": false,
+      "counter_trend": false,
+      "htf_trend_at_entry": "LONG",
+      "rsi_extended": true,
+      "rsi_at_entry": 65.99,
+      "funding_against": null,
+      "thin_vote": false,
+      "vote_margin_at_entry": 7,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,13 +2719,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 14:05",
+    "last_checked_at": "2026-08-14 20:03",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 195.36,
-    "pnl_pct": 1.27
+    "current_price": 189.95,
+    "pnl_pct": -1.53
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2801,11 +2819,11 @@
     "sl": 0.99705,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-14 12:07",
     "confirmed_at": "2026-08-14 13:59",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-14 20:03",
+    "exit_price": 0.99705,
     "confidence": 77.1,
     "vote_margin": 6,
     "atr_at_entry": 0.0033,
@@ -2815,12 +2833,30 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 14:05",
+    "last_checked_at": "2026-08-14 20:03",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 1.0023,
-    "pnl_pct": -0.09
+    "dollar_pnl": -0.06,
+    "balance_applied": true,
+    "current_price": 0.9969,
+    "pnl_pct": -0.61,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 77.1,
+      "risk_pct": 0.61,
+      "minutes_in_trade": 364,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "atr_ratio": 1.85,
+      "sl_tighter_than_normal": false,
+      "counter_trend": false,
+      "htf_trend_at_entry": "LONG",
+      "rsi_extended": true,
+      "rsi_at_entry": 65.76,
+      "funding_against": null,
+      "thin_vote": false,
+      "vote_margin_at_entry": 6,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   }
 ]
