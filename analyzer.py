@@ -2210,10 +2210,33 @@ def final_verdict(chart, market, orderbook, fg, funding, indicators, news, match
         data_direction = "NEUTRAL"
 
     if not has_ai_opinion:
-        final_direction = data_direction if data_direction != "NEUTRAL" else (
-            "LONG" if ch_24h >= 0 else "SHORT"
-        )
-        agreement = "FULL" if data_direction != "NEUTRAL" else "PARTIAL"
+        if data_direction != "NEUTRAL":
+            final_direction = data_direction
+            agreement = "FULL"
+        else:
+            # BUG FIX: this used to silently force a direction here via
+            # `ch_24h >= 0 -> LONG` whenever the weighted vote was genuinely
+            # neutral (no decisive lean either way across orderbook/fg/news/
+            # funding/indicators/htf/divergence/whale), and marked it
+            # "PARTIAL" - which app.py still rendered as a normal, confident-
+            # looking LONG/SHORT trade card with a full entry/TP/SL.
+            #
+            # app.py already has a complete UI built around an agreement
+            # value of "NO_EDGE" - it shows a grey "no clear edge" marker and
+            # an explicit "SKIP (no edge)" recommendation - but this function
+            # never actually returned that value, so that entire skip-path
+            # was dead code. Every coin-flip vote was quietly dressed up as
+            # a real directional call instead of an honest "no setup here".
+            # This was a meaningful contributor to the heavy LONG skew seen
+            # in the trade log, since the ch_24h>=0 tiebreak always resolves
+            # ties toward LONG.
+            #
+            # We still need *some* direction internally so the entry/TP/SL
+            # math below has something to compute against, but agreement=
+            # "NO_EDGE" now correctly tells the caller (and Ahtisham) this
+            # isn't a real signal and should be skipped.
+            final_direction = "LONG" if ch_24h >= 0 else "SHORT"
+            agreement = "NO_EDGE"
         gemini_direction = final_direction
     else:
         trend_lower = chart.get("trend", "").lower()
