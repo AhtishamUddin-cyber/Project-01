@@ -9309,5 +9309,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ANTHROPICUSDT_1786749174266",
+    "coin": "ANTHROPIC",
+    "pair": "ANTHROPICUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1637.55075,
+    "entry_low": 1637.55075,
+    "entry_high": 1638.17985714,
+    "invalidate_price": 1632.51789286,
+    "tp1": 1646.8615357,
+    "tp2": 1653.84462497,
+    "sl": 1632.89535715,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 23:12",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 2.51642857,
+    "entry_snapshot": {
+      "rsi": 55.9,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
