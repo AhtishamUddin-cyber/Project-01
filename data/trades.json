@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 11:59",
+    "last_checked_at": "2026-08-14 12:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1192.7,
-    "pnl_pct": -0.47
+    "current_price": 1193.61,
+    "pnl_pct": -0.4
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 11:59",
+    "last_checked_at": "2026-08-14 12:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.27,
-    "pnl_pct": -0.6
+    "current_price": 85.22,
+    "pnl_pct": -0.66
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 11:59",
+    "last_checked_at": "2026-08-14 12:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002864,
-    "pnl_pct": -0.33
+    "current_price": 0.002869,
+    "pnl_pct": -0.16
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,13 +2701,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 11:59",
+    "last_checked_at": "2026-08-14 12:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 195.73,
-    "pnl_pct": 1.47
+    "current_price": 195.72,
+    "pnl_pct": 1.46
   },
   {
     "id": "COTIUSDT_1786696624036",
