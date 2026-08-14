@@ -8565,5 +8565,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_CRCLUSDT_1786708941267",
+    "coin": "CRCL",
+    "pair": "CRCLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 75.3815,
+    "entry_low": 75.3815,
+    "entry_high": 75.56114286,
+    "invalidate_price": 71.36664286,
+    "tp1": 85.14917858,
+    "tp2": 92.96332144,
+    "sl": 71.47442857,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 12:02",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 77.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.71857143,
+    "entry_snapshot": {
+      "rsi": 58.9,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
