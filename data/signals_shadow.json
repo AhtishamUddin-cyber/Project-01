@@ -8670,5 +8670,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_BEATUSDT_1786708948576",
+    "coin": "BEAT",
+    "pair": "BEATUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.68101,
+    "entry_low": 0.68101,
+    "entry_high": 0.71387429,
+    "invalidate_price": 0.41809572,
+    "tp1": 1.2271,
+    "tp2": 1.53219499,
+    "sl": 0.43781429,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 12:02",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.13145714,
+    "entry_snapshot": {
+      "rsi": 55.46,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
