@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1187.57,
-    "pnl_pct": -0.9
+    "current_price": 1189.79,
+    "pnl_pct": -0.72
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.58,
-    "pnl_pct": -0.24
+    "current_price": 85.59,
+    "pnl_pct": -0.22
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002859,
-    "pnl_pct": -0.51
+    "current_price": 0.002855,
+    "pnl_pct": -0.65
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,13 +2701,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 194.73,
-    "pnl_pct": 0.95
+    "current_price": 195.01,
+    "pnl_pct": 1.09
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2777,12 +2777,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 343.53,
+    "current_price": 343.7,
     "pnl_pct": null
   },
   {
@@ -2815,12 +2815,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 12:07",
+    "last_checked_at": "2026-08-14 12:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1.0023,
+    "current_price": 1.0022,
     "pnl_pct": null
   }
 ]
