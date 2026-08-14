@@ -2746,5 +2746,41 @@
     "balance_applied": true,
     "current_price": 0.01119,
     "pnl_pct": 5.48
+  },
+  {
+    "id": "TSLAUSDT_1786709222772",
+    "coin": "TSLA",
+    "pair": "TSLAUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 344.23896429,
+    "entry": 344.23896429,
+    "entry_low": 344.0445,
+    "entry_high": 344.43342857,
+    "invalidate_price": 340.93307142,
+    "tp1": 349.80064288,
+    "tp2": 354.11775004,
+    "sl": 341.16642856,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 12:07",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 66.4,
+    "vote_margin": 4,
+    "atr_at_entry": 1.55571429,
+    "entry_snapshot": {
+      "rsi": 70.96,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
