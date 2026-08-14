@@ -8163,5 +8163,40 @@
     "is_shadow": true,
     "current_price": 0.01097,
     "pnl_pct": null
+  },
+  {
+    "id": "shadow_COTIUSDT_1786696118272",
+    "coin": "COTI",
+    "pair": "COTIUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.0109855,
+    "entry_low": 0.0109855,
+    "entry_high": 0.011018,
+    "invalidate_price": 0.0107255,
+    "tp1": 0.01158675,
+    "tp2": 0.01206775,
+    "sl": 0.010745,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 08:28",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.00013,
+    "entry_snapshot": {
+      "rsi": 48.12,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
