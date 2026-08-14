@@ -9344,5 +9344,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ADAUSDT_1786749182612",
+    "coin": "ADA",
+    "pair": "ADAUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.1804025,
+    "entry_low": 0.1804025,
+    "entry_high": 0.18133286,
+    "invalidate_price": 0.17295964,
+    "tp1": 0.1941718,
+    "tp2": 0.20449877,
+    "sl": 0.17351785,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 23:13",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.00372143,
+    "entry_snapshot": {
+      "rsi": 64.84,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
