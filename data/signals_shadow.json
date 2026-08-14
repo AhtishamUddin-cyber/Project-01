@@ -8456,5 +8456,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ZECUSDT_1786699829099",
+    "coin": "ZEC",
+    "pair": "ZECUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 485.0795,
+    "entry_low": 484.37914286,
+    "entry_high": 485.0795,
+    "invalidate_price": 490.68235714,
+    "tp1": 474.22,
+    "tp2": 466.94025003,
+    "sl": 490.26214285,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 09:30",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": -6,
+    "atr_at_entry": 2.80142857,
+    "entry_snapshot": {
+      "rsi": 36.32,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
