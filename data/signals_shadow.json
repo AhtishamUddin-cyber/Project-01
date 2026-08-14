@@ -9204,5 +9204,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_DOOSBOTUSDT_1786749165860",
+    "coin": "DOOSBOT",
+    "pair": "DOOSBOTUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 56.5465,
+    "entry_low": 56.5465,
+    "entry_high": 56.694,
+    "invalidate_price": 55.3665,
+    "tp1": 58.7295,
+    "tp2": 60.36675,
+    "sl": 55.455,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 23:12",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.59,
+    "entry_snapshot": {
+      "rsi": 59.04,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
