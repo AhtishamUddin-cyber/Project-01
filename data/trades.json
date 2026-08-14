@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 08:25",
+    "last_checked_at": "2026-08-14 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1172.03,
-    "pnl_pct": -2.2
+    "current_price": 1176.17,
+    "pnl_pct": -1.85
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 08:25",
+    "last_checked_at": "2026-08-14 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.54,
-    "pnl_pct": 0.88
+    "current_price": 86.02,
+    "pnl_pct": 0.28
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2663,13 +2663,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-14 08:25",
+    "last_checked_at": "2026-08-14 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002886,
-    "pnl_pct": 0.43
+    "current_price": 0.002901,
+    "pnl_pct": 0.95
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2701,13 +2701,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-14 08:25",
+    "last_checked_at": "2026-08-14 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 193.65,
-    "pnl_pct": 0.39
+    "current_price": 193.9,
+    "pnl_pct": 0.52
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2739,10 +2739,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-14 08:37",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 0.01095,
+    "pnl_pct": null
   }
 ]
