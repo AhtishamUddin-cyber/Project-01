@@ -9064,5 +9064,40 @@
     "is_shadow": true,
     "current_price": 606.21,
     "pnl_pct": 0.21
+  },
+  {
+    "id": "shadow_CYSUSDT_1786749155526",
+    "coin": "CYS",
+    "pair": "CYSUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 1.291436,
+    "entry_low": 1.291436,
+    "entry_high": 1.30923314,
+    "invalidate_price": 1.14905886,
+    "tp1": 1.62068313,
+    "tp2": 1.88408083,
+    "sl": 1.15973715,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-14 23:12",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.07118857,
+    "entry_snapshot": {
+      "rsi": 53.66,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
