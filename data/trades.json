@@ -2592,8 +2592,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1176.01,
-    "pnl_pct": -1.87
+    "current_price": 1175.74,
+    "pnl_pct": -1.89
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2630,8 +2630,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.69,
-    "pnl_pct": -0.11
+    "current_price": 85.66,
+    "pnl_pct": -0.14
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2668,8 +2668,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.002876,
-    "pnl_pct": 0.08
+    "current_price": 0.002875,
+    "pnl_pct": 0.05
   },
   {
     "id": "SAMSUNGUSDT_1786649824409",
@@ -2706,8 +2706,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 194.03,
-    "pnl_pct": 0.58
+    "current_price": 193.92,
+    "pnl_pct": 0.53
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2745,6 +2745,6 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "current_price": 0.01124,
-    "pnl_pct": null
+    "pnl_pct": 2.41
   }
 ]
