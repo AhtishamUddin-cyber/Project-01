@@ -9882,5 +9882,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_WLFIUSDT_1786811736542",
+    "coin": "WLFI",
+    "pair": "WLFIUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.05633275,
+    "entry_low": 0.05633275,
+    "entry_high": 0.056349,
+    "invalidate_price": 0.05620275,
+    "tp1": 0.05657325,
+    "tp2": 0.05675363,
+    "sl": 0.0562125,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 16:35",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 65.0,
+    "vote_margin": 7,
+    "atr_at_entry": 6.5e-05,
+    "entry_snapshot": {
+      "rsi": 49.85,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
