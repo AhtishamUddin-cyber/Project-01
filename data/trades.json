@@ -2894,5 +2894,41 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "CLUSDT_1786792112883",
+    "coin": "CL",
+    "pair": "CLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 81.1029625,
+    "entry": 81.1029625,
+    "entry_low": 81.009025,
+    "entry_high": 81.1969,
+    "invalidate_price": 76.741825,
+    "tp1": 91.3952125,
+    "tp2": 99.7041625,
+    "sl": 76.85455,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 11:08",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.7515,
+    "entry_snapshot": {
+      "rsi": 64.69,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
