@@ -2587,7 +2587,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2625,7 +2625,7 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2719,7 +2719,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2889,7 +2889,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2927,13 +2927,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 80.924,
-    "pnl_pct": -0.1
+    "current_price": 80.918,
+    "pnl_pct": -0.11
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -2965,12 +2965,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 15:35",
+    "last_checked_at": "2026-08-15 15:36",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1739,
-    "pnl_pct": null
+    "current_price": 0.1734,
+    "pnl_pct": -15.4
   }
 ]
