@@ -2858,5 +2858,41 @@
       "whipsaw_checked": true,
       "whipsaw": false
     }
+  },
+  {
+    "id": "BZUSDT_1786792101633",
+    "coin": "BZ",
+    "pair": "BZUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 85.98730357,
+    "entry": 85.98730357,
+    "entry_low": 85.88275,
+    "entry_high": 86.09185714,
+    "invalidate_price": 82.32360714,
+    "tp1": 94.46694643,
+    "tp2": 101.33430356,
+    "sl": 82.44907143,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 11:08",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 80.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.83642857,
+    "entry_snapshot": {
+      "rsi": 65.49,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
