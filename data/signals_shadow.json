@@ -10073,5 +10073,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ROBOUSDT_1786815401824",
+    "coin": "ROBO",
+    "pair": "ROBOUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.013941,
+    "entry_low": 0.013941,
+    "entry_high": 0.01399172,
+    "invalidate_price": 0.01353528,
+    "tp1": 0.01469158,
+    "tp2": 0.01525452,
+    "sl": 0.01356571,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 17:36",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.00020286,
+    "entry_snapshot": {
+      "rsi": 54.08,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
