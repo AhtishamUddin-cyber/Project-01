@@ -371,14 +371,14 @@
     "exit_price": null,
     "confidence": 67.1,
     "vote_margin": 6,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1884.9,
-    "pnl_pct": -2.09
+    "current_price": 1882.46,
+    "pnl_pct": -2.22
   },
   {
     "id": "shadow_SOXLUSDT_1786307664557",
@@ -548,14 +548,14 @@
     "exit_price": null,
     "confidence": 72.9,
     "vote_margin": 8,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1884.8,
-    "pnl_pct": -2.1
+    "current_price": 1882.47,
+    "pnl_pct": -2.22
   },
   {
     "id": "shadow_BICOUSDT_1786307750248",
@@ -1181,14 +1181,14 @@
     "exit_price": null,
     "confidence": 47.9,
     "vote_margin": 1,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 611.26,
-    "pnl_pct": 1.02
+    "current_price": 610.61,
+    "pnl_pct": 0.91
   },
   {
     "id": "shadow_BNBUSDT_1786316004003",
@@ -1250,14 +1250,14 @@
     "exit_price": null,
     "confidence": 37.9,
     "vote_margin": -1,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 611.26,
-    "pnl_pct": 0.71
+    "current_price": 610.61,
+    "pnl_pct": 0.61
   },
   {
     "id": "shadow_BNBUSDT_1786316007734",
@@ -1280,14 +1280,14 @@
     "exit_price": null,
     "confidence": 40.7,
     "vote_margin": 2,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 611.26,
-    "pnl_pct": -0.08
+    "current_price": 610.61,
+    "pnl_pct": -0.19
   },
   {
     "id": "shadow_KORUUSDT_1786330703705",
@@ -1670,14 +1670,14 @@
     "exit_price": null,
     "confidence": 84.3,
     "vote_margin": 12,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 86.05,
-    "pnl_pct": 1.97
+    "current_price": 86.16,
+    "pnl_pct": 2.1
   },
   {
     "id": "shadow_CLUSDT_1786331051311",
@@ -1700,14 +1700,14 @@
     "exit_price": null,
     "confidence": 72.9,
     "vote_margin": 8,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 81.011,
-    "pnl_pct": 2.51
+    "current_price": 81.106,
+    "pnl_pct": 2.63
   },
   {
     "id": "shadow_XLMUSDT_1786331053077",
@@ -1730,14 +1730,14 @@
     "exit_price": null,
     "confidence": 70.0,
     "vote_margin": -7,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.15877,
-    "pnl_pct": 2.31
+    "current_price": 0.15914,
+    "pnl_pct": 2.08
   },
   {
     "id": "shadow_EPICUSDT_1786331054512",
@@ -2129,14 +2129,14 @@
     "exit_price": null,
     "confidence": 78.6,
     "vote_margin": 10,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 86.05,
-    "pnl_pct": 2.13
+    "current_price": 86.16,
+    "pnl_pct": 2.26
   },
   {
     "id": "shadow_BZUSDT_1786331184788",
@@ -2159,14 +2159,14 @@
     "exit_price": null,
     "confidence": 35.7,
     "vote_margin": 2,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 86.05,
-    "pnl_pct": 1.84
+    "current_price": 86.16,
+    "pnl_pct": 1.97
   },
   {
     "id": "shadow_BZUSDT_1786331190451",
@@ -2189,14 +2189,14 @@
     "exit_price": null,
     "confidence": 57.1,
     "vote_margin": 6,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 86.05,
-    "pnl_pct": 0.61
+    "current_price": 86.16,
+    "pnl_pct": 0.74
   },
   {
     "id": "shadow_SNDKUSDT_1786335764864",
@@ -2453,13 +2453,13 @@
     "exit_price": null,
     "confidence": 67.1,
     "vote_margin": -6,
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1651.77,
+    "current_price": 1651.92,
     "pnl_pct": null
   },
   {
@@ -4467,14 +4467,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 63094.7,
-    "pnl_pct": 0.94
+    "current_price": 63045.9,
+    "pnl_pct": 1.02
   },
   {
     "id": "shadow_BTCUSDT_1786389856842",
@@ -4504,13 +4504,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 63094.7,
+    "current_price": 63045.9,
     "pnl_pct": null
   },
   {
@@ -4927,14 +4927,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 102.92,
-    "pnl_pct": 5.5
+    "current_price": 102.98,
+    "pnl_pct": 5.56
   },
   {
     "id": "shadow_BLESSUSDT_1786437034904",
@@ -5148,14 +5148,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 40.32,
-    "pnl_pct": 7.99
+    "current_price": 40.301,
+    "pnl_pct": 8.03
   },
   {
     "id": "shadow_NEARUSDT_1786437063547",
@@ -5774,13 +5774,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.02134,
+    "current_price": 0.02193,
     "pnl_pct": null
   },
   {
@@ -6162,14 +6162,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 611.26,
-    "pnl_pct": -0.58
+    "current_price": 610.61,
+    "pnl_pct": -0.69
   },
   {
     "id": "shadow_BNBUSDT_1786449549273",
@@ -6273,14 +6273,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 343.14,
-    "pnl_pct": 2.83
+    "current_price": 343.07,
+    "pnl_pct": 2.81
   },
   {
     "id": "shadow_RKLBUSDT_1786474784725",
@@ -6550,14 +6550,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 347.51,
-    "pnl_pct": 0.43
+    "current_price": 347.82,
+    "pnl_pct": 0.52
   },
   {
     "id": "shadow_XRPUSDT_1786563992253",
@@ -6679,14 +6679,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 491.31,
-    "pnl_pct": -0.68
+    "current_price": 488.04,
+    "pnl_pct": -0.01
   },
   {
     "id": "shadow_NBISUSDT_1786564039986",
@@ -6808,14 +6808,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 191.31,
-    "pnl_pct": -1.27
+    "current_price": 191.35,
+    "pnl_pct": -1.25
   },
   {
     "id": "shadow_KORUUSDT_1786644261697",
@@ -6845,14 +6845,14 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 21.732,
-    "pnl_pct": -0.78
+    "current_price": 21.738,
+    "pnl_pct": -0.75
   },
   {
     "id": "shadow_CBRSUSDT_1786644263304",
@@ -6882,14 +6882,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 221.44,
-    "pnl_pct": -3.56
+    "current_price": 220.87,
+    "pnl_pct": -3.8
   },
   {
     "id": "shadow_ANTHROPICUSDT_1786644266008",
@@ -7030,14 +7030,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1173.16,
-    "pnl_pct": -2.12
+    "current_price": 1174.52,
+    "pnl_pct": -2.01
   },
   {
     "id": "shadow_ACUUSDT_1786645532139",
@@ -7215,14 +7215,14 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 166.73,
-    "pnl_pct": -0.07
+    "current_price": 166.8,
+    "pnl_pct": -0.03
   },
   {
     "id": "shadow_SOLUSDT_1786649739536",
@@ -7252,14 +7252,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 75.468,
-    "pnl_pct": -0.99
+    "current_price": 75.543,
+    "pnl_pct": -0.89
   },
   {
     "id": "shadow_TSLAUSDT_1786659034441",
@@ -8043,14 +8043,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 343.14,
-    "pnl_pct": 0.06
+    "current_price": 343.07,
+    "pnl_pct": 0.04
   },
   {
     "id": "shadow_TSLAUSDT_1786660755005",
@@ -8080,14 +8080,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 343.14,
-    "pnl_pct": -0.98
+    "current_price": 343.07,
+    "pnl_pct": -1.0
   },
   {
     "id": "shadow_TSLAUSDT_1786660757373",
@@ -8117,14 +8117,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 343.14,
-    "pnl_pct": 0.07
+    "current_price": 343.07,
+    "pnl_pct": 0.05
   },
   {
     "id": "shadow_TSLAUSDT_1786660798077",
@@ -8375,14 +8375,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1884.91,
-    "pnl_pct": -0.95
+    "current_price": 1882.51,
+    "pnl_pct": -0.82
   },
   {
     "id": "shadow_SBTCSUSDT_1786696147570",
@@ -8687,14 +8687,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 343.14,
-    "pnl_pct": -0.14
+    "current_price": 343.07,
+    "pnl_pct": -0.16
   },
   {
     "id": "shadow_CRCLUSDT_1786708941267",
@@ -8798,14 +8798,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 65.04,
-    "pnl_pct": -0.26
+    "current_price": 65.0,
+    "pnl_pct": -0.32
   },
   {
     "id": "shadow_BEATUSDT_1786708948576",
@@ -9000,14 +9000,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.07001,
-    "pnl_pct": 0.67
+    "current_price": 0.06992,
+    "pnl_pct": 0.54
   },
   {
     "id": "shadow_COTIUSDT_1786708998172",
@@ -9074,14 +9074,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 611.26,
-    "pnl_pct": 1.04
+    "current_price": 610.61,
+    "pnl_pct": 0.93
   },
   {
     "id": "shadow_CYSUSDT_1786749155526",
@@ -9148,14 +9148,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 63094.5,
-    "pnl_pct": 0.25
+    "current_price": 63065.5,
+    "pnl_pct": 0.2
   },
   {
     "id": "shadow_DOGEUSDT_1786749160259",
@@ -9185,14 +9185,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.07001,
-    "pnl_pct": 0.01
+    "current_price": 0.06992,
+    "pnl_pct": -0.12
   },
   {
     "id": "shadow_MUUUSDT_1786749163915",
@@ -9222,14 +9222,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 32.563,
-    "pnl_pct": -0.31
+    "current_price": 32.557,
+    "pnl_pct": -0.32
   },
   {
     "id": "shadow_DOOSBOTUSDT_1786749165860",
@@ -9259,14 +9259,14 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 56.21,
-    "pnl_pct": -0.6
+    "current_price": 56.58,
+    "pnl_pct": 0.06
   },
   {
     "id": "shadow_BTCUSDT_1786749169652",
@@ -9296,14 +9296,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 63094.7,
-    "pnl_pct": 0.24
+    "current_price": 63045.8,
+    "pnl_pct": 0.16
   },
   {
     "id": "shadow_PUMPUSDT_1786749172226",
@@ -9333,14 +9333,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.002823,
-    "pnl_pct": 0.51
+    "current_price": 0.002824,
+    "pnl_pct": 0.48
   },
   {
     "id": "shadow_ANTHROPICUSDT_1786749174266",
@@ -9407,14 +9407,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.1787,
-    "pnl_pct": -0.94
+    "current_price": 0.1773,
+    "pnl_pct": -1.72
   },
   {
     "id": "shadow_XRPUSDT_1786749185012",
@@ -9444,7 +9444,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
@@ -9555,14 +9555,14 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.1729,
-    "pnl_pct": -14.77
+    "current_price": 0.1722,
+    "pnl_pct": -15.11
   },
   {
     "id": "shadow_PEPEUSDT_1786792044872",
@@ -9592,14 +9592,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 2.6515e-06,
-    "pnl_pct": 0.06
+    "current_price": 2.6541e-06,
+    "pnl_pct": 0.15
   },
   {
     "id": "shadow_ALICEUSDT_1786792047016",
@@ -9629,14 +9629,14 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 16:32",
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.1255,
-    "pnl_pct": -1.33
+    "current_price": 0.1238,
+    "pnl_pct": -2.67
   },
   {
     "id": "shadow_WLDUSDT_1786811718724",
@@ -9652,9 +9652,9 @@
     "tp2": 0.39658769,
     "sl": 0.33818357,
     "timeframe": "15m",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 16:35",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-15 17:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 77.9,
@@ -9666,12 +9666,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 0.3505,
+    "pnl_pct": null
   },
   {
     "id": "shadow_WALUSDT_1786811722472",
@@ -9687,11 +9689,11 @@
     "tp2": 0.02626801,
     "sl": 0.02474571,
     "timeframe": "15m",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-15 16:35",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-15 17:33",
+    "exit_price": 0.02433,
     "confidence": 70.7,
     "vote_margin": 9,
     "atr_at_entry": 0.00018286,
@@ -9701,12 +9703,14 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 0.02433,
+    "pnl_pct": null
   },
   {
     "id": "shadow_HYPEUSDT_1786811724389",
@@ -9722,9 +9726,9 @@
     "tp2": 59.1814875,
     "sl": 56.13632143,
     "timeframe": "15m",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 16:35",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-15 17:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 70.0,
@@ -9736,12 +9740,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 56.96,
+    "pnl_pct": null
   },
   {
     "id": "shadow_CLUSDT_1786811726505",
@@ -9771,12 +9777,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BEARISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 81.117,
+    "pnl_pct": null
   },
   {
     "id": "shadow_SOXLUSDT_1786811730288",
@@ -9806,12 +9814,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 144.32,
+    "pnl_pct": null
   },
   {
     "id": "shadow_BZUSDT_1786811732386",
@@ -9841,12 +9851,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 86.16,
+    "pnl_pct": null
   },
   {
     "id": "shadow_TAOUSDT_1786811734222",
@@ -9876,12 +9888,14 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 197.79,
+    "pnl_pct": null
   },
   {
     "id": "shadow_WLFIUSDT_1786811736542",
@@ -9897,9 +9911,9 @@
     "tp2": 0.05675363,
     "sl": 0.0562125,
     "timeframe": "15m",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 16:35",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-15 17:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 65.0,
@@ -9911,11 +9925,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-15 17:33",
     "stake": null,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "is_shadow": true
+    "is_shadow": true,
+    "current_price": 0.05688,
+    "pnl_pct": null
   }
 ]
