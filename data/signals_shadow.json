@@ -9578,5 +9578,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ALICEUSDT_1786792047016",
+    "coin": "ALICE",
+    "pair": "ALICEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.127195,
+    "entry_low": 0.127195,
+    "entry_high": 0.12812,
+    "invalidate_price": 0.117035,
+    "tp1": 0.146405,
+    "tp2": 0.1608125,
+    "sl": 0.11759,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 11:07",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 65.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.0037,
+    "entry_snapshot": {
+      "rsi": 48.36,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
