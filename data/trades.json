@@ -2587,7 +2587,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.93,
-    "pnl_pct": 0.17
+    "current_price": 86.02,
+    "pnl_pct": 0.28
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2719,7 +2719,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2889,13 +2889,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.93,
-    "pnl_pct": null
+    "current_price": 86.02,
+    "pnl_pct": 0.16
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2927,13 +2927,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 81.022,
-    "pnl_pct": null
+    "current_price": 81.076,
+    "pnl_pct": 0.08
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -2965,12 +2965,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:33",
+    "last_checked_at": "2026-08-15 11:34",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1994,
+    "current_price": 0.1991,
     "pnl_pct": null
   }
 ]
