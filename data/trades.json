@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1174.96,
-    "pnl_pct": -1.95
+    "current_price": 1174.86,
+    "pnl_pct": -1.96
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,7 +2625,7 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2719,7 +2719,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2889,7 +2889,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2927,7 +2927,7 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
@@ -2965,13 +2965,13 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1688,
-    "pnl_pct": -17.64
+    "current_price": 0.1686,
+    "pnl_pct": -17.74
   },
   {
     "id": "WLDUSDT_1786815440466",
@@ -3003,12 +3003,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:57",
+    "last_checked_at": "2026-08-15 17:58",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.3497,
+    "current_price": 0.3501,
     "pnl_pct": null
   }
 ]
