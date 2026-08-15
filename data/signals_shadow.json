@@ -9742,5 +9742,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_CLUSDT_1786811726505",
+    "coin": "CL",
+    "pair": "CLUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 80.800725,
+    "entry_low": 80.66195714,
+    "entry_high": 80.800725,
+    "invalidate_price": 81.91086786,
+    "tp1": 78.7469607,
+    "tp2": 77.20663747,
+    "sl": 81.82760715,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 16:35",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": -7,
+    "atr_at_entry": 0.55507143,
+    "entry_snapshot": {
+      "rsi": 40.59,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BEARISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
