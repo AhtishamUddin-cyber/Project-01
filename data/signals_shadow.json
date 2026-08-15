@@ -9543,5 +9543,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_PEPEUSDT_1786792044872",
+    "coin": "PEPE",
+    "pair": "PEPEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 2.65e-06,
+    "entry_low": 2.65e-06,
+    "entry_high": 2.66e-06,
+    "invalidate_price": 2.6e-06,
+    "tp1": 2.75e-06,
+    "tp2": 2.83e-06,
+    "sl": 2.6e-06,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-15 11:07",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.9,
+    "vote_margin": 8,
+    "atr_at_entry": 3e-08,
+    "entry_snapshot": {
+      "rsi": 37.17,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
