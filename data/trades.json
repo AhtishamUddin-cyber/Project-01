@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1170.95,
-    "pnl_pct": -2.29
+    "current_price": 1171.14,
+    "pnl_pct": -2.27
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.66,
-    "pnl_pct": -0.14
+    "current_price": 85.93,
+    "pnl_pct": 0.17
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2719,13 +2719,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 190.62,
-    "pnl_pct": -1.18
+    "current_price": 190.65,
+    "pnl_pct": -1.17
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2866,7 +2866,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 85.98730357,
-    "entry": 85.98730357,
+    "entry": 85.88275,
     "entry_low": 85.88275,
     "entry_high": 86.09185714,
     "invalidate_price": 82.32360714,
@@ -2875,9 +2875,9 @@
     "sl": 82.44907143,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 11:08",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-15 11:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 80.7,
@@ -2889,12 +2889,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.66,
+    "current_price": 85.93,
     "pnl_pct": null
   },
   {
@@ -2904,7 +2904,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 81.1029625,
-    "entry": 81.1029625,
+    "entry": 81.009025,
     "entry_low": 81.009025,
     "entry_high": 81.1969,
     "invalidate_price": 76.741825,
@@ -2913,9 +2913,9 @@
     "sl": 76.85455,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 11:08",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-15 11:33",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -2927,12 +2927,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 80.803,
+    "current_price": 81.022,
     "pnl_pct": null
   },
   {
@@ -2965,12 +2965,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 11:09",
+    "last_checked_at": "2026-08-15 11:33",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.2008,
+    "current_price": 0.1994,
     "pnl_pct": null
   }
 ]
