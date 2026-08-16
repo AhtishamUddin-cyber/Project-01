@@ -10579,5 +10579,40 @@
     "is_shadow": true,
     "current_price": 0.3482,
     "pnl_pct": null
+  },
+  {
+    "id": "shadow_WLDUSDT_1786880236151",
+    "coin": "WLD",
+    "pair": "WLDUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.34834314,
+    "entry_low": 0.34834314,
+    "entry_high": 0.34844538,
+    "invalidate_price": 0.34561597,
+    "tp1": 0.35234188,
+    "tp2": 0.35500771,
+    "sl": 0.34567731,
+    "timeframe": "1m",
+    "status": "PENDING",
+    "opened_at": "2026-08-16 11:37",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 35.7,
+    "vote_margin": 2,
+    "atr_at_entry": 0.00040896,
+    "entry_snapshot": {
+      "rsi": 52.09,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
