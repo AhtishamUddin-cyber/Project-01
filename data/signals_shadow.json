@@ -10684,5 +10684,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_MUUSDT_1786880514562",
+    "coin": "MU",
+    "pair": "MUUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "entry": 980.6475472,
+    "entry_low": 980.03150948,
+    "entry_high": 980.6475472,
+    "invalidate_price": 985.57584893,
+    "tp1": 971.530189,
+    "tp2": 964.69217035,
+    "sl": 985.2062263,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-16 11:41",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.1,
+    "vote_margin": -6,
+    "atr_at_entry": 2.46415087,
+    "entry_snapshot": {
+      "rsi": 37.85,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BEARISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
