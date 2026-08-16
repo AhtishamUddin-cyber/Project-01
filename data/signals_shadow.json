@@ -11209,5 +11209,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SOXLUSDT_1786880788112",
+    "coin": "SOXL",
+    "pair": "SOXLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 149.40788237,
+    "entry_low": 149.40788237,
+    "entry_high": 152.59922692,
+    "invalidate_price": 123.87712597,
+    "tp1": 190.14,
+    "tp2": 232.06370622,
+    "sl": 125.7919327,
+    "timeframe": "4h",
+    "status": "PENDING",
+    "opened_at": "2026-08-16 11:46",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 56.4,
+    "vote_margin": 4,
+    "atr_at_entry": 12.7653782,
+    "entry_snapshot": {
+      "rsi": 58.81,
+      "htf_trend": "NEUTRAL",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
