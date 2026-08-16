@@ -2592,8 +2592,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1183.88,
-    "pnl_pct": -1.21
+    "current_price": 1184.26,
+    "pnl_pct": -1.18
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2724,8 +2724,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 192.75,
-    "pnl_pct": -0.08
+    "current_price": 192.8,
+    "pnl_pct": -0.05
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2932,7 +2932,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 81.24,
+    "current_price": 81.247,
     "pnl_pct": 0.29
   },
   {
@@ -2970,8 +2970,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1397,
-    "pnl_pct": -31.84
+    "current_price": 0.1399,
+    "pnl_pct": -31.74
   },
   {
     "id": "WLDUSDT_1786815440466",
@@ -3008,7 +3008,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.3473,
-    "pnl_pct": null
+    "current_price": 0.3475,
+    "pnl_pct": -1.17
   }
 ]
