@@ -296,7 +296,12 @@ def refresh_shadow_signals(github_token=None):
             since_dt = _parse_trade_dt(since_str)
             if since_dt and price is not None:
                 price_low, price_high = get_price_extremes_since(t["pair"], t["market_type"], since_dt)
-            t = evaluate_trade(t, price, price_low, price_high)
+            # allow_partial_exit=False: shadow signals exist specifically to
+            # measure the raw single-shot TP1-vs-SL outcome for confidence
+            # calibration (see shadow_signal_stats()) - the partial-exit/
+            # breakeven strategy applied to real trades below must not change
+            # what this measurement means.
+            t = evaluate_trade(t, price, price_low, price_high, allow_partial_exit=False)
             t["last_checked_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         updated.append(t)
     save_shadow_signals(updated, github_token)
@@ -469,16 +474,25 @@ def suggest_max_safe_leverage(entry, sl, maintenance_margin_rate=0.01,
     }
 
 
+# A trade counts as "closed" once it can no longer move - includes
+# BREAKEVEN_TP1 (partial profit banked at TP1, remainder stopped at
+# breakeven - see evaluate_trade's partial-exit logic). BREAKEVEN_TP1 is
+# always a WIN: the TP1 leg is by definition profitable and the breakeven
+# leg nets ~0, so the blended pnl_pct is always positive.
+CLOSED_TRADE_STATUSES = ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL", "BREAKEVEN_TP1")
+WIN_TRADE_STATUSES = ("TP1_HIT", "TP2_HIT", "BREAKEVEN_TP1")
+
+
 def coin_trade_history(trades, coin_symbol):
     """Trader ke apne closed trades isi coin ke liye — taake naya trade lene se
     pehle dekha ja sake ke pichli baar isi coin mein kya hua tha (kitni dafa
     profit, kitni dafa loss, average outcome), instead of relying on memory."""
     coin_symbol = (coin_symbol or "").upper()
     closed = [t for t in trades if (t.get("coin") or "").upper() == coin_symbol
-              and t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")]
+              and t["status"] in CLOSED_TRADE_STATUSES]
     if not closed:
         return {"coin": coin_symbol, "count": 0, "trades": []}
-    wins = [t for t in closed if t["status"] in ("TP1_HIT", "TP2_HIT")
+    wins = [t for t in closed if t["status"] in WIN_TRADE_STATUSES
             or (t["status"] == "CLOSED_MANUAL" and (t.get("pnl_pct") or 0) > 0)]
     win_ids = {id(t) for t in wins}
     losses = [t for t in closed if id(t) not in win_ids]
@@ -502,7 +516,7 @@ def performance_by_confidence(trades):
     by how confident the tool was when the trade was opened. This is the
     honest way to know if the confidence score means anything - not by
     trusting the formula, but by checking what actually happened."""
-    closed = [t for t in trades if t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
+    closed = [t for t in trades if t["status"] in CLOSED_TRADE_STATUSES
               and t.get("confidence") is not None]
     buckets = {
         "High (75%+)": [t for t in closed if t["confidence"] >= 75],
@@ -514,7 +528,7 @@ def performance_by_confidence(trades):
         if not group:
             out.append({"bucket": label, "trades": 0, "win_rate": None, "avg_pnl": None})
             continue
-        wins = [t for t in group if t["status"] in ("TP1_HIT", "TP2_HIT")
+        wins = [t for t in group if t["status"] in WIN_TRADE_STATUSES
                 or (t["status"] == "CLOSED_MANUAL" and (t.get("pnl_pct") or 0) > 0)]
         avg_pnl = sum(t.get("pnl_pct", 0) or 0 for t in group) / len(group)
         out.append({
@@ -820,7 +834,7 @@ def sl_hit_lessons_for_coin(trades, coin, direction=None, min_confidence=60):
     return matches
 
 
-def evaluate_trade(trade, live_price, price_low=None, price_high=None):
+def evaluate_trade(trade, live_price, price_low=None, price_high=None, allow_partial_exit=True):
     """Checks a trade's price action against its TP/SL and returns an updated
     copy with status + unrealized/realized P&L. Doesn't mutate the original.
 
@@ -838,6 +852,12 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
     refresh_all_trades()) — not just the current price. When they're not
     available (e.g. candle history couldn't be fetched), this falls back to
     the old point-in-time behavior using live_price for both.
+
+    `allow_partial_exit`: when True (real trades), hitting TP1 takes a
+    partial exit and moves the stop to breakeven instead of closing outright
+    (see the TP1-partial block below). The shadow-log passes False to keep
+    measuring the raw single-shot TP1-vs-SL outcome used for confidence
+    calibration — see shadow_signal_stats().
     """
     t = dict(trade)
     if live_price is None:
@@ -900,11 +920,20 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
             return t
 
     entry = t["entry"]
+    tp1_partial_taken = t.get("tp1_partial_taken", False)
     if direction == "LONG":
-        pnl_pct = ((live_price - entry) / entry) * 100 if entry else 0
+        live_pnl = ((live_price - entry) / entry) * 100 if entry else 0
     else:
-        pnl_pct = ((entry - live_price) / entry) * 100 if entry else 0
-    t["pnl_pct"] = round(pnl_pct, 2)
+        live_pnl = ((entry - live_price) / entry) * 100 if entry else 0
+    if tp1_partial_taken:
+        # Half the position's gain is already banked from TP1 - blend that
+        # locked-in leg with the other half's live floating P&L, so the
+        # displayed number reflects reality instead of dropping back toward
+        # 0% right after a partial exit (which would look like nothing
+        # happened even though real profit is already secured).
+        t["pnl_pct"] = round(t.get("tp1_partial_pnl_pct", 0) * 0.5 + live_pnl * 0.5, 2)
+    else:
+        t["pnl_pct"] = round(live_pnl, 2)
 
     def _pct_at(exit_price):
         if not entry:
@@ -920,11 +949,11 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
         if direction == "LONG":
             hit_sl = sl and check_low <= sl
             hit_tp2 = tp2 and check_high >= tp2
-            hit_tp1 = tp1 and check_high >= tp1
+            hit_tp1 = (not tp1_partial_taken) and tp1 and check_high >= tp1
         else:
             hit_sl = sl and check_high >= sl
             hit_tp2 = tp2 and check_low <= tp2
-            hit_tp1 = tp1 and check_low <= tp1
+            hit_tp1 = (not tp1_partial_taken) and tp1 and check_low <= tp1
 
         # BUG FIX: pnl_pct above was computed from `live_price` - the ticker
         # price AT THE MOMENT WE HAPPENED TO CHECK, not the actual price the
@@ -938,17 +967,53 @@ def evaluate_trade(trade, live_price, price_low=None, price_high=None):
         # which one actually triggered, so both the trade log and the demo
         # balance reflect what actually happened, not refresh-timing luck.
         if hit_sl:
-            t["status"] = "SL_HIT"
-            t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-            t["exit_price"] = sl
-            t["pnl_pct"] = _pct_at(sl)
-            t["sl_hit_analysis"] = build_sl_hit_analysis(t)
+            if tp1_partial_taken:
+                # NEW: this is a breakeven stop on the remaining half after
+                # TP1 already banked profit on the other half - NOT a full
+                # loss. sl was moved to entry when TP1 partial fired, so the
+                # remainder leg is worth ~0%, and the trade nets out to
+                # roughly half of whatever TP1 gained - never a straight
+                # loss purely because price came back after running up.
+                t["status"] = "BREAKEVEN_TP1"
+                t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                t["exit_price"] = sl
+                t["pnl_pct"] = round(t.get("tp1_partial_pnl_pct", 0) * 0.5 + _pct_at(sl) * 0.5, 2)
+            else:
+                t["status"] = "SL_HIT"
+                t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                t["exit_price"] = sl
+                t["pnl_pct"] = _pct_at(sl)
+                t["sl_hit_analysis"] = build_sl_hit_analysis(t)
         elif hit_tp2:
             t["status"] = "TP2_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = tp2
-            t["pnl_pct"] = _pct_at(tp2)
+            if tp1_partial_taken:
+                t["pnl_pct"] = round(t.get("tp1_partial_pnl_pct", 0) * 0.5 + _pct_at(tp2) * 0.5, 2)
+            else:
+                t["pnl_pct"] = _pct_at(tp2)
+        elif hit_tp1 and allow_partial_exit:
+            # NEW: take partial profit at TP1 instead of closing the whole
+            # position - bank half the gain right now, move the stop on the
+            # other half to breakeven (entry price), and keep tracking
+            # toward TP2 completely risk-free from here. Previously TP1_HIT
+            # closed the ENTIRE position immediately, so any further move
+            # from TP1 to TP2 was never actually captured - TP2 was computed
+            # and shown on the card but the trade lifecycle never had a way
+            # to reach it once TP1 fired first.
+            t["tp1_partial_taken"] = True
+            t["tp1_partial_pnl_pct"] = _pct_at(tp1)
+            t["tp1_partial_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            t["original_sl"] = sl
+            t["sl"] = entry  # move stop to breakeven for the remaining half
+            t["pnl_pct"] = round(t["tp1_partial_pnl_pct"] * 0.5 + 0 * 0.5, 2)
+            # status stays "OPEN" - still being tracked toward TP2 or breakeven
         elif hit_tp1:
+            # allow_partial_exit=False path (used by the shadow-log, which
+            # deliberately measures the raw single-shot TP1-vs-SL signal for
+            # confidence calibration - see refresh_shadow_signals - and must
+            # NOT be changed by the partial-exit strategy applied to real
+            # trades, or that calibration stops meaning what it says it means).
             t["status"] = "TP1_HIT"
             t["closed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             t["exit_price"] = tp1
@@ -961,8 +1026,7 @@ def _finalize_stake_pnl(t, github_token=None):
     """If this trade just closed and has a paper-trading stake that hasn't
     been applied to the demo balance yet, compute its realized dollar P&L
     and apply it exactly once. Mutates and returns the trade dict."""
-    closed_statuses = ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
-    if t.get("status") in closed_statuses and t.get("stake") and not t.get("balance_applied"):
+    if t.get("status") in CLOSED_TRADE_STATUSES and t.get("stake") and not t.get("balance_applied"):
         pnl_pct = t.get("pnl_pct") or 0
         leverage = t.get("leverage") or 1
         dollar_pnl = round(t["stake"] * (pnl_pct / 100) * leverage, 2)
@@ -1018,12 +1082,32 @@ def repair_closed_trade_pnls(trades):
     closes, so they're trustworthy) instead of any live price. Returns
     (repaired_trades, number_of_trades_actually_corrected).
     """
-    closed_statuses = ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")
     fixed_count = 0
     out = []
     for t in trades:
         t = dict(t)
-        if t.get("status") in closed_statuses:
+        if t.get("status") in CLOSED_TRADE_STATUSES:
+            # Partial-exit trades (TP1 partial banked, then breakeven or
+            # TP2) have a blended pnl_pct across two legs - a plain
+            # entry-to-exit_price recompute doesn't know about the first
+            # leg and would wipe out the banked TP1 profit. Recompute the
+            # blend instead, using the same formula evaluate_trade uses.
+            if t.get("tp1_partial_taken"):
+                entry = t.get("entry")
+                exit_price = t.get("exit_price")
+                direction = t.get("direction")
+                tp1_pct = t.get("tp1_partial_pnl_pct")
+                if entry and exit_price and tp1_pct is not None:
+                    if direction == "LONG":
+                        final_leg_pct = round(((exit_price - entry) / entry) * 100, 2)
+                    else:
+                        final_leg_pct = round(((entry - exit_price) / entry) * 100, 2)
+                    correct_pnl = round(tp1_pct * 0.5 + final_leg_pct * 0.5, 2)
+                    if t.get("pnl_pct") != correct_pnl:
+                        t["pnl_pct"] = correct_pnl
+                        fixed_count += 1
+                out.append(t)
+                continue
             entry = t.get("entry")
             exit_price = t.get("exit_price")
             direction = t.get("direction")
@@ -1091,10 +1175,10 @@ def trade_stats(trades):
     the closed-trade denominator but never in the win numerator, which
     silently dragged the win rate down even when the manual close was
     profitable."""
-    closed = [t for t in trades if t["status"] in ("TP1_HIT", "TP2_HIT", "SL_HIT", "CLOSED_MANUAL")]
+    closed = [t for t in trades if t["status"] in CLOSED_TRADE_STATUSES]
 
     def _is_win(t):
-        if t["status"] in ("TP1_HIT", "TP2_HIT"):
+        if t["status"] in WIN_TRADE_STATUSES:
             return True
         if t["status"] == "CLOSED_MANUAL":
             return (t.get("pnl_pct") or 0) > 0
@@ -1927,7 +2011,23 @@ def get_realtime_indicators(pair, timeframe="1h", market_type="spot"):
                 trs.append(tr)
             if len(trs) < p:
                 return None
-            return round(sum(trs[-p:]) / p, 8)
+            # BUG FIX: this used to be `sum(trs[-p:]) / p` - a plain
+            # simple average of only the LAST p true-range values, throwing
+            # away every candle before that window. Every real ATR (Bitget,
+            # TradingView, every platform) uses Wilder's smoothing - the
+            # exact same continuous exponential-average technique already
+            # used for RSI above - seeded from the first p TRs and carried
+            # forward through the WHOLE series, so recent volatility is
+            # blended with history rather than replacing it outright.
+            # The two can genuinely disagree, especially right after a
+            # single volatility spike or lull in the most recent 14
+            # candles - and ATR feeds directly into every SL distance,
+            # TP1/TP2 distance, and entry offset this tool calculates, so a
+            # mismatched ATR here quietly shifts all of them at once.
+            atr = sum(trs[:p]) / p
+            for i in range(p, len(trs)):
+                atr = (atr * (p - 1) + trs[i]) / p
+            return round(atr, 8)
 
         def swing_levels(h, l, c, lookback=60):
             n = min(lookback, len(h))
