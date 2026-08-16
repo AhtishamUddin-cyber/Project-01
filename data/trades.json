@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1174.86,
-    "pnl_pct": -1.96
+    "current_price": 1183.88,
+    "pnl_pct": -1.21
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.14,
-    "pnl_pct": 0.42
+    "current_price": 86.25,
+    "pnl_pct": 0.54
   },
   {
     "id": "PUMPUSDT_1786646577523",
@@ -2719,13 +2719,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 191.46,
-    "pnl_pct": -0.75
+    "current_price": 192.75,
+    "pnl_pct": -0.08
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2889,13 +2889,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.14,
-    "pnl_pct": 0.3
+    "current_price": 86.25,
+    "pnl_pct": 0.43
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2927,13 +2927,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 81.154,
-    "pnl_pct": 0.18
+    "current_price": 81.24,
+    "pnl_pct": 0.29
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -2965,13 +2965,13 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.1686,
-    "pnl_pct": -17.74
+    "current_price": 0.1397,
+    "pnl_pct": -31.84
   },
   {
     "id": "WLDUSDT_1786815440466",
@@ -2980,7 +2980,7 @@
     "market_type": "futures",
     "direction": "LONG",
     "planned_entry": 0.35203197,
-    "entry": 0.35203197,
+    "entry": 0.3516025,
     "entry_low": 0.3516025,
     "entry_high": 0.35246143,
     "invalidate_price": 0.33775393,
@@ -2989,9 +2989,9 @@
     "sl": 0.33826929,
     "timeframe": "15m",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-15 17:37",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-16 05:44",
     "closed_at": null,
     "exit_price": null,
     "confidence": 80.7,
@@ -3003,12 +3003,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-15 17:58",
+    "last_checked_at": "2026-08-16 05:44",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 0.3501,
+    "current_price": 0.3473,
     "pnl_pct": null
   }
 ]
