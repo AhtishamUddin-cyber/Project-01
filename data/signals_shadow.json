@@ -12243,5 +12243,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_GIGADEVICEUSDT_1786949523803",
+    "coin": "GIGADEVICE",
+    "pair": "GIGADEVICEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 69.6541981,
+    "entry_low": 69.6541981,
+    "entry_high": 69.87862532,
+    "invalidate_price": 66.27603101,
+    "tp1": 74.51946424,
+    "tp2": 77.762975,
+    "sl": 66.41068734,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 06:52",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 52.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.89770886,
+    "entry_snapshot": {
+      "rsi": 59.89,
+      "htf_trend": "NEUTRAL",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
