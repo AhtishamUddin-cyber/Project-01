@@ -12748,5 +12748,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_ACEUSDT_1786969181965",
+    "coin": "ACE",
+    "pair": "ACEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.19325361,
+    "entry_low": 0.19325361,
+    "entry_high": 0.19422048,
+    "invalidate_price": 0.18551869,
+    "tp1": 0.20398581,
+    "tp2": 0.21114061,
+    "sl": 0.18609881,
+    "timeframe": "30m",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 12:19",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 22.9,
+    "vote_margin": -1,
+    "atr_at_entry": 0.00386746,
+    "entry_snapshot": {
+      "rsi": 25.49,
+      "htf_trend": "SHORT",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
