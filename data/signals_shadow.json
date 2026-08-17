@@ -11998,5 +11998,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_APRUSDT_1786948278366",
+    "coin": "APR",
+    "pair": "APRUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.19480071,
+    "entry_low": 0.19480071,
+    "entry_high": 0.20252265,
+    "invalidate_price": 0.13302523,
+    "tp1": 0.33141,
+    "tp2": 0.39479883,
+    "sl": 0.13765839,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 06:31",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": 5,
+    "atr_at_entry": 0.03088774,
+    "entry_snapshot": {
+      "rsi": 69.33,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
