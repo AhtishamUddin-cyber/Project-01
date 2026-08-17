@@ -12923,5 +12923,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_SPCXUSDT_1786983497735",
+    "coin": "SPCX",
+    "pair": "SPCXUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 148.51854467,
+    "entry_low": 148.51854467,
+    "entry_high": 148.55321944,
+    "invalidate_price": 148.24114654,
+    "tp1": 149.16002785,
+    "tp2": 149.67321439,
+    "sl": 148.2619514,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 16:18",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 0.13869907,
+    "entry_snapshot": {
+      "rsi": 50.44,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
