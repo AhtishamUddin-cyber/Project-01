@@ -3048,5 +3048,41 @@
     "balance_applied": false,
     "current_price": 0.1938,
     "pnl_pct": null
+  },
+  {
+    "id": "SNDKUSDT_1786983631653",
+    "coin": "SNDK",
+    "pair": "SNDKUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 1796.8611787,
+    "entry": 1796.8611787,
+    "entry_low": 1796.63718431,
+    "entry_high": 1797.0851731,
+    "invalidate_price": 1793.05327395,
+    "tp1": 1804.92497701,
+    "tp2": 1811.55521117,
+    "sl": 1793.32206723,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 16:20",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 78.6,
+    "vote_margin": 10,
+    "atr_at_entry": 1.79195518,
+    "entry_snapshot": {
+      "rsi": 51.57,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
