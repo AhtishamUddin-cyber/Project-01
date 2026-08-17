@@ -13028,5 +13028,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_HUSDT_1786983505990",
+    "coin": "H",
+    "pair": "HUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.11690448,
+    "entry_low": 0.11690448,
+    "entry_high": 0.11852911,
+    "invalidate_price": 0.10390744,
+    "tp1": 0.15057,
+    "tp2": 0.15898239,
+    "sl": 0.10488222,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 16:18",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.00649852,
+    "entry_snapshot": {
+      "rsi": 53.25,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
