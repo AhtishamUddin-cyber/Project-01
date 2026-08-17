@@ -12453,5 +12453,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_COWUSDT_1786964825127",
+    "coin": "COW",
+    "pair": "COWUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.1134167,
+    "entry_low": 0.1134167,
+    "entry_high": 0.11364291,
+    "invalidate_price": 0.111607,
+    "tp1": 0.11676464,
+    "tp2": 0.11927559,
+    "sl": 0.11174273,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 11:07",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.00090485,
+    "entry_snapshot": {
+      "rsi": 54.98,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "BEARISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
