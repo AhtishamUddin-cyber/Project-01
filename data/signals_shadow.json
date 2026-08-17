@@ -11823,5 +11823,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_UNIUSDT_1786948268343",
+    "coin": "UNI",
+    "pair": "UNIUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 3.25274753,
+    "entry_low": 3.25274753,
+    "entry_high": 3.25756719,
+    "invalidate_price": 3.21419022,
+    "tp1": 3.34191131,
+    "tp2": 3.41324233,
+    "sl": 3.21708202,
+    "timeframe": "15m",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 06:31",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.01927865,
+    "entry_snapshot": {
+      "rsi": 64.73,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
