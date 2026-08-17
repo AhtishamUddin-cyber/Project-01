@@ -3010,5 +3010,41 @@
     "balance_applied": false,
     "current_price": 0.3636,
     "pnl_pct": 3.41
+  },
+  {
+    "id": "ACEUSDT_1786965085480",
+    "coin": "ACE",
+    "pair": "ACEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 0.20403975,
+    "entry": 0.20403975,
+    "entry_low": 0.20334508,
+    "entry_high": 0.20473442,
+    "invalidate_price": 0.19223032,
+    "tp1": 0.22904796,
+    "tp2": 0.24961026,
+    "sl": 0.19306393,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 11:11",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 0.00555738,
+    "entry_snapshot": {
+      "rsi": 60.94,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "BEARISH"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
