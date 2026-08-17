@@ -12278,5 +12278,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_GIGGLEUSDT_1786949551703",
+    "coin": "GIGGLE",
+    "pair": "GIGGLEUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 32.535663,
+    "entry_low": 32.535663,
+    "entry_high": 32.81827943,
+    "invalidate_price": 30.27473157,
+    "tp1": 36.34,
+    "tp2": 39.85542849,
+    "sl": 30.44430143,
+    "timeframe": "All",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 06:52",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 1.13046571,
+    "entry_snapshot": {
+      "rsi": 58.48,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
