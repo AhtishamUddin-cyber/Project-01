@@ -12418,5 +12418,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_PRLUSDT_1786964822683",
+    "coin": "PRL",
+    "pair": "PRLUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.39952289,
+    "entry_low": 0.39952289,
+    "entry_high": 0.40153924,
+    "invalidate_price": 0.38339211,
+    "tp1": 0.42936483,
+    "tp2": 0.45174629,
+    "sl": 0.38460192,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-17 11:07",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.00806539,
+    "entry_snapshot": {
+      "rsi": 53.16,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
