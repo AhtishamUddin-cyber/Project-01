@@ -13868,5 +13868,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_NVDAUSDT_1787026243202",
+    "coin": "NVDA",
+    "pair": "NVDAUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 223.43035497,
+    "entry_low": 223.43035497,
+    "entry_high": 223.70917995,
+    "invalidate_price": 221.19975514,
+    "tp1": 227.55696465,
+    "tp2": 230.65192191,
+    "sl": 221.36705013,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-18 04:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 1.11529991,
+    "entry_snapshot": {
+      "rsi": 69.77,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
