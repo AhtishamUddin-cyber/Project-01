@@ -3120,5 +3120,41 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "SAMSUNGUSDT_1787026291062",
+    "coin": "SAMSUNG",
+    "pair": "SAMSUNGUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 193.46418062,
+    "entry": 193.46418062,
+    "entry_low": 193.19992256,
+    "entry_high": 193.72843868,
+    "invalidate_price": 188.97179364,
+    "tp1": 202.97747069,
+    "tp2": 210.79950919,
+    "sl": 189.28890331,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-18 04:11",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 2.11406446,
+    "entry_snapshot": {
+      "rsi": 63.15,
+      "htf_trend": "LONG",
+      "fund_signal": "LONG",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
