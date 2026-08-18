@@ -13763,5 +13763,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_XAUTUSDT_1787026233579",
+    "coin": "XAUT",
+    "pair": "XAUTUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 4379.72232904,
+    "entry_low": 4379.72232904,
+    "entry_high": 4384.49542121,
+    "invalidate_price": 4289.82843409,
+    "tp1": 4597.29742816,
+    "tp2": 4771.35750746,
+    "sl": 4292.69228939,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-18 04:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": 9,
+    "atr_at_entry": 19.09236869,
+    "entry_snapshot": {
+      "rsi": 50.5,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
