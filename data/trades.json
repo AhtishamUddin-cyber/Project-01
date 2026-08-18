@@ -2587,13 +2587,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1195.43,
-    "pnl_pct": -0.25
+    "current_price": 1154.59,
+    "pnl_pct": -3.65
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2625,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 89.63,
-    "pnl_pct": 2.1,
+    "current_price": 89.31,
+    "pnl_pct": 4.16,
     "tp1_partial_taken": true,
     "tp1_partial_pnl_pct": 4.21,
     "tp1_partial_at": "2026-08-18 04:14",
@@ -2709,11 +2709,11 @@
     "sl": 185.855,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-13 19:37",
     "confirmed_at": "2026-08-13 22:05",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-18 09:28",
+    "exit_price": 185.855,
     "confidence": 75.0,
     "vote_margin": 7,
     "atr_at_entry": 3.81,
@@ -2723,13 +2723,31 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 192.54,
-    "pnl_pct": -0.19
+    "dollar_pnl": -0.36,
+    "balance_applied": true,
+    "current_price": 186.11,
+    "pnl_pct": -3.65,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 75.0,
+      "risk_pct": 3.65,
+      "minutes_in_trade": 6443,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "atr_ratio": 1.85,
+      "sl_tighter_than_normal": false,
+      "counter_trend": false,
+      "htf_trend_at_entry": "LONG",
+      "rsi_extended": false,
+      "rsi_at_entry": 54.63,
+      "funding_against": null,
+      "thin_vote": false,
+      "vote_margin_at_entry": 7,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "COTIUSDT_1786696624036",
@@ -2893,13 +2911,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 89.63,
-    "pnl_pct": 4.36
+    "current_price": 89.31,
+    "pnl_pct": 3.99
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2931,13 +2949,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 84.494,
-    "pnl_pct": 4.3
+    "current_price": 84.221,
+    "pnl_pct": 3.96
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3029,8 +3047,8 @@
       "funding_against": null,
       "thin_vote": false,
       "vote_margin_at_entry": 9,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   },
   {
@@ -3163,11 +3181,11 @@
     "sl": 189.28890331,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-18 04:11",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-18 09:28",
+    "exit_price": 186.14,
     "confidence": 75.7,
     "vote_margin": 9,
     "atr_at_entry": 2.11406446,
@@ -3177,12 +3195,12 @@
       "fund_signal": "LONG",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-18 04:14",
+    "last_checked_at": "2026-08-18 09:28",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 192.54,
+    "current_price": 186.14,
     "pnl_pct": null
   }
 ]
