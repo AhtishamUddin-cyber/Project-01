@@ -13833,5 +13833,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_FILUSDT_1787026239702",
+    "coin": "FIL",
+    "pair": "FILUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "entry": 0.62022609,
+    "entry_low": 0.62022609,
+    "entry_high": 0.62203044,
+    "invalidate_price": 0.6057913,
+    "tp1": 0.64693045,
+    "tp2": 0.66695872,
+    "sl": 0.60687391,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-18 04:10",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.9,
+    "vote_margin": 8,
+    "atr_at_entry": 0.00721739,
+    "entry_snapshot": {
+      "rsi": 63.35,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
