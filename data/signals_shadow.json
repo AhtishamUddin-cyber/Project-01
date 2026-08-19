@@ -14606,5 +14606,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RSOXXUSDT_1787166959079",
+    "coin": "rSOXX",
+    "pair": "RSOXXUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 516.8176344,
+    "entry_low": 514.11594468,
+    "entry_high": 516.8176344,
+    "invalidate_price": 538.43115212,
+    "tp1": 476.83262662,
+    "tp2": 446.84387078,
+    "sl": 536.81013829,
+    "timeframe": "1d",
+    "status": "PENDING",
+    "opened_at": "2026-08-19 19:15",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": -5,
+    "atr_at_entry": 10.80675886,
+    "entry_snapshot": {
+      "rsi": 32.84,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
