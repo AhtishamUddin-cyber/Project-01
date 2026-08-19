@@ -2573,11 +2573,11 @@
     "sl": 1100.29507143,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-13 18:05",
     "confirmed_at": "2026-08-13 20:53",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-19 15:00",
+    "exit_price": 1100.29507143,
     "confidence": 80.0,
     "vote_margin": 7,
     "atr_at_entry": 27.71642857,
@@ -2587,13 +2587,31 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-18 09:28",
+    "last_checked_at": "2026-08-19 15:00",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 1154.59,
-    "pnl_pct": -3.65
+    "dollar_pnl": -0.82,
+    "balance_applied": true,
+    "current_price": 1150.35,
+    "pnl_pct": -8.18,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 80.0,
+      "risk_pct": 8.18,
+      "minutes_in_trade": 8287,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "atr_ratio": 3.54,
+      "sl_tighter_than_normal": false,
+      "counter_trend": false,
+      "htf_trend_at_entry": "LONG",
+      "rsi_extended": false,
+      "rsi_at_entry": 62.34,
+      "funding_against": null,
+      "thin_vote": false,
+      "vote_margin_at_entry": 7,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "BZUSDT_1786645164045",
@@ -2625,13 +2643,13 @@
       "fund_signal": "LONG",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-18 09:28",
+    "last_checked_at": "2026-08-19 15:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 89.31,
-    "pnl_pct": 4.16,
+    "current_price": 90.13,
+    "pnl_pct": 4.64,
     "tp1_partial_taken": true,
     "tp1_partial_pnl_pct": 4.21,
     "tp1_partial_at": "2026-08-18 04:14",
@@ -2745,8 +2763,8 @@
       "funding_against": null,
       "thin_vote": false,
       "vote_margin_at_entry": 7,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   },
   {
@@ -2911,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-18 09:28",
+    "last_checked_at": "2026-08-19 15:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 89.31,
-    "pnl_pct": 3.99
+    "current_price": 90.13,
+    "pnl_pct": 4.95
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2949,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-18 09:28",
+    "last_checked_at": "2026-08-19 15:00",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 84.221,
-    "pnl_pct": 3.96
+    "current_price": 84.887,
+    "pnl_pct": 4.79
   },
   {
     "id": "ACEUSDT_1786792122282",
