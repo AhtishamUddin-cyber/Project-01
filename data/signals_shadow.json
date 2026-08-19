@@ -14536,5 +14536,40 @@
     "is_shadow": true,
     "current_price": 9.784,
     "pnl_pct": 3.12
+  },
+  {
+    "id": "shadow_RWDCUSDT_1787166950537",
+    "coin": "rWDC",
+    "pair": "RWDCUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 453.43507201,
+    "entry_low": 447.74583773,
+    "entry_high": 453.43507201,
+    "invalidate_price": 498.94894623,
+    "tp1": 348.18423789,
+    "tp2": 263.98357059,
+    "sl": 495.53540566,
+    "timeframe": "1d",
+    "status": "PENDING",
+    "opened_at": "2026-08-19 19:15",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": -7,
+    "atr_at_entry": 22.75693711,
+    "entry_snapshot": {
+      "rsi": 34.67,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
