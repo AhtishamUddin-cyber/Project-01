@@ -14676,5 +14676,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RLRCXUSDT_1787166963557",
+    "coin": "rLRCX",
+    "pair": "RLRCXUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 304.16708163,
+    "entry_low": 301.06499708,
+    "entry_high": 304.16708163,
+    "invalidate_price": 328.98375805,
+    "tp1": 258.25623025,
+    "tp2": 223.82309171,
+    "sl": 327.12250732,
+    "timeframe": "1d",
+    "status": "PENDING",
+    "opened_at": "2026-08-19 19:16",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": -5,
+    "atr_at_entry": 12.40833821,
+    "entry_snapshot": {
+      "rsi": 30.26,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
