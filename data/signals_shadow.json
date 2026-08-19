@@ -14641,5 +14641,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RIWMUSDT_1787166961388",
+    "coin": "rIWM",
+    "pair": "RIWMUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 299.95790976,
+    "entry_low": 298.94213102,
+    "entry_high": 299.95790976,
+    "invalidate_price": 308.08413972,
+    "tp1": 284.92438434,
+    "tp2": 273.64924028,
+    "sl": 307.47467247,
+    "timeframe": "1d",
+    "status": "PENDING",
+    "opened_at": "2026-08-19 19:16",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": -5,
+    "atr_at_entry": 4.06311498,
+    "entry_snapshot": {
+      "rsi": 39.51,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
