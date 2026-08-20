@@ -14897,5 +14897,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RMSFTUSDT_1787255394160",
+    "coin": "rMSFT",
+    "pair": "RMSFTUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "entry": 482.44797553,
+    "entry_low": 482.44797553,
+    "entry_high": 482.89652948,
+    "invalidate_price": 478.85954393,
+    "tp1": 489.08657399,
+    "tp2": 494.06552284,
+    "sl": 479.1286763,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": 5,
+    "atr_at_entry": 1.7942158,
+    "entry_snapshot": {
+      "rsi": 65.28,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
