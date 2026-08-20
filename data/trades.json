@@ -3220,5 +3220,41 @@
     "balance_applied": false,
     "current_price": 186.14,
     "pnl_pct": null
+  },
+  {
+    "id": "RMSTRUSDT_1787255460513",
+    "coin": "rMSTR",
+    "pair": "RMSTRUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "planned_entry": 113.08207441,
+    "entry": 113.08207441,
+    "entry_low": 112.95521272,
+    "entry_high": 113.20893609,
+    "invalidate_price": 110.92542576,
+    "tp1": 117.64909507,
+    "tp2": 121.40420095,
+    "sl": 111.07765978,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:51",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.0,
+    "vote_margin": 7,
+    "atr_at_entry": 1.01489348,
+    "entry_snapshot": {
+      "rsi": 65.24,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
