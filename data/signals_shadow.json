@@ -15142,5 +15142,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RSTXUSDT_1787255413323",
+    "coin": "rSTX",
+    "pair": "RSTXUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 852.18467137,
+    "entry_low": 850.39515092,
+    "entry_high": 852.18467137,
+    "invalidate_price": 866.50083496,
+    "tp1": 825.69976873,
+    "tp2": 805.83609175,
+    "sl": 865.42712269,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:50",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 66.4,
+    "vote_margin": -4,
+    "atr_at_entry": 7.15808179,
+    "entry_snapshot": {
+      "rsi": 38.46,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
