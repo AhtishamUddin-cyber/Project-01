@@ -14967,5 +14967,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RMRKUSDT_1787255399396",
+    "coin": "rMRK",
+    "pair": "RMRKUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 149.19138357,
+    "entry_low": 149.03522898,
+    "entry_high": 149.19138357,
+    "invalidate_price": 150.44062032,
+    "tp1": 146.88029559,
+    "tp2": 145.1469796,
+    "sl": 150.34692756,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": -5,
+    "atr_at_entry": 0.62461837,
+    "entry_snapshot": {
+      "rsi": 42.95,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
