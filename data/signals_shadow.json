@@ -15002,5 +15002,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RHOODUSDT_1787255401417",
+    "coin": "rHOOD",
+    "pair": "RHOODUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "entry": 94.46730045,
+    "entry_low": 94.46730045,
+    "entry_high": 94.62965791,
+    "invalidate_price": 93.16844074,
+    "tp1": 96.87019091,
+    "tp2": 98.67235875,
+    "sl": 93.26585522,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:50",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.64942985,
+    "entry_snapshot": {
+      "rsi": 52.28,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
