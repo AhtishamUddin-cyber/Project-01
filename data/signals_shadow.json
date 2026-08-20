@@ -14827,5 +14827,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RTSLAUSDT_1787255389177",
+    "coin": "rTSLA",
+    "pair": "RTSLAUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "entry": 343.87662741,
+    "entry_low": 343.87662741,
+    "entry_high": 344.30278985,
+    "invalidate_price": 340.46732793,
+    "tp1": 350.18383145,
+    "tp2": 354.91423448,
+    "sl": 340.72302539,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": 7,
+    "atr_at_entry": 1.70464974,
+    "entry_snapshot": {
+      "rsi": 55.95,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
