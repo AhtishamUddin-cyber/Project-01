@@ -3256,5 +3256,41 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false
+  },
+  {
+    "id": "RTLTUSDT_1787255474150",
+    "coin": "rTLT",
+    "pair": "RTLTUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "planned_entry": 82.43601591,
+    "entry": 82.43601591,
+    "entry_low": 82.42127488,
+    "entry_high": 82.45075694,
+    "invalidate_price": 82.19693229,
+    "tp1": 82.83458158,
+    "tp2": 83.1445616,
+    "sl": 82.21462153,
+    "timeframe": "1h",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:51",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 72.1,
+    "vote_margin": 6,
+    "atr_at_entry": 0.11792824,
+    "entry_snapshot": {
+      "rsi": 64.07,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
