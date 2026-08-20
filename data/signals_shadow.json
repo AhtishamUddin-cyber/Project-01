@@ -14757,5 +14757,40 @@
     "is_shadow": true,
     "current_price": 308.38,
     "pnl_pct": -1.39
+  },
+  {
+    "id": "shadow_RMSTRUSDT_1787255384266",
+    "coin": "rMSTR",
+    "pair": "RMSTRUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "entry": 112.33521271,
+    "entry_low": 112.33521271,
+    "entry_high": 112.58893607,
+    "invalidate_price": 110.30542581,
+    "tp1": 117.02909491,
+    "tp2": 120.78420067,
+    "sl": 110.45765983,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 77.9,
+    "vote_margin": 8,
+    "atr_at_entry": 1.01489345,
+    "entry_snapshot": {
+      "rsi": 65.24,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BULLISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
