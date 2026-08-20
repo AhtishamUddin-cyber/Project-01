@@ -14862,5 +14862,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RCOSTUSDT_1787255391181",
+    "coin": "rCOST",
+    "pair": "RCOSTUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 931.53762401,
+    "entry_low": 930.85021259,
+    "entry_high": 931.53762401,
+    "invalidate_price": 937.03691537,
+    "tp1": 921.36393499,
+    "tp2": 913.73366822,
+    "sl": 936.62446852,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 70.0,
+    "vote_margin": -7,
+    "atr_at_entry": 2.74964568,
+    "entry_snapshot": {
+      "rsi": 45.3,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "BEARISH"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
