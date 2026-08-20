@@ -15037,5 +15037,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RORCLUSDT_1787255403777",
+    "coin": "rORCL",
+    "pair": "RORCLUSDT",
+    "market_type": "spot",
+    "direction": "LONG",
+    "entry": 142.75212205,
+    "entry_low": 142.75212205,
+    "entry_high": 143.23935208,
+    "invalidate_price": 138.85428179,
+    "tp1": 152.523,
+    "tp2": 155.37137989,
+    "sl": 139.14661981,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:50",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 67.1,
+    "vote_margin": 6,
+    "atr_at_entry": 1.94892013,
+    "entry_snapshot": {
+      "rsi": 59.47,
+      "htf_trend": "LONG",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
