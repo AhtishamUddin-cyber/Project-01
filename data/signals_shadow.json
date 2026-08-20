@@ -14932,5 +14932,40 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true
+  },
+  {
+    "id": "shadow_RHYGUSDT_1787255397163",
+    "coin": "rHYG",
+    "pair": "RHYGUSDT",
+    "market_type": "spot",
+    "direction": "SHORT",
+    "entry": 79.53380371,
+    "entry_low": 79.51509207,
+    "entry_high": 79.53380371,
+    "invalidate_price": 79.68349679,
+    "tp1": 79.25687151,
+    "tp2": 79.04917236,
+    "sl": 79.67226981,
+    "timeframe": "1h",
+    "status": "PENDING",
+    "opened_at": "2026-08-20 19:49",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 69.3,
+    "vote_margin": -5,
+    "atr_at_entry": 0.07484654,
+    "entry_snapshot": {
+      "rsi": 39.7,
+      "htf_trend": "SHORT",
+      "fund_signal": "NEUTRAL",
+      "divergence": "NONE"
+    },
+    "last_checked_at": null,
+    "stake": null,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false,
+    "is_shadow": true
   }
 ]
