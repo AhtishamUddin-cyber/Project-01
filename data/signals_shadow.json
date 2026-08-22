@@ -2477,7 +2477,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1594.11,
+    "current_price": 1594.09,
     "pnl_pct": null
   },
   {
@@ -5208,7 +5208,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 47.648,
+    "current_price": 47.647,
     "pnl_pct": -8.74
   },
   {
@@ -5834,7 +5834,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.01952,
+    "current_price": 0.01951,
     "pnl_pct": null
   },
   {
@@ -9849,8 +9849,8 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.2463,
-    "pnl_pct": 21.42
+    "current_price": 0.2459,
+    "pnl_pct": 21.22
   },
   {
     "id": "shadow_PEPEUSDT_1786792044872",
@@ -11045,8 +11045,8 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.3859,
-    "pnl_pct": 2.98
+    "current_price": 0.3862,
+    "pnl_pct": 3.06
   },
   {
     "id": "shadow_WLDUSDT_1786880236151",
@@ -12426,8 +12426,8 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.52118,
-    "pnl_pct": 16.2
+    "current_price": 0.52193,
+    "pnl_pct": 16.08
   },
   {
     "id": "shadow_SKHYUSDT_1786948274780",
@@ -13217,8 +13217,8 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 0.52118,
-    "pnl_pct": 0.5
+    "current_price": 0.52193,
+    "pnl_pct": 0.35
   },
   {
     "id": "shadow_ACEUSDT_1786969175096",
@@ -13938,7 +13938,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1594.11,
+    "current_price": 1594.12,
     "pnl_pct": null
   },
   {
@@ -13975,7 +13975,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 1594.11,
+    "current_price": 1594.12,
     "pnl_pct": null
   },
   {
@@ -14419,7 +14419,7 @@
     "dollar_pnl": null,
     "balance_applied": false,
     "is_shadow": true,
-    "current_price": 135.28,
+    "current_price": 135.29,
     "pnl_pct": null
   },
   {
