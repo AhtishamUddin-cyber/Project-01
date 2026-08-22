@@ -2929,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-20 19:43",
+    "last_checked_at": "2026-08-22 16:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 91.64,
-    "pnl_pct": 6.7
+    "current_price": 91.96,
+    "pnl_pct": 7.08
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2967,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-20 19:43",
+    "last_checked_at": "2026-08-22 16:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.585,
-    "pnl_pct": 6.88
+    "current_price": 86.357,
+    "pnl_pct": 6.6
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3228,7 +3228,7 @@
     "market_type": "spot",
     "direction": "LONG",
     "planned_entry": 113.08207441,
-    "entry": 113.08207441,
+    "entry": 112.95521272,
     "entry_low": 112.95521272,
     "entry_high": 113.20893609,
     "invalidate_price": 110.92542576,
@@ -3237,9 +3237,9 @@
     "sl": 111.07765978,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "OPEN",
     "opened_at": "2026-08-20 19:51",
-    "confirmed_at": null,
+    "confirmed_at": "2026-08-22 16:08",
     "closed_at": null,
     "exit_price": null,
     "confidence": 75.0,
@@ -3251,11 +3251,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-22 16:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 120.41,
+    "pnl_pct": null
   },
   {
     "id": "RTLTUSDT_1787255474150",
@@ -3273,11 +3275,11 @@
     "sl": 82.21462153,
     "timeframe": "1h",
     "note": "",
-    "status": "PENDING",
+    "status": "INVALIDATED",
     "opened_at": "2026-08-20 19:51",
     "confirmed_at": null,
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-22 16:08",
+    "exit_price": 82.07,
     "confidence": 72.1,
     "vote_margin": 6,
     "atr_at_entry": 0.11792824,
@@ -3287,10 +3289,12 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": null,
+    "last_checked_at": "2026-08-22 16:08",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 82.07,
+    "pnl_pct": null
   }
 ]
