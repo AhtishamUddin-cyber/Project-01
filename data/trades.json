@@ -2929,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-22 16:10",
+    "last_checked_at": "2026-08-22 18:29",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 91.92,
-    "pnl_pct": 7.03
+    "current_price": 92.02,
+    "pnl_pct": 7.15
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2967,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-22 16:10",
+    "last_checked_at": "2026-08-22 18:29",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.329,
-    "pnl_pct": 6.57
+    "current_price": 86.444,
+    "pnl_pct": 6.71
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3237,11 +3237,11 @@
     "sl": 112.95521272,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "TP2_HIT",
     "opened_at": "2026-08-20 19:51",
     "confirmed_at": "2026-08-22 16:08",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-22 18:29",
+    "exit_price": 121.40420095,
     "confidence": 75.0,
     "vote_margin": 7,
     "atr_at_entry": 1.01489348,
@@ -3251,13 +3251,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-22 16:10",
+    "last_checked_at": "2026-08-22 18:29",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 120.41,
-    "pnl_pct": 5.38,
+    "dollar_pnl": 0.58,
+    "balance_applied": true,
+    "current_price": 121.51,
+    "pnl_pct": 5.82,
     "tp1_partial_taken": true,
     "tp1_partial_pnl_pct": 4.16,
     "tp1_partial_at": "2026-08-22 16:09",
