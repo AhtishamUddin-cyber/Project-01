@@ -2929,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-26 14:29",
+    "last_checked_at": "2026-08-26 15:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 86.5,
-    "pnl_pct": 0.72
+    "current_price": 87.82,
+    "pnl_pct": 2.26
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2967,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-26 14:29",
+    "last_checked_at": "2026-08-26 15:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 81.613,
-    "pnl_pct": 0.75
+    "current_price": 82.855,
+    "pnl_pct": 2.28
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3325,13 +3325,13 @@
     "confidence": 77.9,
     "vote_margin": -8,
     "atr_at_entry": 4.17928571,
-    "last_checked_at": "2026-08-26 14:29",
+    "last_checked_at": "2026-08-26 15:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 239.34,
-    "pnl_pct": 0.01
+    "current_price": 240.99,
+    "pnl_pct": -0.68
   },
   {
     "id": "SNDKUSDT_1787679408776",
@@ -3357,12 +3357,12 @@
     "confidence": 72.1,
     "vote_margin": -6,
     "atr_at_entry": 41.84571429,
-    "last_checked_at": "2026-08-26 14:29",
+    "last_checked_at": "2026-08-26 15:55",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1463.37,
-    "pnl_pct": 0.87
+    "current_price": 1500.04,
+    "pnl_pct": -1.62
   }
 ]
