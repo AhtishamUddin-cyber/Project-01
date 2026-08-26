@@ -3330,8 +3330,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 240.39,
-    "pnl_pct": -0.43
+    "current_price": 240.41,
+    "pnl_pct": -0.44
   },
   {
     "id": "SNDKUSDT_1787679408776",
@@ -3362,7 +3362,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 1467.63,
-    "pnl_pct": 0.58
+    "current_price": 1467.35,
+    "pnl_pct": 0.6
   }
 ]
