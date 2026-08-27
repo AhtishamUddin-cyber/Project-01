@@ -2929,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-26 15:56",
+    "last_checked_at": "2026-08-27 17:54",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 87.78,
-    "pnl_pct": 2.21
+    "current_price": 88.39,
+    "pnl_pct": 2.92
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2967,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-26 15:56",
+    "last_checked_at": "2026-08-27 17:54",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 82.797,
-    "pnl_pct": 2.21
+    "current_price": 83.541,
+    "pnl_pct": 3.13
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3317,21 +3317,30 @@
     "sl": 247.08892857,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-25 17:36",
     "confirmed_at": "2026-08-25 19:45",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-27 17:54",
+    "exit_price": 247.08892857,
     "confidence": 77.9,
     "vote_margin": -8,
     "atr_at_entry": 4.17928571,
-    "last_checked_at": "2026-08-26 15:56",
+    "last_checked_at": "2026-08-27 17:54",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 240.91,
-    "pnl_pct": -0.65
+    "dollar_pnl": -0.24,
+    "balance_applied": true,
+    "current_price": 245.13,
+    "pnl_pct": -2.41,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 77.9,
+      "risk_pct": 3.23,
+      "minutes_in_trade": 2769,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   },
   {
     "id": "SNDKUSDT_1787679408776",
@@ -3349,20 +3358,29 @@
     "sl": 1553.57857143,
     "timeframe": "1h",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-08-25 17:36",
     "confirmed_at": "2026-08-25 19:45",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-08-27 17:54",
+    "exit_price": 1553.57857143,
     "confidence": 72.1,
     "vote_margin": -6,
     "atr_at_entry": 41.84571429,
-    "last_checked_at": "2026-08-26 15:56",
+    "last_checked_at": "2026-08-27 17:54",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 1497.97,
-    "pnl_pct": -1.48
+    "dollar_pnl": -0.03,
+    "balance_applied": true,
+    "current_price": 1481.16,
+    "pnl_pct": -0.34,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 72.1,
+      "risk_pct": 5.24,
+      "minutes_in_trade": 2769,
+      "high_confidence_sl": true,
+      "fast_stopout": false,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   }
 ]
