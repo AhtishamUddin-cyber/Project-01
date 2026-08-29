@@ -2929,13 +2929,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "BULLISH"
     },
-    "last_checked_at": "2026-08-27 17:54",
+    "last_checked_at": "2026-08-29 17:07",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 88.39,
-    "pnl_pct": 2.92
+    "current_price": 87.94,
+    "pnl_pct": 2.4
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2967,13 +2967,13 @@
       "fund_signal": "NEUTRAL",
       "divergence": "NONE"
     },
-    "last_checked_at": "2026-08-27 17:54",
+    "last_checked_at": "2026-08-29 17:07",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 83.541,
-    "pnl_pct": 3.13
+    "current_price": 83.019,
+    "pnl_pct": 2.48
   },
   {
     "id": "ACEUSDT_1786792122282",
@@ -3338,8 +3338,8 @@
       "minutes_in_trade": 2769,
       "high_confidence_sl": true,
       "fast_stopout": false,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": true
     }
   },
   {
@@ -3379,8 +3379,8 @@
       "minutes_in_trade": 2769,
       "high_confidence_sl": true,
       "fast_stopout": false,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": false
     }
   }
 ]
