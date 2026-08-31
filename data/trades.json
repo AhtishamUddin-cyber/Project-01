@@ -2934,8 +2934,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 90.38,
-    "pnl_pct": 5.24
+    "current_price": 90.35,
+    "pnl_pct": 5.2
   },
   {
     "id": "CLUSDT_1786792112883",
@@ -2972,8 +2972,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 85.676,
-    "pnl_pct": 5.76
+    "current_price": 85.668,
+    "pnl_pct": 5.75
   },
   {
     "id": "ACEUSDT_1786792122282",
