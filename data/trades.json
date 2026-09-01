@@ -3382,5 +3382,35 @@
       "whipsaw_checked": true,
       "whipsaw": false
     }
+  },
+  {
+    "id": "QQQUSDT_1788278229183",
+    "coin": "QQQ",
+    "pair": "QQQUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "planned_entry": 712.42853571,
+    "entry": 712.42853571,
+    "entry_low": 712.34657143,
+    "entry_high": 712.5105,
+    "invalidate_price": 713.82192858,
+    "tp1": 709.4778214,
+    "tp2": 707.05167852,
+    "sl": 713.72357144,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-09-01 15:57",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": -9,
+    "atr_at_entry": 0.65571429,
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
