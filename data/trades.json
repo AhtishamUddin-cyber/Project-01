@@ -3476,8 +3476,8 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 56.02,
-    "pnl_pct": 0.3
+    "current_price": 56.03,
+    "pnl_pct": 0.31
   },
   {
     "id": "KORUUSDT_1788365005284",
@@ -3508,7 +3508,7 @@
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 19.971,
-    "pnl_pct": 0.51
+    "current_price": 19.975,
+    "pnl_pct": 0.53
   }
 ]
