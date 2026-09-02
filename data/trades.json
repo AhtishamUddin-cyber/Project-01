@@ -3471,13 +3471,13 @@
     "confidence": 72.9,
     "vote_margin": 8,
     "atr_at_entry": 0.32714286,
-    "last_checked_at": "2026-09-02 18:34",
+    "last_checked_at": "2026-09-02 18:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 56.12,
-    "pnl_pct": 0.48
+    "current_price": 56.02,
+    "pnl_pct": 0.3
   },
   {
     "id": "KORUUSDT_1788365005284",
@@ -3503,12 +3503,12 @@
     "confidence": 77.9,
     "vote_margin": 8,
     "atr_at_entry": 0.30764286,
-    "last_checked_at": "2026-09-02 18:34",
+    "last_checked_at": "2026-09-02 18:41",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
     "balance_applied": false,
-    "current_price": 20.066,
-    "pnl_pct": 0.99
+    "current_price": 19.971,
+    "pnl_pct": 0.51
   }
 ]
