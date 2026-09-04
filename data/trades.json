@@ -3484,8 +3484,8 @@
       "minutes_in_trade": 1039,
       "high_confidence_sl": true,
       "fast_stopout": false,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": true
     }
   },
   {
@@ -3525,8 +3525,8 @@
       "minutes_in_trade": 887,
       "high_confidence_sl": true,
       "fast_stopout": false,
-      "whipsaw_checked": false,
-      "whipsaw": null
+      "whipsaw_checked": true,
+      "whipsaw": true
     }
   }
 ]
