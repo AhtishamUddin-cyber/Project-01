@@ -3528,5 +3528,35 @@
       "whipsaw_checked": true,
       "whipsaw": true
     }
+  },
+  {
+    "id": "TSLAUSDT_1788546547030",
+    "coin": "TSLA",
+    "pair": "TSLAUSDT",
+    "market_type": "futures",
+    "direction": "SHORT",
+    "planned_entry": 352.76389286,
+    "entry": 352.76389286,
+    "entry_low": 352.56228572,
+    "entry_high": 352.9655,
+    "invalidate_price": 358.02578571,
+    "tp1": 340.91960715,
+    "tp2": 331.28289287,
+    "sl": 357.78385714,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-09-04 18:29",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 75.7,
+    "vote_margin": -9,
+    "atr_at_entry": 1.61285714,
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
