@@ -3566,7 +3566,7 @@
       "minutes_in_trade": 0,
       "high_confidence_sl": true,
       "fast_stopout": true,
-      "whipsaw_checked": false,
+      "whipsaw_checked": true,
       "whipsaw": null
     }
   }
