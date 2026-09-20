@@ -1,7 +1,0 @@
-streamlit>=1.36
-requests
-textblob
-Pillow
-google-genai
-PyMuPDF
-python-docx
