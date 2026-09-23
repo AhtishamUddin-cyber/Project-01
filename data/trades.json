@@ -3594,10 +3594,12 @@
     "confidence": 61.4,
     "vote_margin": 4,
     "atr_at_entry": 5.67071429,
-    "last_checked_at": null,
+    "last_checked_at": "2026-09-23 14:38",
     "stake": 10.0,
     "leverage": 1,
     "dollar_pnl": null,
-    "balance_applied": false
+    "balance_applied": false,
+    "current_price": 328.79,
+    "pnl_pct": null
   }
 ]
