@@ -3569,5 +3569,35 @@
       "whipsaw_checked": true,
       "whipsaw": null
     }
+  },
+  {
+    "id": "ARMUSDT_1790174277094",
+    "coin": "ARM",
+    "pair": "ARMUSDT",
+    "market_type": "futures",
+    "direction": "LONG",
+    "planned_entry": 332.00358928,
+    "entry": 332.00358928,
+    "entry_low": 331.29475,
+    "entry_high": 332.71242857,
+    "invalidate_price": 319.95332142,
+    "tp1": 352.27639288,
+    "tp2": 368.01262504,
+    "sl": 320.80392856,
+    "timeframe": "15m",
+    "note": "",
+    "status": "PENDING",
+    "opened_at": "2026-09-23 14:37",
+    "confirmed_at": null,
+    "closed_at": null,
+    "exit_price": null,
+    "confidence": 61.4,
+    "vote_margin": 4,
+    "atr_at_entry": 5.67071429,
+    "last_checked_at": null,
+    "stake": 10.0,
+    "leverage": 1,
+    "dollar_pnl": null,
+    "balance_applied": false
   }
 ]
