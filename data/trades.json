@@ -3586,20 +3586,29 @@
     "sl": 320.80392856,
     "timeframe": "15m",
     "note": "",
-    "status": "OPEN",
+    "status": "SL_HIT",
     "opened_at": "2026-09-23 14:37",
     "confirmed_at": "2026-09-23 18:58",
-    "closed_at": null,
-    "exit_price": null,
+    "closed_at": "2026-09-24 14:52",
+    "exit_price": 320.80392856,
     "confidence": 61.4,
     "vote_margin": 4,
     "atr_at_entry": 5.67071429,
-    "last_checked_at": "2026-09-24 08:19",
+    "last_checked_at": "2026-09-24 14:52",
     "stake": 10.0,
     "leverage": 1,
-    "dollar_pnl": null,
-    "balance_applied": false,
-    "current_price": 321.19,
-    "pnl_pct": -3.05
+    "dollar_pnl": -0.37,
+    "balance_applied": true,
+    "current_price": 319.17,
+    "pnl_pct": -3.66,
+    "sl_hit_analysis": {
+      "confidence_at_entry": 61.4,
+      "risk_pct": 3.17,
+      "minutes_in_trade": 1194,
+      "high_confidence_sl": false,
+      "fast_stopout": false,
+      "whipsaw_checked": false,
+      "whipsaw": null
+    }
   }
 ]
